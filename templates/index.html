@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ info.name }} | Portfólio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header id="header">
+        <nav>
+            <div class="logo">Carlos<span class="dot">.</span></div>
+            <ul class="nav-links">
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#skills">Habilidades</a></li>
+                <li><a href="#education">Formação</a></li>
+                <li><a href="#contact" class="btn-nav">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-text">
+                <h3 class="fade-in">Olá! Eu sou {{ info.name }}</h3>
+                <h1 class="glitch">{{ info.role }}</h1>
+                <p class="subtitle fade-in-up">{{ info.highlight }}</p>
+                <div class="cta-buttons fade-in-up">
+                    <a href="#contact" class="btn btn-primary">Entrar em Contato</a>
+                    <a href="{{ info.social.linkedin }}" target="_blank" class="btn btn-outline">
+                        <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                </div>
+            </div>
+            <div class="hero-img fade-in">
+                <div class="img-wrapper">
+                    <img src="{{ url_for('static', filename='img/perfil.jpg') }}" alt="Foto de Perfil">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">Sobre Mim</h2>
+            <div class="about-content">
+                <div class="about-text scroll-reveal">
+                    {% for paragraph in about_text %}
+                        <p style="margin-bottom: 15px; color: #ccc;">{{ paragraph }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section bg-darker">
+        <div class="container">
+            <h2 class="section-title">Stack & Ferramentas</h2>
+            
+            <div class="skills-wrapper" style="display: flex; flex-wrap: wrap; gap: 50px;">
+                
+                <div class="tech-stack" style="flex: 1; min-width: 300px;">
+                    <h3 style="color: var(--neon-cyan); margin-bottom: 20px;">Stack Tecnológico</h3>
+                    {% for skill in tech_stack %}
+                    <div class="skill-card scroll-reveal" style="margin-bottom: 20px; text-align: left; padding: 20px;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <i class="{{ skill.icon }}" style="font-size: 1.5rem; color: #fff;"></i>
+                            <h4 style="margin: 0;">{{ skill.name }}</h4>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: {{ skill.level }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="eng-tools" style="flex: 1; min-width: 300px;">
+                    <h3 style="color: var(--neon-green); margin-bottom: 20px;">Ferramentas Técnicas</h3>
+                    <div class="tools-grid" style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                        {% for tool in tools %}
+                        <div class="tool-item scroll-reveal" style="background: rgba(255,255,255,0.05); padding: 15px; border-left: 3px solid var(--neon-green); border-radius: 4px;">
+                            <i class="fas fa-tools" style="color: var(--neon-green); margin-right: 10px;"></i> {{ tool }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="competencies" class="section">
+        <div class="container">
+            <h2 class="section-title">Competências</h2>
+            <div class="competencies-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                {% for comp in competencies %}
+                <div class="comp-card scroll-reveal" style="background: #111; padding: 20px; border: 1px solid #333; border-radius: 8px; text-align: center; transition: 0.3s;">
+                    <i class="fas fa-check-circle" style="color: var(--neon-magenta); font-size: 2rem; margin-bottom: 15px;"></i>
+                    <p style="color: #fff; font-weight: 500;">{{ comp }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="section bg-darker">
+        <div class="container">
+            <h2 class="section-title">Formação & Cursos</h2>
+            <div class="education-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+                
+                <div class="edu-column">
+                    <h3 style="color: var(--neon-blue); margin-bottom: 20px;"><i class="fas fa-graduation-cap"></i> Acadêmico</h3>
+                    {% for edu in education %}
+                    <div class="edu-card" style="margin-bottom: 20px; padding: 20px; background: rgba(0, 123, 255, 0.05); border-left: 4px solid var(--neon-blue);">
+                        <h4 style="color: #fff; margin-bottom: 5px;">{{ edu.course }}</h4>
+                        <p style="color: #aaa; font-size: 0.9rem;">{{ edu.school }}</p>
+                        <span style="display: inline-block; margin-top: 10px; padding: 4px 10px; background: var(--neon-blue); color: #fff; font-size: 0.8rem; border-radius: 20px;">{{ edu.status }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="edu-column">
+                    <h3 style="color: var(--neon-magenta); margin-bottom: 20px;"><i class="fas fa-book-open"></i> Cursos e Idiomas</h3>
+                    <ul style="list-style: none;">
+                        {% for course in extra_courses %}
+                        <li style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #333; color: #ccc;">
+                            <i class="fas fa-caret-right" style="color: var(--neon-magenta); margin-right: 10px;"></i> {{ course }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">Contato</h2>
+            <div class="contact-wrapper scroll-reveal">
+                <form action="mailto:{{ info.social.email }}" method="post" enctype="text/plain" class="contact-form">
+                    <input type="text" placeholder="Seu Nome" required>
+                    <input type="email" placeholder="Seu Email" required>
+                    <textarea rows="5" placeholder="Sua Mensagem" required></textarea>
+                    <button type="submit">Enviar Mensagem</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="{{ info.social.github }}" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="{{ info.social.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+            </div>
+            <p>&copy; 2026 Carlos Daniel Alves. Engenharia & Code.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
