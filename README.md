@@ -1,96 +1,113 @@
-# Portfólio Profissional — Carlos Daniel Alves da Silva
+# Portfólio — Carlos Daniel Alves da Silva
 
-> Portfólio de estudante de Engenharia Mecânica no IFCE, construído com FastAPI + Jinja2 + TailwindCSS.
-
----
-
-## 🚀 Tecnologias
-
-| Camada | Tecnologia |
-|--------|-----------|
-| Backend | FastAPI · Jinja2 · Python 3.11+ |
-| Frontend | HTML5 · CSS3 · JavaScript ES6+ |
-| Estilo | TailwindCSS (CDN) · CSS Custom Properties |
-| Fontes | Google Fonts (Poppins + Inter) |
-| Ícones | Font Awesome 6 |
-| Animações | AOS (Animate On Scroll) |
-| Contato | EmailJS (Sprint 7) |
+<!-- Banner: adicionar imagem aqui quando disponível -->
+<!-- ![Banner do portfólio](app/static/images/og/og-image.png) -->
 
 ---
 
-## 📁 Estrutura do Projeto
+Sou estudante de Engenharia Mecânica no IFCE Campus Maracanaú e comecei a desenvolver esse portfólio porque precisava de um lugar para reunir e documentar tudo que estou construindo ao longo da graduação.
+
+Não queria apenas um site com projetos acabados — queria algo que contasse minha evolução real. Então resolvi construí-lo do zero, aprender o que fosse necessário no processo, e deixar tudo documentado aqui.
+
+O resultado foi bem além do que eu esperava quando comecei.
+
+---
+
+## O que tem aqui
+
+- **Home** — apresentação geral, quem sou e o que estou desenvolvendo
+- **Minha Jornada** — linha do tempo da minha trajetória acadêmica e profissional, contada de forma cronológica
+- **Projetos em Programação** — projetos Python que desenvolvi, incluindo o Pesquisar+
+- **Laboratório CAD** — meus estudos em modelagem 3D com Fusion 360
+- **Currículo** — versão interativa do meu currículo, com download do PDF disponível
+- **Tecnologias & Competências** — como e por que uso cada tecnologia que aprendi
+- **Contato** — formulário funcional (via EmailJS), WhatsApp, LinkedIn e GitHub
+
+---
+
+## Objetivos do projeto
+
+- Reunir meus projetos em um lugar só, com histórico real de evolução
+- Ter um currículo online que recrutadores possam acessar rapidamente
+- Documentar o que aprendo, não apenas o que já sei
+- Servir como vitrine profissional durante a graduação
+- Facilitar o contato com empresas, professores e outros estudantes
+
+---
+
+## Tecnologias utilizadas
+
+**Backend**
+- [FastAPI](https://fastapi.tiangolo.com/) — framework que escolhi por ser moderno, rápido e bem documentado
+- [Jinja2](https://jinja.palletsprojects.com/) — renderização de templates HTML no servidor
+- [Uvicorn](https://www.uvicorn.org/) — servidor ASGI para rodar a aplicação
+- Python 3.11+
+
+**Frontend**
+- HTML5 e CSS3 (vanilla, sem frameworks CSS)
+- JavaScript ES6+ (sem bibliotecas pesadas)
+- [AOS](https://michalsnik.github.io/aos/) — animações de scroll
+- [Font Awesome 6](https://fontawesome.com/) — ícones
+- [Google Fonts](https://fonts.google.com/) — Poppins (títulos) e Inter (texto)
+
+**Integrações**
+- [EmailJS](https://www.emailjs.com/) — envio de formulário de contato sem backend próprio, carregado sob demanda
+
+**Versionamento**
+- Git + GitHub
+
+**Modelagem CAD**
+- Autodesk Fusion 360 — utilizado nos projetos mecânicos documentados no Laboratório CAD
+
+---
+
+## Estrutura do projeto
 
 ```
 meu_portifolio/
 │
 ├── app/
-│   ├── __init__.py
-│   ├── main.py              ← FastAPI app
-│   ├── config.py            ← Dados do estudante + configurações
+│   ├── main.py              ← aplicação FastAPI + rota 404 customizada
+│   ├── config.py            ← dados pessoais, SEO e itens de navegação centralizados
 │   │
-│   ├── routers/             ← Uma rota por página
+│   ├── routers/             ← uma rota por página
 │   │   ├── home.py
 │   │   ├── journey.py
 │   │   ├── projects.py
 │   │   ├── cad_lab.py
 │   │   ├── resume.py
+│   │   ├── technologies.py
 │   │   └── contact.py
 │   │
-│   ├── templates/           ← Jinja2 templates
-│   │   ├── base.html        ← Layout base (head, navbar, footer)
-│   │   ├── partials/
-│   │   │   ├── navbar.html
-│   │   │   ├── footer.html
-│   │   │   └── section_header.html
-│   │   └── pages/
-│   │       ├── home.html
-│   │       ├── journey.html
-│   │       ├── projects.html
-│   │       ├── cad_lab.html
-│   │       ├── resume.html
-│   │       ├── contact.html
-│   │       └── 404.html
+│   ├── templates/
+│   │   ├── base.html        ← layout base: head, navbar, footer, scripts
+│   │   ├── partials/        ← navbar, footer, section_header reutilizáveis
+│   │   └── pages/           ← template de cada página
 │   │
 │   └── static/
-│       ├── css/
-│       │   ├── base.css        ← Design tokens, reset, tipografia
-│       │   ├── layout.css      ← Navbar, footer, container
-│       │   ├── components.css  ← Todos os componentes reutilizáveis
-│       │   ├── sections.css    ← Estilos específicos por seção
-│       │   └── animations.css  ← Keyframes e microinterações
-│       ├── js/
-│       │   ├── main.js         ← Bootstrap principal
-│       │   ├── navbar.js       ← Comportamento da navbar
-│       │   ├── aos-init.js     ← Configuração AOS
-│       │   └── contact.js      ← Formulário de contato
-│       ├── images/
-│       │   ├── profile/        ← Foto de Carlos Daniel
-│       │   ├── projects/       ← Screenshots de projetos
-│       │   ├── cad/            ← Capturas CAD/3D
-│       │   └── og/             ← Imagem Open Graph
-│       ├── icons/              ← Favicon, ícones SVG
-│       ├── videos/             ← Vídeos futuros
-│       └── documents/
-│           ├── curriculo/      ← Currículo PDF
-│           └── certificates/   ← Certificados
+│       ├── css/             ← base, layout, components, sections, animations
+│       ├── js/              ← main, navbar, aos-init, contact
+│       ├── images/          ← profile, projects, cad, og
+│       ├── icons/           ← favicon
+│       └── documents/       ← currículo PDF e certificados
 │
 ├── requirements.txt
 ├── .gitignore
-├── .env.example
 └── README.md
 ```
 
 ---
 
-## ⚙️ Como Rodar Localmente
+## Como rodar localmente
 
-### Pré-requisitos
-- Python 3.11+
-- pip
-
-### 1. Criar ambiente virtual
+**Pré-requisitos:** Python 3.11+
 
 ```bash
+# 1. Clone o repositório
+git clone https://github.com/dev-carlosalves/meu_portifolio.git
+cd meu_portifolio
+
+# 2. Crie e ative o ambiente virtual
 python -m venv venv
 
 # Windows
@@ -98,24 +115,11 @@ venv\Scripts\activate
 
 # Linux / macOS
 source venv/bin/activate
-```
 
-### 2. Instalar dependências
-
-```bash
+# 3. Instale as dependências
 pip install -r requirements.txt
-```
 
-### 3. Configurar variáveis de ambiente
-
-```bash
-cp .env.example .env
-# Edite .env com seus dados (obrigatório apenas na Sprint 7)
-```
-
-### 4. Rodar o servidor
-
-```bash
+# 4. Inicie o servidor
 uvicorn app.main:app --reload
 ```
 
@@ -123,58 +127,67 @@ Acesse: **http://localhost:8000**
 
 ---
 
-## 🌐 Páginas
+## Configurando o formulário de contato (EmailJS)
 
-| Rota | Descrição | Sprint |
-|------|-----------|--------|
-| `/` | Página principal (Hero + About + Skills) | 2 |
-| `/jornada` | Linha do tempo acadêmica | 3 |
-| `/projetos` | Grid de projetos com filtros | 4 |
-| `/laboratorio-cad` | Galeria de modelagem 3D | 5 |
-| `/curriculo` | Currículo com PDF viewer | 6 |
-| `/contato` | Formulário de contato | 7 |
+O formulário de contato usa EmailJS. Para funcionar, você precisa substituir as credenciais no arquivo `app/static/js/contact.js`:
 
----
+```javascript
+const EMAILJS_PUBLIC_KEY  = 'sua_public_key';
+const EMAILJS_SERVICE_ID  = 'seu_service_id';
+const EMAILJS_TEMPLATE_ID = 'seu_template_id';
+```
 
-## 🎨 Design System
-
-### Paleta de Cores
-
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `--color-bg-primary` | `#09090B` | Fundo principal |
-| `--color-bg-secondary` | `#18181B` | Seções alternadas |
-| `--color-bg-card` | `#27272A` | Cards |
-| `--color-text` | `#FAFAFA` | Texto principal |
-| `--color-text-muted` | `#A1A1AA` | Texto secundário |
-| `--color-accent` | `#06B6D4` | Destaque (ciano) |
-| `--color-accent-hover` | `#22D3EE` | Hover do destaque |
-
-### Tipografia
-
-| Uso | Fonte |
-|-----|-------|
-| Títulos | Poppins (700, 800, 900) |
-| Texto | Inter (300, 400, 500, 600) |
+Os campos que o template do EmailJS precisa receber são: `name`, `email`, `subject` e `message`.
 
 ---
 
-## 📋 Sprint Roadmap
+## Sobre o Pesquisar+
 
-| Sprint | Status | Objetivo |
-|--------|--------|----------|
-| 1 | ✅ Completo | Arquitetura, design system, componentes base |
-| 2 | ⏳ Próximo | Conteúdo real: Hero, About, Skills |
-| 3 | 🔲 Pendente | Minha Jornada (timeline acadêmica) |
-| 4 | 🔲 Pendente | Projetos (cards + filtros) |
-| 5 | 🔲 Pendente | Laboratório CAD (galeria 3D) |
-| 6 | 🔲 Pendente | Currículo (PDF viewer) |
-| 7 | 🔲 Pendente | Contato (integração EmailJS) |
-| 8 | 🔲 Pendente | Performance, SEO, testes, deploy |
+O principal projeto que estou desenvolvendo atualmente. É uma plataforma de busca acadêmica que integra diversas fontes de pesquisa em uma única interface.
+
+O repositório permanece privado enquanto o desenvolvimento está em andamento, mas a aplicação está disponível publicamente:
+
+🔗 **[pesquisar-plus.onrender.com](https://pesquisar-plus.onrender.com/)**
+
+Várias funcionalidades ainda estão sendo desenvolvidas — é um trabalho em progresso deliberado.
 
 ---
 
-## 📄 Licença
+## Ainda vou fazer
 
-Projeto pessoal de Carlos Daniel Alves da Silva.
-Todos os direitos reservados.
+- Adicionar foto de perfil real
+- Publicar os primeiros projetos do Laboratório CAD à medida que os modelos ficam prontos
+- Gravar um vídeo curto de apresentação do portfólio
+- Adicionar mais projetos Python conforme avanço nos estudos
+- Melhorar o SEO e fazer o deploy em produção
+- Expandir a seção de tecnologias com novos aprendizados
+
+---
+
+## O que aprendi construindo isso
+
+Quando comecei, tinha uma ideia simples. Conforme fui desenvolvendo, percebi que um projeto desse tipo envolve muito mais do que parece.
+
+Aprendi bastante sobre como estruturar uma aplicação de verdade — separar responsabilidades, criar componentes reutilizáveis, centralizar configurações. FastAPI me mostrou como um backend Python pode ser elegante. Jinja2 me ensinou como renderização server-side funciona na prática.
+
+No frontend, escrever CSS vanilla do zero, sem frameworks, me fez entender o que os frameworks realmente resolvem. Criar um design system próprio com variáveis CSS foi uma das partes mais satisfatórias do projeto.
+
+Git e GitHub se tornaram naturais no processo. E o maior aprendizado foi perceber que documentar enquanto você constrói é completamente diferente de tentar documentar depois.
+
+---
+
+## Contato
+
+Se tiver interesse em conversar sobre oportunidades, projetos ou só trocar ideia:
+
+- **E-mail:** alves.silva.carlosd@gmail.com
+- **WhatsApp:** +55 (85) 98675-9763 *(preferencialmente mensagens)*
+- **LinkedIn:** [carlos-daniel-alves-da-silva](https://www.linkedin.com/in/carlos-daniel-alves-da-silva-a07128311)
+- **GitHub:** [dev-carlosalves](https://github.com/dev-carlosalves)
+
+---
+
+## Licença
+
+Projeto pessoal desenvolvido para fins acadêmicos e profissionais.  
+Todos os direitos reservados a Carlos Daniel Alves da Silva.
