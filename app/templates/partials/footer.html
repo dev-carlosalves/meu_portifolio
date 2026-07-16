@@ -1,0 +1,123 @@
+{#
+  partials/footer.html — Footer profissional.
+
+  Contém:
+  - Logo + tagline
+  - Links rápidos de navegação
+  - Links de redes sociais
+  - Copyright com ano dinâmico
+#}
+
+<footer id="footer" role="contentinfo" aria-label="Rodapé do site" class="footer">
+  <div class="container">
+
+    <div class="footer__grid">
+
+      <!-- ── Coluna 1: Identidade ──────────────────────────────────── -->
+      <div class="footer__brand">
+        <a href="/" class="navbar__logo" aria-label="Carlos Daniel — Início">
+          <span class="navbar__logo-bracket" aria-hidden="true">&lt;</span>
+          <span class="navbar__logo-name">CD</span>
+          <span class="navbar__logo-bracket" aria-hidden="true">/&gt;</span>
+        </a>
+        <p class="footer__tagline">
+          {{ student.title }}
+        </p>
+        <p class="footer__location">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          {{ student.location }}
+        </p>
+      </div>
+
+      <!-- ── Coluna 2: Navegação rápida ───────────────────────────── -->
+      <nav aria-label="Links rápidos do rodapé">
+        <p class="footer__col-title">Navegação</p>
+        <ul class="footer__nav-list" role="list">
+          {% for item in nav_items %}
+            <li>
+              <a href="{{ item.href }}" class="footer__link">
+                {{ item.label }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+
+      <!-- ── Coluna 3: Contato & Redes ────────────────────────────── -->
+      <div>
+        <p class="footer__col-title">Contato</p>
+        <ul class="footer__contact-list" role="list">
+          <li>
+            <a
+              href="mailto:{{ student.email }}"
+              class="footer__link"
+              aria-label="Enviar e-mail para Carlos Daniel"
+            >
+              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+              {{ student.email }}
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://wa.me/{{ student.whatsapp | replace(' ', '') | replace('(', '') | replace(')', '') | replace('+', '') | replace('-', '') }}"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="footer__link"
+              aria-label="WhatsApp de Carlos Daniel"
+            >
+              <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+              WhatsApp
+            </a>
+          </li>
+        </ul>
+
+        <!-- Redes sociais -->
+        <div class="footer__socials" aria-label="Redes sociais">
+          <a
+            href="{{ student.github }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label="GitHub de Carlos Daniel"
+          >
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+          <a
+            href="{{ student.linkedin }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-link"
+            aria-label="LinkedIn de Carlos Daniel"
+          >
+            <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+          </a>
+          <a
+            href="mailto:{{ student.email }}"
+            class="social-link"
+            aria-label="E-mail de Carlos Daniel"
+          >
+            <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Linha divisória ───────────────────────────────────────── -->
+    <hr class="footer__divider" aria-hidden="true" />
+
+    <!-- ── Copyright ────────────────────────────────────────────── -->
+    <div class="footer__bottom" style="flex-direction: column; gap: var(--space-2); text-align: center; align-items: center;">
+      <p class="footer__copyright" style="font-size: var(--text-xs); color: var(--color-text-muted);">
+        Construído com dedicação durante minha graduação em Engenharia Mecânica.
+      </p>
+      <p class="footer__copyright" style="font-size: var(--text-xs); font-weight: 600; margin-top: 2px;">
+        Carlos Daniel Alves da Silva &copy; <span id="footer-year"></span>
+      </p>
+      <p class="footer__stack" style="margin-top: 4px;">
+        HTML · CSS · JS · FastAPI · Jinja2
+      </p>
+    </div>
+
+  </div>
+</footer>

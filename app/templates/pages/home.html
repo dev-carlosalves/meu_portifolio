@@ -1,0 +1,442 @@
+{#
+  pages/home.html — Página inicial do portfólio de Carlos Daniel Alves da Silva.
+
+  Sprint 2 — Conteúdo completo.
+
+  Seções:
+    1. #hero          — Apresentação (2 colunas: texto esquerda, foto/vídeo direita)
+    2. #portfolio-intro — Sobre este portfólio (texto + 4 cards de área)
+    3. #journey-cta    — Chamada para Minha Jornada
+#}
+{% extends "base.html" %}
+
+{% block page_title %}Carlos Daniel | Engenharia Mecânica · Python · CAD{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════
+     #HERO — Seção de apresentação principal
+     Ocupa 100vh com layout 2 colunas em desktop
+═══════════════════════════════════════════════════════════════ -->
+<section id="hero" class="hero hero--split" aria-label="Apresentação de Carlos Daniel Alves da Silva">
+
+  <!-- Camadas de fundo decorativas -->
+  <div class="hero__bg"       aria-hidden="true"></div>
+  <div class="hero__grid"     aria-hidden="true"></div>
+  <div class="hero__gradient" aria-hidden="true"></div>
+
+  <!-- Orbe decorativo -->
+  <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
+  <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
+
+  <!-- Wrapper das 2 colunas -->
+  <div class="hero__split-container">
+
+    <!-- ── COLUNA ESQUERDA: Apresentação ──────────────────────── -->
+    <div class="hero__left" data-aos="fade-right" data-aos-duration="900">
+
+      <!-- Saudação topo -->
+      <p class="hero__greeting">
+        <span class="hero__greeting-line" aria-hidden="true"></span>
+        Olá, seja bem-vindo ao meu portfólio
+        <span class="hero__greeting-line" aria-hidden="true"></span>
+      </p>
+
+      <!-- Badge de status -->
+      <div class="hero__status-badge">
+        <span class="hero__status-dot" aria-hidden="true"></span>
+        <span>Disponível para estágios e colaborações</span>
+      </div>
+
+      <!-- Nome principal -->
+      <h1 class="hero__name" id="hero-name">
+        Carlos Daniel
+        <span class="hero__name-accent">Alves da Silva</span>
+      </h1>
+
+      <!-- Subtítulos: 3 áreas com hierarquia -->
+      <div class="hero__roles" aria-label="Áreas de atuação">
+        <div class="hero__role hero__role--primary">
+          <i class="fa-solid fa-gears" aria-hidden="true"></i>
+          <span>Estudante de Engenharia Mecânica</span>
+        </div>
+        <div class="hero__role hero__role--secondary">
+          <i class="fa-brands fa-python" aria-hidden="true"></i>
+          <span>Desenvolvedor Backend Python</span>
+        </div>
+        <div class="hero__role hero__role--tertiary">
+          <i class="fa-solid fa-cube" aria-hidden="true"></i>
+          <span>Projetista CAD</span>
+        </div>
+      </div>
+
+      <!-- Texto de apresentação autêntico -->
+      <p class="hero__bio">
+        Tenho 18 anos, sou do Ceará e estudo Engenharia Mecânica no
+        <strong>IFCE Campus Maracanaú</strong>.
+        Gosto de resolver problemas reais — por isso desenvolvo projetos em
+        <strong>Python</strong> e aprofundo meus conhecimentos em
+        <strong>Fusion 360</strong>.
+        Atualmente construo a plataforma <strong>Pesquisar+</strong> e
+        uso este portfólio para documentar cada etapa da minha evolução.
+      </p>
+
+      <!-- CTAs: Primário, Secundário, Outline -->
+      <div class="hero__actions">
+        <a
+          href="/projetos"
+          class="btn-primary"
+          id="hero-cta-projects"
+          aria-label="Conhecer os projetos de Carlos Daniel"
+        >
+          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+          <span>Conhecer meus projetos</span>
+        </a>
+        <a
+          href="{{ student.cv }}"
+          class="btn-secondary"
+          id="hero-cta-cv"
+          download
+          aria-label="Baixar currículo de Carlos Daniel"
+        >
+          <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+          <span>Currículo</span>
+        </a>
+        <a
+          href="/contato"
+          class="btn-outline"
+          id="hero-cta-contact"
+          aria-label="Entrar em contato com Carlos Daniel"
+        >
+          <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+          <span>Entrar em contato</span>
+        </a>
+      </div>
+
+      <!-- Estatísticas em mini-cards -->
+      <div class="hero__stats" role="list" aria-label="Estatísticas de Carlos Daniel">
+        <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="100">
+          <span class="hero-stat__value" data-count="15">0</span>
+          <span class="hero-stat__label">Projetos</span>
+        </div>
+        <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="180">
+          <span class="hero-stat__value" data-count="10">0</span>
+          <span class="hero-stat__label">Tecnologias</span>
+        </div>
+        <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="260">
+          <span class="hero-stat__value hero-stat__value--text">2025</span>
+          <span class="hero-stat__label">Início na programação</span>
+        </div>
+        <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="340">
+          <span class="hero-stat__value hero-stat__value--brand">Pesquisar+</span>
+          <span class="hero-stat__label">Projeto principal</span>
+        </div>
+      </div>
+
+      <!-- Redes sociais -->
+      <div class="hero__socials" aria-label="Redes sociais de Carlos Daniel">
+        <a
+          href="{{ student.github }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+          aria-label="Perfil do GitHub de Carlos Daniel"
+        >
+          <i class="fa-brands fa-github" aria-hidden="true"></i>
+        </a>
+        <a
+          href="{{ student.linkedin }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-link"
+          aria-label="Perfil do LinkedIn de Carlos Daniel"
+        >
+          <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+        </a>
+        <a
+          href="mailto:{{ student.email }}"
+          class="social-link"
+          aria-label="Enviar e-mail para Carlos Daniel"
+        >
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+        </a>
+      </div>
+
+    </div><!-- /.hero__left -->
+
+
+    <!-- ── COLUNA DIREITA: Foto + Vídeo ───────────────────────── -->
+    <div class="hero__right" data-aos="fade-left" data-aos-duration="900" data-aos-delay="150">
+
+      <!-- Card da foto profissional -->
+      <div class="hero__photo-card" aria-label="Foto profissional de Carlos Daniel">
+
+        <!-- Glow decorativo atrás do card -->
+        <div class="hero__photo-glow" aria-hidden="true"></div>
+
+        <!-- Foto / Placeholder -->
+        <div class="hero__photo-wrapper">
+          <img
+            src="{{ student.photo }}"
+            alt="Carlos Daniel Alves da Silva, estudante de Engenharia Mecânica no IFCE Campus Maracanaú"
+            class="hero__photo-img"
+            width="400"
+            height="460"
+            loading="lazy"
+            onerror="this.parentElement.classList.add('hero__photo-wrapper--fallback'); this.style.display='none';"
+          />
+          <!-- Fallback elegante quando a foto ainda não foi inserida -->
+          <div class="hero__photo-placeholder" aria-hidden="true">
+            <div class="hero__photo-placeholder-avatar">
+              <i class="fa-solid fa-user" aria-hidden="true"></i>
+            </div>
+            <p class="hero__photo-placeholder-label">Foto profissional</p>
+            <p class="hero__photo-placeholder-hint">em breve</p>
+          </div>
+        </div>
+
+        <!-- Tag flutuante: IFCE -->
+        <div class="hero__float-tag hero__float-tag--top" aria-hidden="true">
+          <i class="fa-solid fa-graduation-cap"></i>
+          IFCE · Eng. Mecânica
+        </div>
+
+        <!-- Tag flutuante: Python -->
+        <div class="hero__float-tag hero__float-tag--bottom" aria-hidden="true">
+          <i class="fa-brands fa-python"></i>
+          Pesquisar+
+        </div>
+
+      </div><!-- /.hero__photo-card -->
+
+      <!-- Componente de Vídeo (estrutura preparada para YouTube) -->
+      <div
+        class="hero__video-card"
+        id="hero-video-container"
+        aria-label="Vídeo de apresentação de Carlos Daniel"
+      >
+        <div class="hero__video-header">
+          <i class="fa-brands fa-youtube hero__video-icon" aria-hidden="true"></i>
+          <span class="hero__video-title">Vídeo de apresentação</span>
+        </div>
+
+        <div class="hero__video-placeholder">
+          <!-- Quando disponível: <iframe width="100%" height="100%" src="https://www.youtube.com/embed/VIDEO_ID" ... /> -->
+          <div class="hero__video-soon">
+            <i class="fa-regular fa-circle-play hero__video-soon-icon" aria-hidden="true"></i>
+            <span>Em breve</span>
+          </div>
+        </div>
+
+        <p class="hero__video-caption">
+          Uma apresentação rápida sobre quem sou e o que estou construindo.
+        </p>
+      </div><!-- /.hero__video-card -->
+
+    </div><!-- /.hero__right -->
+
+  </div><!-- /.hero__split-container -->
+
+  <!-- Scroll Indicator -->
+  <div
+    id="scroll-indicator"
+    class="hero__scroll-indicator"
+    role="button"
+    tabindex="0"
+    aria-label="Role para explorar o portfólio"
+  >
+    <span class="hero__scroll-text">Role para explorar</span>
+    <div class="hero__scroll-arrow" aria-hidden="true">
+      <i class="fa-solid fa-chevron-down"></i>
+    </div>
+  </div>
+
+</section><!-- /#hero -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     #PORTFOLIO-INTRO — Sobre este portfólio
+═══════════════════════════════════════════════════════════════ -->
+<section
+  id="portfolio-intro"
+  class="section section--alt"
+  aria-label="Sobre este portfólio"
+>
+  <div class="container">
+
+    <!-- Header da seção -->
+    <div class="pi__header" data-aos="fade-up">
+      {% set section_badge = "Sobre este portfólio" %}
+      {% set section_title = "O que você vai <span class='text-accent'>encontrar aqui</span>" %}
+      {% set section_subtitle = "" %}
+      {% set align = "center" %}
+      {% include "partials/section_header.html" %}
+
+      <p class="pi__lead" data-aos="fade-up" data-aos-delay="100">
+        Este site foi criado para documentar toda minha evolução durante a graduação.
+        Aqui você encontra projetos de desenvolvimento de software, engenharia mecânica,
+        modelagem CAD e estudos contínuos.
+        <strong>Meu objetivo é transformar conhecimento em soluções reais.</strong>
+      </p>
+    </div>
+
+    <!-- 4 Cards de área -->
+    <div class="pi__cards-grid">
+
+      <!-- Card 1: Desenvolvimento de Software -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="0"
+        aria-label="Área: Desenvolvimento de Software"
+      >
+        <div class="pi__card-icon pi__card-icon--software">
+          <i class="fa-solid fa-code" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">Desenvolvimento de Software</h3>
+        <p class="pi__card-desc">
+          Projetos em Python com foco em automação, APIs e plataformas web.
+          Atualmente desenvolvendo a <strong>Pesquisar+</strong>,
+          uma plataforma de busca inteligente.
+        </p>
+        <a href="/projetos" class="pi__card-link" aria-label="Ver projetos de software">
+          Ver projetos
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 2: Engenharia Mecânica -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="100"
+        aria-label="Área: Engenharia Mecânica"
+      >
+        <div class="pi__card-icon pi__card-icon--eng">
+          <i class="fa-solid fa-gears" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">Engenharia Mecânica</h3>
+        <p class="pi__card-desc">
+          Estudos no <strong>IFCE Campus Maracanaú</strong> com ênfase em
+          mecânica dos sólidos, termodinâmica e fundamentos de projeto mecânico.
+        </p>
+        <a href="/jornada" class="pi__card-link" aria-label="Ver jornada acadêmica">
+          Minha jornada
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 3: Projetos CAD -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        aria-label="Área: Projetos CAD"
+      >
+        <div class="pi__card-icon pi__card-icon--cad">
+          <i class="fa-solid fa-cube" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">Projetos CAD</h3>
+        <p class="pi__card-desc">
+          Modelagem 3D e prototipagem no <strong>Fusion 360</strong>.
+          Desenvolvimento de peças, conjuntos e renderizações técnicas
+          para projetos reais.
+        </p>
+        <a href="/laboratorio-cad" class="pi__card-link" aria-label="Ver laboratório CAD">
+          Laboratório CAD
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 4: Aprendizagem Contínua -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="300"
+        aria-label="Área: Aprendizagem Contínua"
+      >
+        <div class="pi__card-icon pi__card-icon--learn">
+          <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">Aprendizagem Contínua</h3>
+        <p class="pi__card-desc">
+          Perfil autodidata com estudo constante de novas tecnologias,
+          metodologias e ferramentas de engenharia e programação
+          — tudo documentado aqui.
+        </p>
+        <a href="/jornada" class="pi__card-link" aria-label="Acompanhar evolução">
+          Acompanhar evolução
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+    </div><!-- /.pi__cards-grid -->
+
+  </div>
+</section><!-- /#portfolio-intro -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     #JOURNEY-CTA — Pequena chamada para a Jornada
+═══════════════════════════════════════════════════════════════ -->
+<section
+  id="journey-cta"
+  class="section journey-cta"
+  aria-label="Convite para acompanhar a jornada"
+>
+  <!-- Fundo decorativo -->
+  <div class="journey-cta__bg" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="journey-cta__content" data-aos="fade-up" data-aos-duration="800">
+
+      <span class="journey-cta__eyebrow">
+        <i class="fa-solid fa-route" aria-hidden="true"></i>
+        Em construção
+      </span>
+
+      <h2 class="journey-cta__title">
+        Minha trajetória está<br />
+        <span class="text-accent">apenas começando.</span>
+      </h2>
+
+      <p class="journey-cta__desc">
+        Cada semestre, cada projeto, cada aprendizado será documentado aqui.
+        Você pode acompanhar toda a minha evolução profissional —
+        de estudante a engenheiro — através deste portfólio.
+      </p>
+
+      <div class="journey-cta__actions">
+        <a
+          href="/jornada"
+          class="btn-primary"
+          id="cta-journey-btn"
+          aria-label="Ver minha jornada acadêmica completa"
+        >
+          <i class="fa-solid fa-route" aria-hidden="true"></i>
+          Conheça minha jornada
+        </a>
+        <a
+          href="/projetos"
+          class="btn-outline"
+          id="cta-projects-btn"
+          aria-label="Ver todos os projetos"
+        >
+          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+          Ver projetos
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section><!-- /#journey-cta -->
+
+{% endblock %}
+
+
+{% block scripts_extra %}
+  <!-- typed.js — efeito de texto animado no subtítulo do hero -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12/dist/typed.min.js"></script>
+  <!-- Módulo exclusivo da Home: contadores + typed init -->
+  <script src="/static/js/home.js"></script>
+{% endblock %}

@@ -1,0 +1,461 @@
+{#
+  pages/journey.html — Minha Jornada (timeline acadêmica e profissional de Carlos Daniel).
+  Conteúdo real: Sprint 3.
+#}
+{% extends "base.html" %}
+
+{% block page_title %}Minha Jornada | Carlos Daniel{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CABEÇALHO DA PÁGINA
+═══════════════════════════════════════════════════════════════ -->
+<section class="section section--hero-pad pb-8" aria-label="Cabeçalho da Página">
+  <div class="container">
+    {% set section_badge = "Trajetória" %}
+    {% set section_title = "Minha <span class='text-accent'>Jornada</span>" %}
+    {% set section_subtitle = "Toda grande trajetória começa com um primeiro passo. Esta linha do tempo apresenta minha evolução acadêmica, profissional e técnica desde o início dos meus estudos até os projetos que desenvolvo atualmente." %}
+    {% set align = "center" %}
+    {% include "partials/section_header.html" %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     INTRODUÇÃO: Evolução Contínua
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-16" aria-label="Introdução à trajetória">
+  <div class="container">
+    <div class="journey-intro" data-aos="fade-up">
+      <h2 class="journey-intro__title">Evolução Contínua</h2>
+      <p class="journey-intro__text">
+        Acredito que o aprendizado é um processo constante que vai além das salas de aula. 
+        Construí este espaço para registrar, de forma transparente e cronológica, minha jornada na Engenharia Mecânica 
+        e no desenvolvimento de software. Cada etapa reflete minha dedicação em transformar conceitos teóricos em 
+        soluções práticas e funcionais.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TIMELINE VERTICAL
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-24" aria-label="Linha do tempo">
+  <div class="container">
+
+    <div id="journey-timeline" class="timeline timeline--split" aria-label="Linha do tempo profissional e acadêmica">
+
+      <!-- ── ETAPA 1: Curso Técnico ────────────────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            2022 – 2024
+            <span class="badge badge--tech">Formação Técnica</span>
+          </div>
+          <h3 class="timeline-card__role">Curso Técnico em Mecânica</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+            IFCE – Campus Maracanaú
+          </div>
+          <p class="timeline-card__desc">
+            Durante o Ensino Médio Integrado ao Técnico, tive meu primeiro contato estruturado com a engenharia. 
+            Desenvolvi uma base sólida em desenho técnico assistido por computador (CAD), metrologia, processos de 
+            fabricação mecânica, ensaios de materiais e manutenção industrial. Essa experiência prática inicial 
+            despertou meu interesse pela mecânica e pela resolução de problemas práticos.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">Desenho Técnico</span>
+            <span class="tag">Processos Industriais</span>
+            <span class="tag">Metrologia</span>
+            <span class="tag">Fundamentos de Engenharia</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 2: Ingresso na Engenharia ────────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Março de 2025
+            <span class="badge badge--grad">Graduação</span>
+          </div>
+          <h3 class="timeline-card__role">Ingresso na Engenharia Mecânica</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-university" aria-hidden="true"></i>
+            IFCE – Campus Maracanaú
+          </div>
+          <p class="timeline-card__desc">
+            Dei início ao bacharelado em Engenharia Mecânica com o objetivo de aprofundar meus conhecimentos analíticos 
+            e teóricos. O ingresso no ensino superior marcou o começo de uma nova etapa de desenvolvimento intelectual, 
+            ampliando minha compreensão em disciplinas de cálculo, física, física mecânica aplicada e metodologias 
+            estruturadas de modelagem física e de sistemas.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">Bacharelado</span>
+            <span class="tag">Cálculo Diferencial</span>
+            <span class="tag">Física Mecânica</span>
+            <span class="tag">Raciocínio Lógico</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 3: Experiência Profissional ──────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            2025
+            <span class="badge badge--work">Experiência Profissional</span>
+          </div>
+          <h3 class="timeline-card__role">Primeira Experiência Profissional</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
+            AMG – Powerchips Injeção Diesel
+          </div>
+          <p class="timeline-card__desc">
+            Atuei por aproximadamente dois meses como estagiário na manutenção mecânica de componentes de injeção diesel. 
+            Acompanhei tarefas de manutenção preventiva e corretiva no chão de fábrica, o que me deu uma valiosa 
+            perspectiva prática das rotinas de manutenção mecânica, do trabalho integrado em ambientes industriais reais 
+            e da importância de cumprir rigorosos padrões de segurança.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">Manutenção Preventiva</span>
+            <span class="tag">Sistemas Diesel</span>
+            <span class="tag">Vivência Industrial</span>
+            <span class="tag">Segurança no Trabalho</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 4: Descoberta da Programação ────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Maio de 2025
+            <span class="badge badge--self">Autodidata</span>
+          </div>
+          <h3 class="timeline-card__role">Descoberta da Programação</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-laptop-code" aria-hidden="true"></i>
+            Estudo Autodidata — Plataforma Eduliv
+          </div>
+          <p class="timeline-card__desc">
+            Percebi o potencial de integrar a programação à análise de dados da engenharia. 
+            Iniciei meus estudos de maneira independente em Python com foco em análise estatística e tratamento de dados. 
+            Aprendi a usar bibliotecas-chave para manipulação e visualização de dados, além de adquirir conhecimentos essenciais 
+            em modelagem de bancos de dados relatoriais com SQL, recursos estruturados de planilhas e Power BI para criação de painéis.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">Matplotlib</span>
+            <span class="tag">Excel</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Power BI</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 5: Projeto NEABI ────────────────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Agosto – Dezembro de 2025
+            <span class="badge badge--acad">Projeto Acadêmico</span>
+          </div>
+          <h3 class="timeline-card__role">Participação no Projeto NEABI</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
+            Núcleo de Estudos Afro-Brasileiros e Indígenas — IFCE
+          </div>
+          <p class="timeline-card__desc">
+            Colaborei ativamente nas ações promovidas pelo Núcleo de Estudos Afro-Brasileiros e Indígenas (NEABI) 
+            no IFCE. Essa experiência me proporcionou aprimorar habilidades cruciais em pesquisa bibliográfica, 
+            elaboração de resumos acadêmicos, comunicação oral e reflexão crítica sobre temas interdisciplinares 
+            relevantes para a comunidade acadêmica.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">Pesquisa Acadêmica</span>
+            <span class="tag">Interdisciplinaridade</span>
+            <span class="tag">Comunicação</span>
+            <span class="tag">Produção de Relatórios</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 6: Primeiros Projetos em Python ──────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Início de 2026
+            <span class="badge badge--self">Autodidata</span>
+          </div>
+          <h3 class="timeline-card__role">Primeiros Projetos em Python</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-code-branch" aria-hidden="true"></i>
+            Prática e Consolidação de Código
+          </div>
+          <p class="timeline-card__desc">
+            Com as bases bem definidas, comecei a programar meus primeiros scripts e ferramentas práticas para consolidar 
+            o conhecimento. Criei soluções focadas no tratamento e manipulação de arquivos de dados, aplicação prática de 
+            estruturas de dados complexas, consumo de dados por meio de APIs RESTful públicas e projetos orientados a objetos 
+            (POO) com interfaces gráficas básicas.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">Estruturas de Dados</span>
+            <span class="tag">Manipulação de Arquivos</span>
+            <span class="tag">POO</span>
+            <span class="tag">Integração de APIs</span>
+            <span class="tag">Interfaces Gráficas</span>
+          </div>
+          <div class="timeline-card__buttons">
+            <a href="/projetos" class="btn-secondary btn--sm">
+              <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              Ver todos os projetos
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 7: Nascimento do Pesquisar+ ─────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot timeline-dot--current" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Março de 2026
+            <span class="badge badge--main">Projeto Principal</span>
+          </div>
+          <h3 class="timeline-card__role">Nascimento do Pesquisar+</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            Plataforma Educacional Inteligente
+          </div>
+          <p class="timeline-card__desc">
+            O <strong>Pesquisar+</strong> é a minha maior iniciativa de desenvolvimento até hoje. 
+            É uma plataforma inteligente de busca e apoio a pesquisas acadêmicas construída com FastAPI e Python. 
+            Este projeto me impulsionou a dominar tecnologias Web modernas de ponta a ponta, projetando o fluxo de dados do backend, 
+            integração de banco de dados relacional e a construção de interfaces leves e responsivas.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">FastAPI</span>
+            <span class="tag">Python 3</span>
+            <span class="tag">HTML/CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Jinja2</span>
+            <span class="tag">SQLite/PostgreSQL</span>
+          </div>
+          <div class="timeline-card__buttons">
+            <a href="https://pesquisar-plus.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn-primary btn--sm">
+              <i class="fa-solid fa-external-link" aria-hidden="true"></i>
+              Conhecer o projeto
+            </a>
+            <button id="private-code-btn" class="btn-outline btn--sm">
+              <i class="fa-solid fa-lock" aria-hidden="true"></i>
+              Código Privado
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 8: Laboratório CAD ───────────────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Junho de 2026
+            <span class="badge badge--dev">Em Desenvolvimento</span>
+          </div>
+          <h3 class="timeline-card__role">Laboratório CAD</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-cubes" aria-hidden="true"></i>
+            Autodesk Fusion 360 & Inventor
+          </div>
+          <p class="timeline-card__desc">
+            Retomei o foco em modelagem 3D, desta vez integrando meus conhecimentos em engenharia para criar peças e 
+            conjuntos técnicos detalhados com o Autodesk Fusion 360. Com experiência prévia em ferramentas clássicas como 
+            AutoCAD e Autodesk Inventor, venho desenvolvendo estudos em modelagem paramétrica, conjuntos (assemblies) e detalhamento técnico de componentes mecânicos.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">Fusion 360</span>
+            <span class="tag">Autodesk Inventor</span>
+            <span class="tag">Peças Técnicas</span>
+            <span class="tag">Simulação Básica</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 9: Construção deste Portfólio ───────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card">
+          <div class="timeline-card__period">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Julho de 2026
+            <span class="badge badge--ongoing">Projeto Contínuo</span>
+          </div>
+          <h3 class="timeline-card__role">Construção deste Portfólio</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+            Desenvolvimento Web e Arquitetura
+          </div>
+          <p class="timeline-card__desc">
+            Criei este portfólio profissional para centralizar e compartilhar de forma transparente todas as conquistas, 
+            projetos e avanços técnicos obtidos ao longo do curso. Mais do que um site institucional, ele foi construído 
+            utilizando FastAPI e Jinja2, exemplificando a aplicação prática de padrões de arquitetura Web limpa e modular.
+          </p>
+          <div class="timeline-card__tags">
+            <span class="tag">FastAPI</span>
+            <span class="tag">Templates Jinja2</span>
+            <span class="tag">Design System</span>
+            <span class="tag">UX/UI responsivo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ETAPA 10: Futuro / Próximos Passos ────────────────── -->
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="50">
+        <div class="timeline-dot" aria-hidden="true"></div>
+        <div class="timeline-card timeline-card--future">
+          <div class="timeline-card__period">
+            <i class="fa-solid fa-arrow-trend-up" aria-hidden="true"></i>
+            Futuro
+            <span class="badge badge--ongoing">Objetivos de Evolução</span>
+          </div>
+          <h3 class="timeline-card__role">Próximos Passos</h3>
+          <div class="timeline-card__org">
+            <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
+            Metas de Desenvolvimento Contínuo
+          </div>
+          <p class="timeline-card__desc">
+            Abaixo estão os meus principais objetivos pessoais de aprendizado e desenvolvimento para os próximos períodos da graduação:
+          </p>
+          <ul class="timeline-card--future__list" role="list">
+            <li class="timeline-card--future__item" role="listitem">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <span>Concluir o desenvolvimento e implantação da plataforma Pesquisar+</span>
+            </li>
+            <li class="timeline-card--future__item" role="listitem">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <span>Expandir e consolidar conhecimentos em modelagem com Fusion 360</span>
+            </li>
+            <li class="timeline-card--future__item" role="listitem">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <span>Publicar novos projetos de engenharia e programação</span>
+            </li>
+            <li class="timeline-card--future__item" role="listitem">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <span>Aprimorar constantemente a fluência técnica na língua inglesa</span>
+            </li>
+            <li class="timeline-card--future__item" role="listitem">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <span>Desenvolver aplicações Web maiores e mais complexas</span>
+            </li>
+            <li class="timeline-card--future__item" role="listitem">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <span>Contribuir ativamente para projetos de código aberto ou projetos reais</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODAL DE CÓDIGO PRIVADO
+═══════════════════════════════════════════════════════════════ -->
+<div id="modal-private-code" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title-id">
+  <div class="modal-container">
+    <button id="modal-close-btn" class="modal-close" aria-label="Fechar modal">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    
+    <div class="modal-icon">
+      <i class="fa-solid fa-lock" aria-hidden="true"></i>
+    </div>
+    
+    <h2 id="modal-title-id" class="modal-title">Repositório Privado</h2>
+    
+    <p class="modal-desc">
+      O repositório do <strong>Pesquisar+</strong> permanece privado temporariamente durante a fase ativa de 
+      desenvolvimento interno, garantindo a proteção e segurança da arquitetura inicial e das chaves de API integradas.
+      <br /><br />
+      O acesso público será disponibilizado futuramente. Se desejar saber mais sobre os detalhes técnicos e a arquitetura 
+      da aplicação, sinta-se à vontade para entrar em contato!
+    </p>
+    
+    <div class="flex justify-center">
+      <a href="/contato" class="btn-primary">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+        Falar com Carlos Daniel
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+  (() => {
+    const privateCodeBtn = document.getElementById('private-code-btn');
+    const modalOverlay = document.getElementById('modal-private-code');
+    const modalCloseBtn = document.getElementById('modal-close-btn');
+
+    if (!privateCodeBtn || !modalOverlay) {
+      console.warn("Elementores do modal não encontrados.");
+      return;
+    }
+
+    privateCodeBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      modalOverlay.classList.add('is-active');
+      document.body.style.overflow = 'hidden';
+      
+      // Coloca o foco no botão de fechar do modal para fins de acessibilidade
+      if (modalCloseBtn) modalCloseBtn.focus();
+    });
+
+    function closeModal() {
+      modalOverlay.classList.remove('is-active');
+      document.body.style.overflow = '';
+      
+      // Retorna o foco para o botão de origem
+      if (privateCodeBtn) privateCodeBtn.focus();
+    }
+
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', closeModal);
+    }
+
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
+    
+    // Fechamento via teclado (Escape)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.classList.contains('is-active')) {
+        closeModal();
+      }
+    });
+  })();
+</script>
+{% endblock %}

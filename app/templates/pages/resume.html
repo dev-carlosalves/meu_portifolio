@@ -1,0 +1,759 @@
+{#
+  pages/resume.html — Currículo online interativo de Carlos Daniel Alves da Silva.
+  Conteúdo real: Sprint 6.
+#}
+{% extends "base.html" %}
+
+{% block page_title %}Currículo Profissional | Carlos Daniel{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CABEÇALHO DA PÁGINA
+═══════════════════════════════════════════════════════════════ -->
+<section class="section section--hero-pad pb-10" aria-label="Apresentação do Currículo" data-aos="fade-down">
+  <div class="container">
+    <div class="text-center max-w-3xl mx-auto">
+      {% set section_badge = "Apresentação" %}
+      {% set section_title = "Currículo <span class='text-accent'>Profissional</span>" %}
+      {% set section_subtitle = "Nesta página apresento minha trajetória acadêmica, experiências, competências técnicas e os conhecimentos que venho desenvolvendo durante minha graduação em Engenharia Mecânica." %}
+      {% set align = "center" %}
+      {% include "partials/section_header.html" %}
+      
+      <!-- Ações de topo -->
+      <div class="flex justify-center gap-4 flex-wrap mt-6">
+        <a 
+          href="{{ student.cv }}" 
+          class="btn-primary" 
+          download 
+          id="resume-download-hero" 
+          aria-label="Baixar currículo completo em formato PDF"
+        >
+          <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+          Baixar Currículo (PDF)
+        </a>
+        <a 
+          href="/contato" 
+          class="btn-outline" 
+          id="resume-contact-hero"
+          aria-label="Ir para a página de contato"
+        >
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          Entrar em contato
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CORPO DO CURRÍCULO (Layout Dashboard / Sidebar + Main)
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-24" aria-label="Detalhes do Currículo">
+  <div class="container">
+    
+    <div class="resume-layout">
+      
+      <!-- ── SIDEBAR (Esquerda: Dados Pessoais, Idiomas, Interesses) ── -->
+      <aside class="resume-sidebar" data-aos="fade-right">
+        
+        <!-- Bloco 1: Dados Pessoais -->
+        <div class="card p-6">
+          <h3 class="text-sm font-bold font-heading text-text-base uppercase tracking-wider mb-4 pb-2 border-b border-border-dark">
+            Dados Pessoais
+          </h3>
+          
+          <div class="personal-data-card" role="list">
+            
+            <!-- Nome -->
+            <div class="personal-data-item" role="listitem">
+              <div class="personal-data-item__icon" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
+              <div class="personal-data-item__content">
+                <span class="personal-data-item__label">Nome Completo</span>
+                <span class="personal-data-item__value">{{ student.name }}</span>
+              </div>
+            </div>
+            
+            <!-- Localização -->
+            <div class="personal-data-item" role="listitem">
+              <div class="personal-data-item__icon" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="personal-data-item__content">
+                <span class="personal-data-item__label">Localização</span>
+                <span class="personal-data-item__value">{{ student.location }}</span>
+              </div>
+            </div>
+            
+            <!-- E-mail -->
+            <div class="personal-data-item" role="listitem">
+              <div class="personal-data-item__icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></div>
+              <div class="personal-data-item__content">
+                <span class="personal-data-item__label">E-mail</span>
+                <a href="mailto:{{ student.email }}" class="personal-data-item__value">{{ student.email }}</a>
+              </div>
+            </div>
+            
+            <!-- Telefone / WhatsApp -->
+            <div class="personal-data-item" role="listitem">
+              <div class="personal-data-item__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></div>
+              <div class="personal-data-item__content">
+                <span class="personal-data-item__label">Telefone</span>
+                <span class="personal-data-item__value">{{ student.whatsapp }}</span>
+              </div>
+            </div>
+            
+            <!-- GitHub -->
+            <div class="personal-data-item" role="listitem">
+              <div class="personal-data-item__icon" aria-hidden="true"><i class="fa-brands fa-github"></i></div>
+              <div class="personal-data-item__content">
+                <span class="personal-data-item__label">GitHub</span>
+                <a href="{{ student.github }}" target="_blank" rel="noopener noreferrer" class="personal-data-item__value">
+                  github.com/dev-carlosalves
+                </a>
+              </div>
+            </div>
+            
+            <!-- LinkedIn -->
+            <div class="personal-data-item" role="listitem">
+              <div class="personal-data-item__icon" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></div>
+              <div class="personal-data-item__content">
+                <span class="personal-data-item__label">LinkedIn</span>
+                <a href="{{ student.linkedin }}" target="_blank" rel="noopener noreferrer" class="personal-data-item__value">
+                  carlos-daniel-alves-da-silva
+                </a>
+              </div>
+            </div>
+            
+            <!-- Curso Atual -->
+            <div class="personal-data-item" role="listitem">
+              <div class="personal-data-item__icon" aria-hidden="true"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="personal-data-item__content">
+                <span class="personal-data-item__label">Graduação</span>
+                <span class="personal-data-item__value">Engenharia Mecânica (IFCE)</span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- Bloco 2: Idiomas -->
+        <div class="card p-6">
+          <h3 class="text-sm font-bold font-heading text-text-base uppercase tracking-wider mb-4 pb-2 border-b border-border-dark">
+            Idiomas
+          </h3>
+          
+          <div class="flex flex-col gap-4">
+            <!-- Português -->
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-xs font-semibold text-text-base block">Português</span>
+                <span class="text-xxs text-text-muted">Língua materna</span>
+              </div>
+              <span class="status-badge status-badge--completed">Nativo</span>
+            </div>
+            
+            <!-- Inglês -->
+            <div class="flex justify-between items-center">
+              <div>
+                <span class="text-xs font-semibold text-text-base block">Inglês</span>
+                <span class="text-xxs text-text-muted">A1 · Aprendizado contínuo — Centro de Línguas de Maracanaú (CLM)</span>
+              </div>
+              <span class="status-badge status-badge--evolving">Nível A1</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bloco 3: Áreas de Interesse -->
+        <div class="card p-6">
+          <h3 class="text-sm font-bold font-heading text-text-base uppercase tracking-wider mb-4 pb-2 border-b border-border-dark">
+            Áreas de Interesse
+          </h3>
+          
+          <div class="flex flex-wrap gap-2">
+            <span class="tag">Engenharia Mecânica</span>
+            <span class="tag">Desenvolvimento Backend</span>
+            <span class="tag">Projetos CAD / 3D</span>
+            <span class="tag">Automação de Sistemas</span>
+            <span class="tag">Tecnologia aplicada</span>
+            <span class="tag">Educação e Busca</span>
+          </div>
+        </div>
+        
+      </aside>
+      
+      <!-- ── MAIN CONTENT (Direita: Resumo, Formação, Habilidades, Cursos, Diferenciais) ── -->
+      <main class="resume-main" data-aos="fade-left" data-aos-delay="100">
+        
+        <!-- 1. Resumo Profissional -->
+        <section aria-labelledby="resume-summary-title">
+          <h3 id="resume-summary-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-address-card" aria-hidden="true"></i></span>
+            Resumo Profissional
+          </h3>
+          <div class="card p-6 leading-relaxed text-sm text-text-muted">
+            <p>
+              Sou estudante de Engenharia Mecânica no IFCE Campus Maracanaú, tenho 18 anos e possuo forte interesse 
+              pelo desenvolvimento de tecnologias e resolução de problemas técnicos. Atuo ativamente aliando as bases 
+              físico-matemáticas da engenharia a competências de desenvolvimento de software, com ênfase em programação 
+              backend estruturada em Python e modelagem mecânica paramétrica 3D com o Autodesk Fusion 360. 
+              Com perfil autodidata, altamente organizado e disciplinado, busco constantemente expandir e registrar 
+              meus conhecimentos de forma prática e aplicada a soluções reais.
+            </p>
+          </div>
+        </section>
+        
+        <!-- 2. Objetivo Profissional -->
+        <section aria-labelledby="resume-objective-title">
+          <h3 id="resume-objective-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-bullseye" aria-hidden="true"></i></span>
+            Objetivo Profissional
+          </h3>
+          <div class="card p-6 leading-relaxed text-sm text-text-muted">
+            <p>
+              Busco oportunidades de estágio, projetos de pesquisa ou monitoria acadêmica nas áreas de engenharia mecânica, 
+              desenvolvimento de software backend e modelagem CAD. Meu objetivo é aplicar as competências técnicas desenvolvidas, 
+              contribuir de forma efetiva com a equipe de engenharia ou TI e adquirir novos aprendizados práticos contínuos.
+            </p>
+          </div>
+        </section>
+        
+        <!-- 3. Formação Acadêmica -->
+        <section aria-labelledby="resume-academic-title">
+          <h3 id="resume-academic-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></span>
+            Formação Acadêmica
+          </h3>
+          
+          <div class="timeline" aria-label="Linha do tempo da formação acadêmica">
+            
+            <!-- Bacharelado -->
+            <div class="timeline-item">
+              <div class="timeline-dot timeline-dot--current" aria-hidden="true"></div>
+              <div class="timeline-card">
+                <div class="timeline-card__period">
+                  <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                  2025 – Atual
+                  <span class="badge badge--grad">Graduação</span>
+                </div>
+                <h4 class="timeline-card__role">Bacharelado em Engenharia Mecânica</h4>
+                <div class="timeline-card__org">
+                  <i class="fa-solid fa-building-columns" aria-hidden="true"></i>
+                  Instituto Federal do Ceará (IFCE) · Campus Maracanaú
+                </div>
+                <p class="timeline-card__desc">
+                  Estudo de bases de cálculo analítico, física mecânica, termologia e modelagem cinemática, integrando 
+                  conhecimentos práticos de laboratório a projetos de pesquisa acadêmica.
+                </p>
+              </div>
+            </div>
+            
+            <!-- Técnico -->
+            <div class="timeline-item">
+              <div class="timeline-dot" aria-hidden="true"></div>
+              <div class="timeline-card">
+                <div class="timeline-card__period">
+                  <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+                  2022 – 2024
+                  <span class="badge badge--tech">Formação Técnica</span>
+                </div>
+                <h4 class="timeline-card__role">Curso Técnico em Mecânica</h4>
+                <div class="timeline-card__org">
+                  <i class="fa-solid fa-building" aria-hidden="true"></i>
+                  Instituto Federal do Ceará (IFCE) · Campus Maracanaú
+                </div>
+                <p class="timeline-card__desc">
+                  Ensino médio integrado ao técnico. Aprendizado focado em metrologia dimensional de precisão, processos de usinagem, 
+                  ensaios metalográficos de materiais, manutenção industrial e desenho mecânico em CAD.
+                </p>
+              </div>
+            </div>
+            
+          </div>
+        </section>
+        
+        <!-- 4. Experiência Profissional -->
+        <section aria-labelledby="resume-experience-title">
+          <h3 id="resume-experience-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></span>
+            Experiência Profissional
+          </h3>
+          
+          <div class="card p-6">
+            <div class="flex justify-between items-start flex-wrap gap-2 mb-3">
+              <div>
+                <h4 class="font-heading font-bold text-text-base text-base">Estagiário de Manutenção Mecânica</h4>
+                <div class="text-xs text-accent font-medium mt-1">
+                  <i class="fa-solid fa-building" aria-hidden="true"></i>
+                  AMG – Powerchips Injeção Diesel
+                </div>
+              </div>
+              <span class="status-badge status-badge--completed">2 meses (Estágio Técnico)</span>
+            </div>
+            
+            <p class="text-xs md:text-sm text-text-muted leading-relaxed mb-4">
+              Atuei auxiliando nas rotinas de manutenção preventiva e corretiva de componentes mecânicos de precisão de sistemas 
+              de injeção de combustível diesel. Acompanhei de perto a linha operacional de calibração de bicos injetores e 
+              dinâmicas de chão de fábrica, assimilando práticas de controle de qualidade e as normas de segurança do trabalho 
+              em ambientes industriais.
+            </p>
+            
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">Manutenção Industrial</span>
+              <span class="tag">Injeção Diesel</span>
+              <span class="tag">Segurança Industrial</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Competências Técnicas (Custom Discrete Bars Grid) -->
+        <section aria-labelledby="resume-skills-title">
+          <h3 id="resume-skills-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+            Competências Técnicas
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Linguagens & Frameworks -->
+            <div class="card p-6">
+              <h4 class="text-xs font-bold font-heading text-text-base uppercase tracking-wider mb-4 border-b border-border-dark pb-2">
+                Desenvolvimento Web & Software
+              </h4>
+              
+              <div class="flex flex-col gap-4">
+                
+                <!-- Python -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>Python</span>
+                    <span class="skill-bar-label">Intermediário</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Foco em lógica, automações e tratamento de arquivos JSON/CSV.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- FastAPI & Jinja2 -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>FastAPI & Jinja2</span>
+                    <span class="skill-bar-label">Em Desenvolvimento</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Criação de endpoints assíncronos e renderização de layouts HTML.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- HTML5 / CSS3 -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>HTML5 & CSS3 (Vanilla)</span>
+                    <span class="skill-bar-label">Intermediário</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Estruturas semânticas, acessibilidade e estilização responsiva.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- JavaScript (ES6+) -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>JavaScript</span>
+                    <span class="skill-bar-label">Em Desenvolvimento</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Validações client-side, manipulação do DOM e requisições dinâmicas.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- SQL & Bancos de Dados -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>SQL / SQLite / PostgreSQL</span>
+                    <span class="skill-bar-label">Fundamentais</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Modelagem relacional inicial, tabelas e operações básicas CRUD.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick"></span>
+                      <span class="skill-bar-tick"></span>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div><!-- /desenvolvimento web -->
+            
+            <!-- Engenharia CAD & Ferramentas -->
+            <div class="card p-6">
+              <h4 class="text-xs font-bold font-heading text-text-base uppercase tracking-wider mb-4 border-b border-border-dark pb-2">
+                Engenharia CAD & Ferramentas
+              </h4>
+              
+              <div class="flex flex-col gap-4">
+                
+                <!-- AutoCAD -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>AutoCAD (Desenho 2D)</span>
+                    <span class="skill-bar-label">Intermediário</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Detalhamento técnico mecânico 2D e layouts industriais.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Fusion 360 -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>Fusion 360 (Modelagem 3D)</span>
+                    <span class="skill-bar-label">Em Desenvolvimento</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Modelagem paramétrica, junções mecânicas e desenhos técnicos.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Autodesk Inventor -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>Autodesk Inventor</span>
+                    <span class="skill-bar-label">Fundamentais</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Modelagem de peças e montagens acadêmicas básicas.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick"></span>
+                      <span class="skill-bar-tick"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Git & GitHub -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>Git & GitHub</span>
+                    <span class="skill-bar-label">Intermediário</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Versionamento de código, branches, commits e documentação Markdown.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Planilhas & BI -->
+                <div class="skill-bar-wrapper">
+                  <div class="flex justify-between items-center text-xs font-semibold text-text-base">
+                    <span>Excel & Power BI</span>
+                    <span class="skill-bar-label">Em Desenvolvimento</span>
+                  </div>
+                  <p class="text-xxs text-text-muted">Uso de fórmulas no Excel e painéis analíticos no Power BI.</p>
+                  <div class="skill-bar-container">
+                    <div class="skill-bar-ticks">
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick skill-bar-tick--active"></span>
+                      <span class="skill-bar-tick"></span>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div><!-- /engenharia e ferramentas -->
+            
+          </div>
+        </section>
+
+        <!-- 6. Projetos em Destaque -->
+        <section aria-labelledby="resume-projects-title">
+          <h3 id="resume-projects-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i></span>
+            Projetos em Destaque
+          </h3>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            
+            <!-- Projeto 1 -->
+            <article class="card p-5 flex flex-col justify-between" aria-label="Pesquisar+">
+              <div>
+                <h4 class="font-heading font-bold text-sm text-text-base mb-2">Pesquisar+</h4>
+                <p class="text-xxs text-text-muted leading-relaxed">
+                  Minha principal iniciativa de software. Plataforma de busca inteligente para estudantes de exatas.
+                </p>
+              </div>
+              <a href="/projetos" class="btn-outline btn--sm mt-4 w-full">Saiba mais</a>
+            </article>
+            
+            <!-- Projeto 2 -->
+            <article class="card p-5 flex flex-col justify-between" aria-label="Evolução Python">
+              <div>
+                <h4 class="font-heading font-bold text-sm text-text-base mb-2">Projetos Python</h4>
+                <p class="text-xxs text-text-muted leading-relaxed">
+                  Sequência estruturada de 15 exercícios e utilitários programados para consolidar competências em lógica e POO.
+                </p>
+              </div>
+              <a href="/projetos" class="btn-outline btn--sm mt-4 w-full">Saiba mais</a>
+            </article>
+            
+            <!-- Projeto 3 -->
+            <article class="card p-5 flex flex-col justify-between" aria-label="Laboratório CAD">
+              <div>
+                <h4 class="font-heading font-bold text-sm text-text-base mb-2">Laboratório CAD</h4>
+                <p class="text-xxs text-text-muted leading-relaxed">
+                  Registros de estudos paramétricos e montagens técnicas detalhadas de engenharia no Fusion 360.
+                </p>
+              </div>
+              <a href="/laboratorio-cad" class="btn-outline btn--sm mt-4 w-full">Saiba mais</a>
+            </article>
+            
+          </div>
+        </section>
+
+        <!-- 7. Cursos e Certificados -->
+        <section aria-labelledby="resume-courses-title">
+          <h3 id="resume-courses-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-certificate" aria-hidden="true"></i></span>
+            Cursos e Certificações Complementares
+          </h3>
+          
+          <div class="flex flex-col gap-3">
+            
+            <!-- Certificado 1 -->
+            <div class="certificate-card">
+              <div class="certificate-info">
+                <div class="certificate-icon" aria-hidden="true"><i class="fa-brands fa-python"></i></div>
+                <div>
+                  <h4 class="certificate-name">Python Fundamentos</h4>
+                  <span class="certificate-org">Plataforma Eduliv</span>
+                </div>
+              </div>
+              <span class="tag tag--sm">Concluído</span>
+            </div>
+            
+            <!-- Certificado 2 -->
+            <div class="certificate-card">
+              <div class="certificate-info">
+                <div class="certificate-icon" aria-hidden="true"><i class="fa-solid fa-file-excel"></i></div>
+                <div>
+                  <h4 class="certificate-name">Excel para Análise de Dados</h4>
+                  <span class="certificate-org">Plataforma Eduliv</span>
+                </div>
+              </div>
+              <span class="tag tag--sm">Concluído</span>
+            </div>
+            
+            <!-- Certificado 3 -->
+            <div class="certificate-card">
+              <div class="certificate-info">
+                <div class="certificate-icon" aria-hidden="true"><i class="fa-solid fa-chart-bar"></i></div>
+                <div>
+                  <h4 class="certificate-name">Power BI Visualização Avançada</h4>
+                  <span class="certificate-org">Plataforma Eduliv</span>
+                </div>
+              </div>
+              <span class="tag tag--sm">Concluído</span>
+            </div>
+            
+            <!-- Certificado 4 -->
+            <div class="certificate-card">
+              <div class="certificate-info">
+                <div class="certificate-icon" aria-hidden="true"><i class="fa-solid fa-database"></i></div>
+                <div>
+                  <h4 class="certificate-name">Bancos de Dados & SQL Básico</h4>
+                  <span class="certificate-org">Plataforma Eduliv</span>
+                </div>
+              </div>
+              <span class="tag tag--sm">Concluído</span>
+            </div>
+            
+            <!-- Certificado 5 -->
+            <div class="certificate-card">
+              <div class="certificate-info">
+                <div class="certificate-icon" aria-hidden="true"><i class="fa-solid fa-language"></i></div>
+                <div>
+                  <h4 class="certificate-name">Inglês Nível A1</h4>
+                  <span class="certificate-org">Centro de Línguas de Maracanaú (CLM)</span>
+                </div>
+              </div>
+              <span class="tag tag--sm">Em andamento</span>
+            </div>
+            
+          </div>
+        </section>
+
+        <!-- 8. Diferenciais / Características Profissionais -->
+        <section aria-labelledby="resume-features-title">
+          <h3 id="resume-features-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-award" aria-hidden="true"></i></span>
+            Características Profissionais
+          </h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            
+            <div class="card p-5 text-center">
+              <i class="fa-solid fa-hourglass-start text-accent text-lg mb-3 block" aria-hidden="true"></i>
+              <h4 class="font-heading font-bold text-xs text-text-base mb-2">Aprendizagem Contínua</h4>
+              <p class="text-xxs text-text-muted leading-relaxed">
+                Busca rotineira por expandir conhecimentos em engenharia e desenvolvimento de sistemas de forma interconectada.
+              </p>
+            </div>
+            
+            <div class="card p-5 text-center">
+              <i class="fa-solid fa-user-gear text-accent text-lg mb-3 block" aria-hidden="true"></i>
+              <h4 class="font-heading font-bold text-xs text-text-base mb-2">Autodidatismo</h4>
+              <p class="text-xxs text-text-muted leading-relaxed">
+                Capacidade demonstrada para absorver e aplicar de forma autônoma linguagens de programação e softwares complexos.
+              </p>
+            </div>
+            
+            <div class="card p-5 text-center">
+              <i class="fa-solid fa-list-check text-accent text-lg mb-3 block" aria-hidden="true"></i>
+              <h4 class="font-heading font-bold text-xs text-text-base mb-2">Organização</h4>
+              <p class="text-xxs text-text-muted leading-relaxed">
+                Método sistemático e estruturado para gerenciar arquivos de projetos, códigos e rotinas de estudos complementares.
+              </p>
+            </div>
+            
+            <div class="card p-5 text-center">
+              <i class="fa-solid fa-circle-question text-accent text-lg mb-3 block" aria-hidden="true"></i>
+              <h4 class="font-heading font-bold text-xs text-text-base mb-2">Resolução de Problemas</h4>
+              <p class="text-xxs text-text-muted leading-relaxed">
+                Foco analítico em decompor falhas complexas em etapas lógicas menores para implementar soluções efetivas.
+              </p>
+            </div>
+            
+            <div class="card p-5 text-center">
+              <i class="fa-solid fa-square-root-variable text-accent text-lg mb-3 block" aria-hidden="true"></i>
+              <h4 class="font-heading font-bold text-xs text-text-base mb-2">Pensamento Analítico</h4>
+              <p class="text-xxs text-text-muted leading-relaxed">
+                Habilidade lógica para avaliar dados numéricos estruturados e estruturar raciocínios com base em conceitos físicos.
+              </p>
+            </div>
+            
+            <div class="card p-5 text-center">
+              <i class="fa-solid fa-check text-accent text-lg mb-3 block" aria-hidden="true"></i>
+              <h4 class="font-heading font-bold text-xs text-text-base mb-2">Comprometimento</h4>
+              <p class="text-xxs text-text-muted leading-relaxed">
+                Foco e dedicação constantes na entrega de projetos e nas metas acadêmicas de forma qualificada.
+              </p>
+            </div>
+            
+          </div>
+        </section>
+
+        <!-- 9. Disponibilidade -->
+        <section aria-labelledby="resume-availability-title">
+          <h3 id="resume-availability-title" class="text-base font-bold font-heading text-text-base mb-4 flex items-center gap-2">
+            <span class="text-accent"><i class="fa-solid fa-handshake" aria-hidden="true"></i></span>
+            Disponibilidade
+          </h3>
+          <div class="card p-6 leading-relaxed text-sm text-text-muted space-y-4">
+            <p>
+              Atualmente estou em busca de oportunidades de estágio supervisionado e projetos que contribuam para meu desenvolvimento profissional.
+            </p>
+            <p>
+              Devido à graduação em Engenharia Mecânica no IFCE (período da manhã), tenho preferência por oportunidades no período da tarde e da noite.
+            </p>
+            <p>
+              Também estou aberto para colaborar em projetos acadêmicos, pesquisas e iniciativas relacionadas à engenharia, desenvolvimento de software e tecnologia.
+            </p>
+          </div>
+        </section>
+        
+      </main>
+      
+    </div>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEÇÃO DE DOWNLOAD FINAL
+═══════════════════════════════════════════════════════════════ -->
+<section class="section section--alt" aria-label="Ação de Download do Currículo">
+  <div class="container">
+    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
+      <i class="fa-regular fa-file-pdf text-accent text-3xl mb-4 block" aria-hidden="true"></i>
+      <h2 class="text-xl font-bold font-heading text-text-base mb-3">Deseja guardar uma cópia?</h2>
+      <p class="text-sm text-text-muted leading-relaxed mb-8 max-w-md mx-auto">
+        Você pode efetuar o download da versão resumida tradicional em formato PDF para seu controle, impressão ou envio direto.
+      </p>
+      
+      <div class="flex justify-center">
+        <a 
+          href="{{ student.cv }}" 
+          class="btn-primary" 
+          download 
+          id="resume-download-footer"
+          aria-label="Baixar cópia oficial do currículo em PDF"
+        >
+          <i class="fa-solid fa-download" aria-hidden="true"></i>
+          Download do Currículo em PDF
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAMADA FINAL
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-24" aria-label="Seguir para a próxima seção">
+  <div class="container">
+    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
+      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-3 block">Contato</span>
+      <h2 class="text-2xl font-bold font-heading text-text-base mb-4">Vamos conversar?</h2>
+      <p class="text-sm text-text-muted leading-relaxed mb-8 max-w-md mx-auto">
+        Se você se interessou pela minha evolução técnica e gostaria de bater um papo sobre projetos ou oportunidades, 
+        sinta-se à vontade para me contatar.
+      </p>
+      
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="/projetos" class="btn-outline">
+          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+          Conhecer Projetos
+        </a>
+        <a href="/contato" class="btn-primary">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          Entrar em Contato
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

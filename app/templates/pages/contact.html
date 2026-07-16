@@ -1,0 +1,459 @@
+{#
+  pages/contact.html — Página de contato interativa integrada ao EmailJS.
+  Sprint 9 Polish: dados reais de contato, FAQ atualizado, disponibilidade correta.
+#}
+{% extends "base.html" %}
+
+{% block page_title %}Contato | Carlos Daniel{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CABEÇALHO / HERO DA PÁGINA
+═══════════════════════════════════════════════════════════════ -->
+<section class="section section--hero-pad pb-10" aria-label="Apresentação de Contato" data-aos="fade-down">
+  <div class="container">
+    <div class="cad-hero__grid">
+      
+      <!-- Lado Esquerdo: Texto -->
+      <div>
+        {% set section_badge = "Fale Comigo" %}
+        {% set section_title = "Vamos <span class='text-accent'>conversar?</span>" %}
+        {% set section_subtitle = "Obrigado por visitar meu portfólio. Caso tenha interesse em conversar sobre oportunidades de estágio, projetos, colaborações ou simplesmente trocar experiências, ficarei muito feliz em receber sua mensagem." %}
+        {% set align = "left" %}
+        {% include "partials/section_header.html" %}
+      </div>
+      
+      <!-- Lado Direito: Ilustração de Comunicação SVG -->
+      <div class="flex justify-center" data-aos="fade-left" data-aos-delay="100">
+        <svg class="animate-float" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="max-width: 100%; width: 220px; height: 220px;">
+          <defs>
+            <linearGradient id="bubble-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.1"/>
+              <stop offset="100%" stop-color="#06B6D4" stop-opacity="0.02"/>
+            </linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="80" stroke="rgba(6, 182, 212, 0.08)" stroke-width="1" fill="none" stroke-dasharray="4,4"/>
+          <circle cx="100" cy="100" r="50" stroke="rgba(6, 182, 212, 0.05)" stroke-width="1" fill="none"/>
+          <path d="M 60,90 Q 100,50 140,90" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5" fill="none" stroke-dasharray="2,2"/>
+          <path d="M 60,110 Q 100,150 140,110" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5" fill="none" stroke-dasharray="2,2"/>
+          <rect x="35" y="75" width="50" height="35" rx="8" fill="url(#bubble-grad)" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5"/>
+          <polygon points="45,110 50,115 55,110" fill="#09090B" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5"/>
+          <line x1="45" y1="92" x2="75" y2="92" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>
+          <rect x="115" y="90" width="50" height="35" rx="8" fill="url(#bubble-grad)" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5"/>
+          <polygon points="145,125 150,130 155,125" fill="#09090B" stroke="rgba(6, 182, 212, 0.3)" stroke-width="1.5"/>
+          <line x1="125" y1="107" x2="155" y2="107" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="100" cy="100" r="10" fill="#06B6D4" opacity="0.15">
+            <animate attributeName="r" values="10;25;10" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.15;0;0.15" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="100" cy="100" r="4" fill="#06B6D4"/>
+        </svg>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEÇÃO "ENTRE EM CONTATO" (Dois Blocos)
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-16" aria-label="Canais de Contato">
+  <div class="container">
+    <div class="contact__grid">
+      
+      <!-- ── BLOCO ESQUERDO: Formas rápidas de contato ── -->
+      <div data-aos="fade-right">
+        <div class="card p-6 h-full flex flex-col justify-between">
+          <div>
+            <h3 class="font-heading font-bold text-text-base text-base mb-4">Escolha a melhor forma</h3>
+            <p class="text-xs text-text-muted leading-relaxed mb-6">
+              Estou conectado nos principais canais profissionais e costumo responder mensagens com rapidez. 
+              Sinta-se à vontade para usar qualquer um dos canais abaixo.
+            </p>
+            
+            <div class="flex flex-col gap-5">
+              
+              <!-- E-mail -->
+              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <p class="text-xxs text-text-subtle uppercase font-semibold">E-mail</p>
+                    <p class="text-xs text-text-base font-bold" style="white-space: nowrap;">{{ student.email }}</p>
+                  </div>
+                </div>
+                <button 
+                  id="copy-email-btn" 
+                  data-email="{{ student.email }}"
+                  class="btn-outline btn--sm w-full justify-center"
+                  aria-label="Copiar endereço de e-mail para área de transferência"
+                >
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i>
+                  Copiar e-mail
+                </button>
+              </div>
+              
+              <!-- WhatsApp -->
+              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-2">
+                  <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                  </div>
+                  <div>
+                    <p class="text-xxs text-text-subtle uppercase font-semibold">WhatsApp</p>
+                    <p class="text-xs text-text-base font-bold">{{ student.whatsapp }}</p>
+                  </div>
+                </div>
+                <p class="text-xxs text-text-subtle mb-3 pl-1">
+                  <i class="fa-solid fa-circle-info text-accent mr-1" aria-hidden="true"></i>
+                  {{ student.whatsapp_note }}
+                </p>
+                <a 
+                  href="https://wa.me/5585986759763" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="btn-primary btn--sm w-full justify-center"
+                  aria-label="Abrir conversa no WhatsApp em nova aba"
+                >
+                  <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                  Conversar no WhatsApp
+                </a>
+              </div>
+              
+              <!-- LinkedIn -->
+              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
+                    <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+                  </div>
+                  <div class="flex-grow min-w-0">
+                    <p class="text-xxs text-text-subtle uppercase font-semibold">LinkedIn</p>
+                    <p class="text-xs text-text-base font-medium" style="word-break: break-all;">carlos-daniel-alves-da-silva</p>
+                  </div>
+                </div>
+                <a 
+                  href="{{ student.linkedin }}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="btn-outline btn--sm w-full justify-center"
+                  aria-label="Acessar perfil no LinkedIn em nova aba"
+                >
+                  <i class="fa-solid fa-up-right-from-square" aria-hidden="true"></i>
+                  Acessar LinkedIn
+                </a>
+              </div>
+              
+              <!-- GitHub -->
+              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
+                    <i class="fa-brands fa-github" aria-hidden="true"></i>
+                  </div>
+                  <div class="flex-grow min-w-0">
+                    <p class="text-xxs text-text-subtle uppercase font-semibold">GitHub</p>
+                    <p class="text-xs text-text-base font-medium">github.com/dev-carlosalves</p>
+                  </div>
+                </div>
+                <p class="text-xxs text-text-subtle mb-3 pl-1">
+                  Repositório onde publico meus projetos, estudos e aplicações desenvolvidas durante minha formação.
+                </p>
+                <a 
+                  href="{{ student.github }}" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="btn-outline btn--sm w-full justify-center"
+                  aria-label="Ver repositórios de projetos no GitHub em nova aba"
+                >
+                  <i class="fa-brands fa-github" aria-hidden="true"></i>
+                  Explorar Projetos
+                </a>
+              </div>
+              
+            </div>
+          </div>
+          
+          <div class="mt-6 pt-4 border-t border-border-dark">
+            <p class="text-xxs text-text-subtle">
+              <i class="fa-solid fa-clock text-accent mr-1" aria-hidden="true"></i>
+              Respondo mensagens em até 24 horas úteis.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- ── BLOCO DIREITO: Formulário com EmailJS ── -->
+      <div data-aos="fade-left">
+        <div class="card p-6">
+          <h3 class="font-heading font-bold text-text-base text-base mb-4">Enviar Mensagem</h3>
+          
+          <form 
+            id="contact-form" 
+            novalidate 
+            aria-label="Formulário para envio de mensagem de e-mail direto"
+          >
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div class="form-group">
+                <label for="name" class="form-label">Nome Completo *</label>
+                <input 
+                  type="text" id="name" name="name" class="form-input" 
+                  placeholder="Seu nome" required aria-describedby="name-error"
+                />
+                <p class="form-error" id="name-error" role="alert" aria-live="polite"></p>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">Seu E-mail *</label>
+                <input 
+                  type="email" id="email" name="email" class="form-input" 
+                  placeholder="exemplo@email.com" required aria-describedby="email-error"
+                />
+                <p class="form-error" id="email-error" role="alert" aria-live="polite"></p>
+              </div>
+            </div>
+            
+            <div class="form-group mb-4">
+              <label for="subject" class="form-label">Assunto *</label>
+              <input 
+                type="text" id="subject" name="subject" class="form-input" 
+                placeholder="Ex: Proposta de Estágio / Dúvida sobre projeto"
+                required aria-describedby="subject-error"
+              />
+              <p class="form-error" id="subject-error" role="alert" aria-live="polite"></p>
+            </div>
+            
+            <div class="form-group mb-6">
+              <label for="message" class="form-label">Mensagem *</label>
+              <textarea 
+                id="message" name="message" class="form-input form-input--textarea" 
+                rows="5"
+                placeholder="Escreva aqui detalhes sobre sua proposta ou dúvida..."
+                required aria-describedby="message-error"
+              ></textarea>
+              <p class="form-error" id="message-error" role="alert" aria-live="polite"></p>
+            </div>
+            
+            <button 
+              type="submit" id="submit-btn" 
+              class="btn-primary w-full justify-center py-3"
+              aria-label="Enviar mensagem pelo formulário de contato"
+            >
+              <i class="fa-solid fa-circle-notch fa-spin hidden mr-2" id="submit-spinner" aria-hidden="true"></i>
+              <i class="fa-solid fa-paper-plane mr-2" id="submit-icon" aria-hidden="true"></i>
+              <span id="submit-btn-text">Enviar Mensagem</span>
+            </button>
+            
+            <p class="text-xxs text-text-subtle mt-4 text-center">
+              * Todos os campos são obrigatórios. Os dados de contato são tratados de forma sigilosa.
+            </p>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     REDES PROFISSIONAIS (4 Cards)
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-16 section--alt" aria-label="Redes e Mídias Profissionais">
+  <div class="container">
+    
+    <div class="text-center max-w-xl mx-auto mb-10" data-aos="fade-up">
+      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-2 block">Conexões</span>
+      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base">Canais Digitais</h2>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- GitHub -->
+      <article class="card p-6 flex flex-col justify-between text-center" data-aos="fade-up">
+        <div>
+          <i class="fa-brands fa-github text-accent text-2xl mb-3 block" aria-hidden="true"></i>
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">GitHub</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-4">
+            Repositório onde publico meus projetos, estudos e aplicações desenvolvidas durante minha formação.
+          </p>
+        </div>
+        <a href="{{ student.github }}" target="_blank" rel="noopener noreferrer" class="btn-outline btn--sm w-full">
+          Explorar Projetos
+        </a>
+      </article>
+      
+      <!-- LinkedIn -->
+      <article class="card p-6 flex flex-col justify-between text-center" data-aos="fade-up" data-aos-delay="50">
+        <div>
+          <i class="fa-brands fa-linkedin-in text-accent text-2xl mb-3 block" aria-hidden="true"></i>
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">LinkedIn</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-4">
+            Perfil profissional contendo conquistas acadêmicas e minha trajetória de formação técnica.
+          </p>
+        </div>
+        <a href="{{ student.linkedin }}" target="_blank" rel="noopener noreferrer" class="btn-outline btn--sm w-full">
+          Ver Perfil Profissional
+        </a>
+      </article>
+      
+      <!-- E-mail -->
+      <article class="card p-6 flex flex-col justify-between text-center" data-aos="fade-up" data-aos-delay="100">
+        <div>
+          <i class="fa-solid fa-envelope text-accent text-2xl mb-3 block" aria-hidden="true"></i>
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">E-mail</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-4">
+            Canal formal prioritário para envio de documentos, propostas e solicitações estruturadas.
+          </p>
+        </div>
+        <a href="mailto:{{ student.email }}" class="btn-outline btn--sm w-full">
+          Enviar Mensagem
+        </a>
+      </article>
+      
+      <!-- WhatsApp -->
+      <article class="card p-6 flex flex-col justify-between text-center" data-aos="fade-up" data-aos-delay="150">
+        <div>
+          <i class="fa-brands fa-whatsapp text-accent text-2xl mb-3 block" aria-hidden="true"></i>
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">WhatsApp</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-2">
+            Canal ágil para conversas rápidas sobre oportunidades e projetos.
+          </p>
+          <p class="text-xxs text-text-subtle leading-relaxed mb-4">
+            <i class="fa-solid fa-circle-info text-accent mr-1" aria-hidden="true"></i>
+            Preferencialmente mensagens. Não atendo chamadas telefônicas.
+          </p>
+        </div>
+        <a 
+          href="https://wa.me/5585986759763?text=Ol%C3%A1%20Carlos!%20Conheci%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar%20sobre%20uma%20oportunidade." 
+          target="_blank" rel="noopener noreferrer" class="btn-outline btn--sm w-full"
+          aria-label="Iniciar conversa no WhatsApp em nova aba"
+        >
+          Iniciar Conversa
+        </a>
+      </article>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DISPONIBILIDADE
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-16" aria-label="Informações de Disponibilidade Profissional">
+  <div class="container">
+    <div class="card p-8 hover-glow" data-aos="fade-up">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-lg md:text-xl font-bold font-heading text-text-base mb-5 text-center">
+          <i class="fa-solid fa-calendar-check text-accent mr-2" aria-hidden="true"></i>
+          Disponibilidade
+        </h2>
+        <div class="text-sm text-text-muted leading-relaxed space-y-4">
+          <p>
+            Atualmente estou em busca de oportunidades de <strong>estágio supervisionado</strong> e projetos que contribuam para meu desenvolvimento profissional.
+          </p>
+          <p>
+            Devido à minha graduação em Engenharia Mecânica no IFCE (período da manhã), tenho <strong>preferência por oportunidades no período da tarde e da noite</strong>.
+          </p>
+          <p>
+            Também estou aberto para colaborar em projetos acadêmicos, pesquisas e iniciativas relacionadas à engenharia, desenvolvimento de software e tecnologia.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FAQ (Accordion)
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-16 section--alt" aria-label="Perguntas Frequentes">
+  <div class="container">
+    
+    <div class="text-center max-w-xl mx-auto mb-12" data-aos="fade-up">
+      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-2 block">Dúvidas Comuns</span>
+      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base">Perguntas Frequentes</h2>
+    </div>
+    
+    <div class="faq-accordion" data-aos="fade-up">
+      
+      <!-- FAQ 1 -->
+      <details class="faq-item">
+        <summary class="faq-item__summary">Você está disponível para estágio?</summary>
+        <div class="faq-item__content">
+          <p>
+            Sim. Atualmente procuro oportunidades de estágio supervisionado, <strong>preferencialmente no período da tarde ou da noite</strong>, 
+            devido às aulas da graduação pela manhã.
+          </p>
+        </div>
+      </details>
+      
+      <!-- FAQ 2 -->
+      <details class="faq-item">
+        <summary class="faq-item__summary">Aceita participar de projetos?</summary>
+        <div class="faq-item__content">
+          <p>
+            Sim. Tenho interesse em colaborar em projetos relacionados à engenharia mecânica, desenvolvimento de software, 
+            automação, pesquisa acadêmica e inovação tecnológica.
+          </p>
+        </div>
+      </details>
+      
+      <!-- FAQ 3 -->
+      <details class="faq-item">
+        <summary class="faq-item__summary">Desenvolve projetos personalizados?</summary>
+        <div class="faq-item__content">
+          <p>
+            Atualmente meu foco principal é o desenvolvimento dos meus próprios projetos para aperfeiçoamento profissional, 
+            mas estou aberto para conversar sobre oportunidades compatíveis com minha experiência e disponibilidade.
+          </p>
+        </div>
+      </details>
+      
+      <!-- FAQ 4 -->
+      <details class="faq-item">
+        <summary class="faq-item__summary">Quanto tempo leva para responder?</summary>
+        <div class="faq-item__content">
+          <p>
+            Normalmente respondo mensagens em até 24 horas úteis. 
+            O contato via <strong>WhatsApp</strong> costuma ser respondido mais rapidamente.
+          </p>
+        </div>
+      </details>
+      
+    </div>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     FRASE FINAL / AGRADECIMENTO
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-24" aria-label="Agradecimento da Visita">
+  <div class="container">
+    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
+      <i class="fa-solid fa-heart text-accent text-3xl mb-4 block" aria-hidden="true"></i>
+      <h2 class="text-2xl font-bold font-heading text-text-base mb-4">Obrigado pela visita</h2>
+      <p class="text-sm text-text-muted leading-relaxed max-w-md mx-auto">
+        Agradeço o tempo que passou navegando pelo meu portfólio. Cada projeto aqui é resultado de muito estudo e 
+        dedicação. Se algo chamou sua atenção, adorarei conversar mais sobre isso!
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Floating WhatsApp Button -->
+<a 
+  href="https://wa.me/5585986759763?text=Ol%C3%A1%20Carlos!%20Conheci%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar%20sobre%20uma%20oportunidade." 
+  target="_blank" 
+  rel="noopener noreferrer" 
+  class="whatsapp-fab" 
+  aria-label="Enviar mensagem para Carlos Daniel via WhatsApp"
+>
+  <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+</a>
+
+{% endblock %}
+
+{% block scripts_extra %}
+  <script src="/static/js/contact.js"></script>
+{% endblock %}

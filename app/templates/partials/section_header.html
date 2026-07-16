@@ -1,0 +1,39 @@
+{#
+  partials/section_header.html — Cabeçalho de seção reutilizável.
+
+  Uso:
+    {% set section_badge = "Trajetória" %}
+    {% set section_title = "Minha <span class='text-accent'>Jornada</span>" %}
+    {% set section_subtitle = "Texto explicativo da seção." %}
+    {% include "partials/section_header.html" %}
+
+  Variáveis esperadas:
+    section_badge    — rótulo pequeno acima do título (ex: "Portfólio")
+    section_title    — título principal (suporta HTML para o span colorido)
+    section_subtitle — parágrafo descritivo abaixo do título (opcional)
+    align            — "center" | "left" (padrão: "center")
+#}
+
+<div
+  class="section-header {% if align == 'left' %}section-header--left{% else %}section-header--center{% endif %}"
+  data-aos="fade-up"
+>
+  {% if section_badge %}
+    <p class="section-badge" aria-label="Categoria">
+      <span class="section-badge__dot" aria-hidden="true"></span>
+      {{ section_badge }}
+    </p>
+  {% endif %}
+
+  <h2 class="section-title">
+    {{ section_title | safe }}
+  </h2>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  {% if section_subtitle %}
+    <p class="section-subtitle">
+      {{ section_subtitle }}
+    </p>
+  {% endif %}
+</div>

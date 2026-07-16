@@ -1,0 +1,49 @@
+# Ambiente Python
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+
+# FastAPI / Uvicorn
+*.pid
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.production
+
+# IDEs
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Documentos sensíveis (NÃO versionar o currículo original)
+# app/static/documents/curriculo/*.pdf
+
+# Node (caso use ferramentas de build no futuro)
+node_modules/
+.npm
+
+# Build output (futuro)
+dist/
+.output/

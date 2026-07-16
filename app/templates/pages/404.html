@@ -1,0 +1,33 @@
+{#
+  pages/404.html — Página de erro 404 customizada.
+#}
+{% extends "base.html" %}
+
+{% block page_title %}404 — Página não encontrada | Carlos Daniel{% endblock %}
+
+{% block content %}
+
+<section
+  class="section section--hero-pad"
+  style="min-height:calc(100vh - 200px); display:flex; align-items:center;"
+  aria-label="Erro 404 — página não encontrada"
+>
+  <div class="container text-center" data-aos="fade-up">
+
+    <p class="text-accent font-heading text-7xl font-bold mb-4" aria-hidden="true">404</p>
+    <h1 class="text-3xl font-heading font-bold text-text-base mb-4">
+      Página não encontrada
+    </h1>
+    <p class="text-text-muted mb-8 max-w-md mx-auto">
+      A página que você procura não existe ou foi movida.
+      Volte ao início e continue explorando.
+    </p>
+    <a href="/" class="btn-primary" aria-label="Voltar para a página inicial">
+      <i class="fa-solid fa-house" aria-hidden="true"></i>
+      Voltar ao Início
+    </a>
+
+  </div>
+</section>
+
+{% endblock %}

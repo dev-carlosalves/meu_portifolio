@@ -1,0 +1,864 @@
+{#
+  pages/projects.html — Projetos de Programação com filtros por categoria e evolução técnica.
+  Conteúdo real: Sprint 4.
+#}
+{% extends "base.html" %}
+
+{% block page_title %}Projetos em Programação | Carlos Daniel{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CABEÇALHO DA PÁGINA
+═══════════════════════════════════════════════════════════════ -->
+<section class="section section--hero-pad pb-8" aria-label="Cabeçalho da Página" data-aos="fade-down">
+  <div class="container">
+    {% set section_badge = "Portfólio" %}
+    {% set section_title = "Projetos em <span class='text-accent'>Programação</span>" %}
+    {% set section_subtitle = "Esta página reúne os projetos que desenvolvi durante minha jornada de aprendizado em programação. Cada projeto representa uma etapa importante da minha evolução técnica, desde os primeiros exercícios até aplicações completas utilizando FastAPI." %}
+    {% set align = "center" %}
+    {% include "partials/section_header.html" %}
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PROJETO EM DESTAQUE (Pesquisar+)
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-16" aria-label="Projeto em destaque">
+  <div class="container">
+    <div class="card p-8 hover-lift hover-glow" data-aos="fade-up">
+      
+      <div class="featured-project__grid">
+        
+        <!-- Detalhes do projeto -->
+        <div class="flex flex-col justify-between h-full">
+          <div>
+            <span class="featured-project__badge">
+              <i class="fa-solid fa-star" aria-hidden="true"></i>
+              Projeto Principal
+            </span>
+            
+            <h2 class="featured-project__title">Pesquisar+</h2>
+            
+            <p class="featured-project__desc">
+              O <strong>Pesquisar+</strong> é uma plataforma educacional inteligente desenvolvida para organizar estudos e 
+              facilitar o aprendizado em disciplinas das áreas de Exatas. Representa minha principal iniciativa de 
+              desenvolvimento de software até o momento, unindo conceitos de programação robustos a uma interface de 
+              usuário focada em produtividade. Atualmente encontra-se sob desenvolvimento contínuo e aperfeiçoamento de recursos.
+            </p>
+            
+            <!-- Funcionalidades -->
+            <div class="mb-6">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-text-base mb-3">Funcionalidades Principais</h3>
+              <div class="features-grid">
+                <div class="feature-tag"><i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Autenticação</div>
+                <div class="feature-tag"><i class="fa-solid fa-user-shield" aria-hidden="true"></i> Area do Administrador</div>
+                <div class="feature-tag"><i class="fa-solid fa-clipboard-question" aria-hidden="true"></i> Painel de Questões</div>
+                <div class="feature-tag"><i class="fa-solid fa-video" aria-hidden="true"></i> Painel de Aulas</div>
+                <div class="feature-tag"><i class="fa-solid fa-stopwatch" aria-hidden="true"></i> Simulados</div>
+                <div class="feature-tag"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Interface Responsiva</div>
+              </div>
+            </div>
+            
+            <!-- Tecnologias -->
+            <div class="mb-6">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-text-base mb-2">Tecnologias Utilizadas</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="tag">Python</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">Jinja2</span>
+                <span class="tag">HTML5</span>
+                <span class="tag">CSS3</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">SQLite</span>
+                <span class="tag">Git & GitHub</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Status e Ações -->
+          <div>
+            <div class="flex items-center gap-2 mb-4">
+              <span class="status-badge status-badge--main">
+                <i class="fa-solid fa-person-digging" aria-hidden="true"></i>
+                Em desenvolvimento contínuo
+              </span>
+            </div>
+            
+            <div class="flex flex-wrap gap-4">
+              <a href="https://pesquisar-plus.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn-primary">
+                <i class="fa-solid fa-external-link" aria-hidden="true"></i>
+                Acessar Plataforma
+              </a>
+              <button id="private-code-btn" class="btn-outline">
+                <i class="fa-solid fa-lock" aria-hidden="true"></i>
+                Código Fonte
+              </button>
+            </div>
+          </div>
+          
+        </div><!-- /detalhes -->
+        
+        <!-- Galeria/Mockup -->
+        <div class="project-gallery">
+          <div class="project-gallery__slides" id="gallery-slides">
+            
+            <!-- Slide 1 -->
+            <div class="project-gallery__slide is-active" data-slide="0">
+              <div class="mockup-placeholder">
+                <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+                <h4 class="mockup-placeholder__title">Painel de Estudos Inteligente</h4>
+                <p class="mockup-placeholder__subtitle">
+                  Visualização do painel principal com métricas de desempenho e atalhos rápidos de estudo.
+                </p>
+              </div>
+            </div>
+            
+            <!-- Slide 2 -->
+            <div class="project-gallery__slide" data-slide="1">
+              <div class="mockup-placeholder" style="background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #090514 100%);">
+                <i class="fa-solid fa-square-poll-horizontal" aria-hidden="true"></i>
+                <h4 class="mockup-placeholder__title">Interface de Simulados</h4>
+                <p class="mockup-placeholder__subtitle">
+                  Fluxo interativo de cronometragem e resolução de testes com feedback imediato de gabarito.
+                </p>
+              </div>
+            </div>
+            
+            <!-- Slide 3 -->
+            <div class="project-gallery__slide" data-slide="2">
+              <div class="mockup-placeholder" style="background: radial-gradient(circle at 50% 50%, #064e3b 0%, #022c22 100%);">
+                <i class="fa-solid fa-users-gear" aria-hidden="true"></i>
+                <h4 class="mockup-placeholder__title">Painel de Controle Administrativo</h4>
+                <p class="mockup-placeholder__subtitle">
+                  Mapeamento de banco de dados para gestão de usuários cadastrados e inclusão de conteúdos.
+                </p>
+              </div>
+            </div>
+            
+          </div>
+          
+          <!-- Controles do carrossel -->
+          <button class="project-gallery__btn project-gallery__btn--prev" id="gallery-prev-btn" aria-label="Slide anterior">
+            <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <button class="project-gallery__btn project-gallery__btn--next" id="gallery-next-btn" aria-label="Próximo slide">
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          
+          <!-- Dots -->
+          <div class="project-gallery__dots" id="gallery-dots">
+            <button class="project-gallery__dot is-active" data-dot="0" aria-label="Ir para slide 1"></button>
+            <button class="project-gallery__dot" data-dot="1" aria-label="Ir para slide 2"></button>
+            <button class="project-gallery__dot" data-dot="2" aria-label="Ir para slide 3"></button>
+          </div>
+        </div><!-- /galeria -->
+        
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEÇÃO: MINHA EVOLUÇÃO EM PYTHON
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-12" aria-label="Explicação da evolução">
+  <div class="container">
+    <div class="text-center max-w-2xl mx-auto" data-aos="fade-up">
+      <h2 class="text-2xl font-bold font-heading text-text-base mb-3">Minha evolução em Python</h2>
+      <p class="text-sm text-text-muted leading-relaxed">
+        Os projetos apresentados a seguir registram uma trajetória de estudos planejada e estruturada. 
+        Não foram criados de forma aleatória: cada nível representa a aquisição de uma nova competência-chave, 
+        demonstrando o crescimento prático desde os scripts iniciais de lógica até a estruturação de sistemas consolidados.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BARRA DE PESQUISA E FILTROS
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-12" aria-label="Barra de busca e filtros">
+  <div class="container">
+    <div class="projects-bar" data-aos="fade-up">
+      
+      <!-- Filtros por Categoria -->
+      <div id="project-filters" class="flex flex-wrap gap-2" aria-label="Filtrar projetos por tecnologia ou plataforma">
+        <button class="btn-filter btn-filter--active" data-filter="all">Todos</button>
+        <button class="btn-filter" data-filter="Python">Python</button>
+        <button class="btn-filter" data-filter="FastAPI">FastAPI</button>
+        <button class="btn-filter" data-filter="API">API</button>
+        <button class="btn-filter" data-filter="POO">POO</button>
+        <button class="btn-filter" data-filter="Analise">Análise de Dados</button>
+        <button class="btn-filter" data-filter="Desktop">Desktop</button>
+        <button class="btn-filter" data-filter="Web">Web</button>
+      </div>
+      
+      <!-- Campo de Busca -->
+      <div class="projects-search-wrapper">
+        <i class="fa-solid fa-magnifying-glass projects-search-icon" aria-hidden="true"></i>
+        <input 
+          type="text" 
+          id="project-search" 
+          class="projects-search-input" 
+          placeholder="Pesquisar projetos..."
+          aria-label="Digitar palavra chave para pesquisar projetos"
+        />
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     GRID DE PROJETOS POR NÍVEIS
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-16" aria-label="Lista de projetos divididos por nível">
+  <div class="container" id="projects-container">
+    
+    <!-- ── NÍVEL 1: Fundamentos ────────────────────────────── -->
+    <div class="evolution-level-section" data-level="1">
+      <div class="level-header" data-aos="fade-up">
+        <span class="level-header__number">Nível 1</span>
+        <h3 class="level-header__title">Fundamentos da Programação</h3>
+      </div>
+      
+      <div class="level-grid">
+        
+        <!-- Card 1.1 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 1</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Conversor de Temperaturas</h4>
+            <p class="card-project__desc">
+              Utilitário de terminal projetado para realizar conversões precisas entre as escalas termométricas Celsius, 
+              Fahrenheit e Kelvin.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Entrada/saída de dados, manipulação de variáveis, operadores matemáticos e controle de fluxo básico.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Lógica</span>
+          </div>
+        </article>
+        
+        <!-- Card 1.2 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 1</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Calculadora de IMC</h4>
+            <p class="card-project__desc">
+              Script interativo que solicita peso e altura do usuário, calcula o IMC e classifica a faixa de peso de acordo 
+              com os parâmetros da OMS.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Uso prático de blocos condicionais encadeados (if-elif-else) e formatação de casas decimais.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Matemática</span>
+          </div>
+        </article>
+        
+        <!-- Card 1.3 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 1</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Jogo de Adivinhação</h4>
+            <p class="card-project__desc">
+              Jogo interativo no terminal no qual o computador escolhe um número aleatório e o usuário tem tentativas para acertar, 
+              recebendo dicas se o valor é maior ou menor.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Geração de números aleatórios, loops condicionais controlados por flags e validação de erros simples.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Terminal</span>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+    
+    <!-- ── NÍVEL 2: Estruturas ────────────────────────────── -->
+    <div class="evolution-level-section" data-level="2">
+      <div class="level-header" data-aos="fade-up">
+        <span class="level-header__number">Nível 2</span>
+        <h3 class="level-header__title">Estruturas de Dados</h3>
+      </div>
+      
+      <div class="level-grid">
+        
+        <!-- Card 2.1 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 2</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Lista de Tarefas</h4>
+            <p class="card-project__desc">
+              Sistema de linha de comando para gerenciar afazeres cotidianos com recursos de inserção, remoção e listagem.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Manipulação estruturada de listas mutáveis em Python, iteração de coleções e indexação.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Listas</span>
+          </div>
+        </article>
+        
+        <!-- Card 2.2 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 2</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Agenda</h4>
+            <p class="card-project__desc">
+              Gerenciador simples de contatos telefônicos mantidos em memória temporária.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Uso de dicionários (chave:valor) para busca rápida de registros e estruturação de menus dinâmicos.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Dicionários</span>
+          </div>
+        </article>
+        
+        <!-- Card 2.3 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100" data-tech="Python,Desktop,Analise">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 2</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Contador de Palavras</h4>
+            <p class="card-project__desc">
+              Programa utilitário que recebe um bloco de texto do usuário e gera estatísticas sobre o número e frequência de cada vocábulo.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Métodos de strings (split, strip), tratamento de pontuação e ordenação de dicionários por frequência.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Strings</span>
+            <span class="tag">Estatística</span>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+    
+    <!-- ── NÍVEL 3: Persistência ────────────────────────────── -->
+    <div class="evolution-level-section" data-level="3">
+      <div class="level-header" data-aos="fade-up">
+        <span class="level-header__number">Nível 3</span>
+        <h3 class="level-header__title">Persistência de Dados</h3>
+      </div>
+      
+      <div class="level-grid">
+        
+        <!-- Card 3.1 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 3</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">To-do JSON</h4>
+            <p class="card-project__desc">
+              Gerenciador de tarefas aprimorado no qual a lista criada persiste mesmo após o fechamento do programa.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Uso da biblioteca nativa `json`, leitura/escrita física de arquivos no disco e tratamento de arquivos vazios.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">JSON</span>
+            <span class="tag">Arquivos</span>
+          </div>
+        </article>
+        
+        <!-- Card 3.2 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50" data-tech="Python,Desktop,Analise">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 3</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Controle Financeiro</h4>
+            <p class="card-project__desc">
+              Controlador de despesas e receitas domésticas que arquiva o fluxo financeiro em uma planilha estruturada.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Manipulação de planilhas CSV pelo módulo `csv`, persistência de dados estruturados e soma dinâmica.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">CSV</span>
+            <span class="tag">Finanças</span>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+    
+    <!-- ── NÍVEL 4: POO ────────────────────────────── -->
+    <div class="evolution-level-section" data-level="4">
+      <div class="level-header" data-aos="fade-up">
+        <span class="level-header__number">Nível 4</span>
+        <h3 class="level-header__title">Programação Orientada a Objetos (POO)</h3>
+      </div>
+      
+      <div class="level-grid">
+        
+        <!-- Card 4.1 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-tech="Python,POO">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 4</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Sistema Biblioteca</h4>
+            <p class="card-project__desc">
+              Aplicação de gestão que modela livros, usuários e processos de empréstimos e devoluções.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Lógica de POO, criação de classes, instanciação de objetos, métodos de instância e encapsulamento de atributos.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">POO</span>
+            <span class="tag">Estruturação</span>
+          </div>
+        </article>
+        
+        <!-- Card 4.2 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50" data-tech="Python,POO">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 4</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">RPG de Terminal</h4>
+            <p class="card-project__desc">
+              Simulador de combate por turnos no qual heróis enfrentam vilões com ataques físicos e feitiços mágicos dinâmicos.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Conceitos de Herança entre classes (guerreiro/mago), polimorfismo de métodos de ataque e manipulação de estados.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">POO</span>
+            <span class="tag">Jogos</span>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+    
+    <!-- ── NÍVEL 5: Erros e Scraping ────────────────────────────── -->
+    <div class="evolution-level-section" data-level="5">
+      <div class="level-header" data-aos="fade-up">
+        <span class="level-header__number">Nível 5</span>
+        <h3 class="level-header__title">Tratamento de Erros e Bibliotecas</h3>
+      </div>
+      
+      <div class="level-grid">
+        
+        <!-- Card 5.1 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 5</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Validador de CPF</h4>
+            <p class="card-project__desc">
+              Fórmula de automação para testar se um cadastro de CPF fornecido é real e matematicamente correto.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Aplicação prática de Regex (Expressões Regulares) para validação de padrões e tratamento robusto de erros e exceções.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Regex</span>
+            <span class="tag">Exceptions</span>
+          </div>
+        </article>
+        
+        <!-- Card 5.2 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50" data-tech="Python,Analise,Web">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 5</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">Web Scraper Técnico</h4>
+            <p class="card-project__desc">
+              Robô de raspagem web que varre sites externos e baixa tabelas técnicas mecânicas estruturadas para arquivos locais.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Requisições Web pelo módulo `requests`, parseamento de estruturas HTML usando `BeautifulSoup` e web scraping ético.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Requests</span>
+            <span class="tag">BeautifulSoup</span>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+    
+    <!-- ── NÍVEL 6: Completas ────────────────────────────── -->
+    <div class="evolution-level-section" data-level="6">
+      <div class="level-header" data-aos="fade-up">
+        <span class="level-header__number">Nível 6</span>
+        <h3 class="level-header__title">Aplicações Completas e Integrações</h3>
+      </div>
+      
+      <div class="level-grid">
+        
+        <!-- Card 6.1 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-tech="Python,API,Web">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 6</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">App Clima e Tempo</h4>
+            <p class="card-project__desc">
+              Aplicativo Web que exibe previsões climáticas dinâmicas para a cidade consultada baseando-se em serviços meteorológicos globais.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Consumo ativo de APIs externas RESTful, estruturação de payloads HTTP e decodificação de dados estruturados em JSON.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">API Integration</span>
+            <span class="tag">JSON</span>
+          </div>
+        </article>
+        
+        <!-- Card 6.2 -->
+        <article class="card-project p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50" data-tech="Python,Desktop">
+          <div>
+            <div class="card-project__meta">
+              <span class="card-project__level-badge">Nível 6</span>
+              <span class="status-badge status-badge--completed"><i class="fa-solid fa-circle-check"></i> Concluído</span>
+            </div>
+            <h4 class="card-project__title mt-2 mb-3">To-do GUI</h4>
+            <p class="card-project__desc">
+              Aplicativo gerenciador de listas de afazeres com interface interativa de usuário completa para desktops.
+            </p>
+            <div class="card-project__competencies">
+              <p class="card-project__competencies-label">Competências Desenvolvidas:</p>
+              <p class="card-project__competencies-text">Desenvolvimento GUI desktop utilizando a biblioteca interna `Tkinter` do Python e loops de eventos interativos.</p>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-dark flex flex-wrap gap-1">
+            <span class="tag">Python</span>
+            <span class="tag">Tkinter</span>
+            <span class="tag">Desktop GUI</span>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+
+    <!-- Mensagem de lista vazia -->
+    <div id="no-projects-message" class="hidden text-center py-16" data-aos="fade-up">
+      <i class="fa-solid fa-ban text-4xl text-text-subtle mb-4" aria-hidden="true"></i>
+      <h3 class="text-lg font-bold font-heading text-text-base mb-2">Nenhum projeto encontrado</h3>
+      <p class="text-sm text-text-muted">Tente ajustar sua busca ou selecionar outra categoria nos filtros acima.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEÇÃO DE MÉTRICAS
+═══════════════════════════════════════════════════════════════ -->
+<section class="metrics-section" aria-label="Métricas de desenvolvimento">
+  <div class="container">
+    <div class="metrics-grid">
+      
+      <div class="metric-card" data-aos="zoom-in" data-aos-delay="0">
+        <p class="metric-card__value">15+</p>
+        <p class="metric-card__label">Projetos criados</p>
+      </div>
+      
+      <div class="metric-card" data-aos="zoom-in" data-aos-delay="80">
+        <p class="metric-card__value">10+</p>
+        <p class="metric-card__label">Tecnologias estudadas</p>
+      </div>
+      
+      <div class="metric-card" data-aos="zoom-in" data-aos-delay="160">
+        <p class="metric-card__value">300+</p>
+        <p class="metric-card__label">Horas dedicadas</p>
+      </div>
+      
+      <div class="metric-card" data-aos="zoom-in" data-aos-delay="240">
+        <p class="metric-card__value metric-card__value--brand">Pesquisar+</p>
+        <p class="metric-card__label">Projeto Principal</p>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAMADA FINAL: E a jornada continua...
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-24" aria-label="Próximas áreas de estudo">
+  <div class="container">
+    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
+      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-3 block">Próxima Etapa</span>
+      <h2 class="text-2xl font-bold font-heading text-text-base mb-4">E a jornada continua...</h2>
+      <p class="text-sm text-text-muted leading-relaxed mb-8 max-w-xl mx-auto">
+        Estes projetos marcam o início do meu aprendizado no desenvolvimento de software. 
+        Continuamente publicarei novas ferramentas e aplicações conforme aprofundo meus estudos. 
+        Para além da programação, aplico também este conhecimento técnico para desenhar e modelar componentes mecânicos.
+      </p>
+      
+      <div class="flex justify-center">
+        <a href="/laboratorio-cad" class="btn-primary">
+          <i class="fa-solid fa-cube" aria-hidden="true"></i>
+          Conheça meu Laboratório CAD
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODAL DE CÓDIGO FONTE DO PESQUISAR+
+═══════════════════════════════════════════════════════════════ -->
+<div id="modal-source-code" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-source-title">
+  <div class="modal-container">
+    <button id="modal-source-close" class="modal-close" aria-label="Fechar modal">
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+    
+    <div class="modal-icon text-accent">
+      <i class="fa-solid fa-lock" aria-hidden="true"></i>
+    </div>
+    
+    <h2 id="modal-source-title" class="modal-title">Código Privado</h2>
+    
+    <p class="modal-desc text-left">
+      Este projeto encontra-se em desenvolvimento contínuo e aperfeiçoamento. 
+      O código-fonte permanece privado neste momento para segurança da arquitetura e das chaves de API integradas.
+      <br /><br />
+      Caso seja necessário para processos seletivos, demonstrações técnicas ou avaliações de engenharia, 
+      o acesso poderá ser temporariamente disponibilizado mediante solicitação prévia.
+    </p>
+    
+    <div class="flex justify-center">
+      <a href="/contato" class="btn-primary">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+        Falar com Carlos Daniel
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+  (() => {
+    /* ── CONTROLES DO CARROSSEL ──────────────────────────────── */
+    const slides = document.querySelectorAll('.project-gallery__slide');
+    const dots = document.querySelectorAll('.project-gallery__dot');
+    const prevBtn = document.getElementById('gallery-prev-btn');
+    const nextBtn = document.getElementById('gallery-next-btn');
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach(s => s.classList.remove('is-active'));
+      dots.forEach(d => d.classList.remove('is-active'));
+
+      currentSlide = (index + slides.length) % slides.length;
+      
+      const targetSlide = document.querySelector(`.project-gallery__slide[data-slide="${currentSlide}"]`);
+      const targetDot = document.querySelector(`.project-gallery__dot[data-dot="${currentSlide}"]`);
+      
+      if (targetSlide) targetSlide.classList.add('is-active');
+      if (targetDot) targetDot.classList.add('is-active');
+    }
+
+    if (prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', () => showSlide(currentSlide - 1));
+      nextBtn.addEventListener('click', () => showSlide(currentSlide + 1));
+      dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+          const val = parseInt(dot.getAttribute('data-dot'), 10);
+          showSlide(val);
+        });
+      });
+    }
+
+    // Auto rotação suave
+    let autoRotate = setInterval(() => showSlide(currentSlide + 1), 6000);
+    const galleryEl = document.querySelector('.project-gallery');
+    if (galleryEl) {
+      galleryEl.addEventListener('mouseenter', () => clearInterval(autoRotate));
+      galleryEl.addEventListener('mouseleave', () => {
+        autoRotate = setInterval(() => showSlide(currentSlide + 1), 6000);
+      });
+    }
+
+    /* ── MODAL CÓDIGO FONTE ──────────────────────────────────── */
+    const codeBtn = document.getElementById('private-code-btn');
+    const modalOverlay = document.getElementById('modal-source-code');
+    const modalCloseBtn = document.getElementById('modal-source-close');
+
+    if (codeBtn && modalOverlay) {
+      codeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modalOverlay.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+        if (modalCloseBtn) modalCloseBtn.focus();
+      });
+    }
+
+    function closeModal() {
+      if (modalOverlay) {
+        modalOverlay.classList.remove('is-active');
+        document.body.style.overflow = '';
+        if (codeBtn) codeBtn.focus();
+      }
+    }
+
+    if (modalCloseBtn) {
+      modalCloseBtn.addEventListener('click', closeModal);
+    }
+    if (modalOverlay) {
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) closeModal();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('is-active')) {
+        closeModal();
+      }
+    });
+
+    /* ── FILTROS E BUSCA INTERATIVOS (CLIENT-SIDE) ───────────── */
+    const filterButtons = document.querySelectorAll('.btn-filter');
+    const searchInput = document.getElementById('project-search');
+    const cards = document.querySelectorAll('.level-grid article');
+    const levels = document.querySelectorAll('.evolution-level-section');
+    const noProjMsg = document.getElementById('no-projects-message');
+    
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function applyFilterAndSearch() {
+      let visibleTotal = 0;
+
+      // Iterar sobre cada nível
+      levels.forEach(level => {
+        let visibleInLevel = 0;
+        const levelCards = level.querySelectorAll('.level-grid article');
+
+        levelCards.forEach(card => {
+          const cardTechs = card.getAttribute('data-tech') || '';
+          const cardContent = card.textContent.toLowerCase();
+          
+          // Match tecnologia / filtro
+          const matchesFilter = (activeFilter === 'all') || cardTechs.includes(activeFilter);
+          
+          // Match busca textual
+          const matchesSearch = (searchQuery === '') || cardContent.includes(searchQuery);
+
+          if (matchesFilter && matchesSearch) {
+            card.style.display = 'flex';
+            visibleInLevel++;
+            visibleTotal++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Ocultar nível se não possuir nenhum card correspondente
+        if (visibleInLevel > 0) {
+          level.style.display = 'block';
+        } else {
+          level.style.display = 'none';
+        }
+      });
+
+      // Feedback visual para busca sem resultados
+      if (visibleTotal === 0) {
+        if (noProjMsg) noProjMsg.classList.remove('hidden');
+      } else {
+        if (noProjMsg) noProjMsg.classList.add('hidden');
+      }
+    }
+
+    // Event listener para botões de filtro
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('btn-filter--active'));
+        btn.classList.add('btn-filter--active');
+        activeFilter = btn.getAttribute('data-filter');
+        applyFilterAndSearch();
+      });
+    });
+
+    // Event listener para barra de busca
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        applyFilterAndSearch();
+      });
+    }
+
+  })();
+</script>
+{% endblock %}

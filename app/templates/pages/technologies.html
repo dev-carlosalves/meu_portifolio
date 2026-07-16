@@ -1,0 +1,788 @@
+{#
+  pages/technologies.html — Tecnologias & Competências de Carlos Daniel Alves da Silva.
+  Conteúdo real: Sprint 7.
+#}
+{% extends "base.html" %}
+
+{% block page_title %}Tecnologias & Competências | Carlos Daniel{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CABEÇALHO / HERO DA PÁGINA
+═══════════════════════════════════════════════════════════════ -->
+<section class="section section--hero-pad pb-12" aria-label="Apresentação do portfólio de competências">
+  <div class="container">
+    <div class="cad-hero__grid">
+      
+      <!-- Lado Esquerdo: Texto e Badges -->
+      <div data-aos="fade-right">
+        <span class="badge badge--tech mb-4">
+          <i class="fa-solid fa-gears" aria-hidden="true"></i>
+          Ferramentas & Métodos
+        </span>
+        
+        <h1 class="text-3xl md:text-4xl font-extrabold font-heading text-text-base leading-tight mb-4">
+          Tecnologias & <span class="text-accent">Competências</span>
+        </h1>
+        
+        <p class="text-sm text-text-muted leading-relaxed mb-6">
+          Acredito que a tecnologia é um meio para solucionar problemas reais de engenharia e negócios. 
+          Nesta página apresento as principais ferramentas e conceitos técnicos que venho estudando e aplicando 
+          praticamente ao longo da minha formação acadêmica e profissional.
+        </p>
+        
+        <div class="flex gap-4">
+          <a href="#categories" class="btn-primary">
+            <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+            Ver Categorias
+          </a>
+        </div>
+      </div>
+      
+      <!-- Lado Direito: Ilustração de Conexões e Nós SVG -->
+      <div class="flex justify-center" data-aos="fade-left" data-aos-delay="100">
+        <svg class="tech-hero-svg animate-float" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="max-width: 100%; width: 320px; height: 320px;">
+          <defs>
+            <filter id="glow-svg" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="6" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <!-- Conexões -->
+          <line x1="200" y1="200" x2="100" y2="100" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1.5"/>
+          <line x1="200" y1="200" x2="300" y2="100" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1.5"/>
+          <line x1="200" y1="200" x2="100" y2="300" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1.5"/>
+          <line x1="200" y1="200" x2="300" y2="300" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1.5"/>
+          <line x1="100" y1="100" x2="300" y2="100" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="4,4"/>
+          <line x1="100" y1="300" x2="300" y2="300" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="4,4"/>
+          <line x1="100" y1="100" x2="100" y2="300" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="4,4"/>
+          <line x1="300" y1="100" x2="300" y2="300" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1" stroke-dasharray="4,4"/>
+          
+          <circle cx="200" cy="200" r="120" stroke="rgba(6, 182, 212, 0.08)" stroke-width="1" fill="none"/>
+          
+          <!-- Nós -->
+          <circle class="node" cx="200" cy="200" r="28" fill="#09090B" stroke="#06B6D4" stroke-width="2.5" filter="url(#glow-svg)"/>
+          <text x="200" y="204" fill="#06B6D4" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle">Engenharia</text>
+          
+          <circle class="node" cx="100" cy="100" r="24" fill="#09090B" stroke="#fb923c" stroke-width="2" filter="url(#glow-svg)"/>
+          <text x="100" y="104" fill="#fff" font-family="sans-serif" font-size="9" text-anchor="middle">Python</text>
+          
+          <circle class="node" cx="300" cy="100" r="24" fill="#09090B" stroke="#22c55e" stroke-width="2" filter="url(#glow-svg)"/>
+          <text x="300" y="104" fill="#fff" font-family="sans-serif" font-size="8" text-anchor="middle">FastAPI</text>
+          
+          <circle class="node" cx="100" cy="300" r="24" fill="#09090B" stroke="#a855f7" stroke-width="2" filter="url(#glow-svg)"/>
+          <text x="100" y="303" fill="#fff" font-family="sans-serif" font-size="8" text-anchor="middle">Fusion 360</text>
+          
+          <circle class="node" cx="300" cy="300" r="24" fill="#09090B" stroke="#06B6D4" stroke-width="2" filter="url(#glow-svg)"/>
+          <text x="300" y="304" fill="#fff" font-family="sans-serif" font-size="9" text-anchor="middle">SQL</text>
+        </svg>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SEÇÃO FILOSOFIA: MINHA FORMA DE APRENDER
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-16 section--alt" aria-label="Minha filosofia de aprendizado">
+  <div class="container">
+    <div class="card p-8 hover-glow" data-aos="fade-up">
+      <div class="max-w-3xl mx-auto text-center">
+        <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-2 block">Metodologia</span>
+        <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-4">Minha forma de aprender</h2>
+        <p class="text-sm text-text-muted leading-relaxed">
+          Acredito firmemente na <strong>aprendizagem baseada em projetos reais</strong>. 
+          Minha meta ao estudar uma nova tecnologia não é apenas acumular certificados formais, mas sim desenvolver 
+          competências reais de aplicação. Por isso, toda nova linguagem ou ferramenta é testada e aplicada em um 
+          projeto ou script prático antes de fazer parte do meu portfólio técnico.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CATEGORIAS DE TECNOLOGIA
+═══════════════════════════════════════════════════════════════ -->
+<section id="categories" class="py-16" aria-label="Categorias de ferramentas estudadas">
+  <div class="container">
+    
+    <!-- CATEGORIA 1: Linguagens de Programação -->
+    <div class="mb-16">
+      <div class="level-header mb-6" data-aos="fade-up">
+        <span class="level-header__number">Linguagens</span>
+        <h2 class="level-header__title">Linguagens de Programação</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Python -->
+        <article class="card p-6" data-aos="fade-up">
+          <div class="tech-card">
+            <div>
+              <div class="tech-card__header">
+                <div class="flex items-center gap-3">
+                  <div class="tech-card__icon"><i class="fa-brands fa-python" aria-hidden="true"></i></div>
+                  <h3 class="tech-card__title">Python</h3>
+                </div>
+                <span class="tech-status-badge tech-status-badge--main">Principal</span>
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                Utilizada no desenvolvimento de aplicações backend estruturadas, APIs RESTful, automação de tarefas, 
+                análise estatística e modelagem lógica de problemas.
+              </p>
+            </div>
+            <div>
+              <div class="tech-card__usage">
+                <p class="tech-card__usage-title">Como utilizo na prática</p>
+                <p class="tech-card__usage-text">Escrevo códigos limpos focados em modularidade, processamento assíncrono e consumo de bases de dados relacionais.</p>
+              </div>
+              <p class="tech-card__projects-title">Projetos Relacionados</p>
+              <div class="flex flex-wrap gap-1">
+                <span class="tag tag--sm">Pesquisar+</span>
+                <span class="tag tag--sm">Web Scraper</span>
+                <span class="tag tag--sm">Sistema Biblioteca</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        
+        <!-- JavaScript -->
+        <article class="card p-6" data-aos="fade-up" data-aos-delay="50">
+          <div class="tech-card">
+            <div>
+              <div class="tech-card__header">
+                <div class="flex items-center gap-3">
+                  <div class="tech-card__icon"><i class="fa-brands fa-js" aria-hidden="true"></i></div>
+                  <h3 class="tech-card__title">JavaScript (ES6+)</h3>
+                </div>
+                <span class="tech-status-badge tech-status-badge--active">Aprendizado Ativo</span>
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                Aplicado para conferir dinamismo às páginas web, manipulação de elementos da árvore DOM, controle de animações 
+                e validação preventiva de formulários client-side.
+              </p>
+            </div>
+            <div>
+              <div class="tech-card__usage">
+                <p class="tech-card__usage-title">Como utilizo na prática</p>
+                <p class="tech-card__usage-text">Desenvolvo funções modulares leves integradas diretamente aos templates e layouts sem frameworks complexos.</p>
+              </div>
+              <p class="tech-card__projects-title">Projetos Relacionados</p>
+              <div class="flex flex-wrap gap-1">
+                <span class="tag tag--sm">Pesquisar+</span>
+                <span class="tag tag--sm">Portfólio</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        
+        <!-- HTML5 -->
+        <article class="card p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="tech-card">
+            <div>
+              <div class="tech-card__header">
+                <div class="flex items-center gap-3">
+                  <div class="tech-card__icon"><i class="fa-solid fa-code" aria-hidden="true"></i></div>
+                  <h3 class="tech-card__title">HTML5</h3>
+                </div>
+                <span class="tech-status-badge tech-status-badge--prev">Estudo Prévio</span>
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                Utilizado para construir a estrutura base semântica das aplicações web, garantindo marcações limpas, legíveis 
+                e de fácil indexação por mecanismos de busca (SEO).
+              </p>
+            </div>
+            <div>
+              <div class="tech-card__usage">
+                <p class="tech-card__usage-title">Como utilizo na prática</p>
+                <p class="tech-card__usage-text">Organizo as tags em blocos lógicos seguindo estritamente as diretrizes de acessibilidade web (WAI-ARIA).</p>
+              </div>
+              <p class="tech-card__projects-title">Projetos Relacionados</p>
+              <div class="flex flex-wrap gap-1">
+                <span class="tag tag--sm">Pesquisar+</span>
+                <span class="tag tag--sm">Portfólio</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        
+        <!-- CSS3 -->
+        <article class="card p-6" data-aos="fade-up" data-aos-delay="150">
+          <div class="tech-card">
+            <div>
+              <div class="tech-card__header">
+                <div class="flex items-center gap-3">
+                  <div class="tech-card__icon"><i class="fa-brands fa-css3-alt" aria-hidden="true"></i></div>
+                  <h3 class="tech-card__title">CSS3</h3>
+                </div>
+                <span class="tech-status-badge tech-status-badge--prev">Estudo Prévio</span>
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                Dominado para aplicar layouts modernos, design responsivo em dispositivos móveis, tipografia fluida, 
+                variáveis CSS (design tokens) e animações leves.
+              </p>
+            </div>
+            <div>
+              <div class="tech-card__usage">
+                <p class="tech-card__usage-title">Como utilizo na prática</p>
+                <p class="tech-card__usage-text">Construo folhas de estilos modularizadas, responsivas e focadas na otimização de renderização.</p>
+              </div>
+              <p class="tech-card__projects-title">Projetos Relacionados</p>
+              <div class="flex flex-wrap gap-1">
+                <span class="tag tag--sm">Pesquisar+</span>
+                <span class="tag tag--sm">Portfólio</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        
+        <!-- SQL -->
+        <article class="card p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="tech-card">
+            <div>
+              <div class="tech-card__header">
+                <div class="flex items-center gap-3">
+                  <div class="tech-card__icon"><i class="fa-solid fa-database" aria-hidden="true"></i></div>
+                  <h3 class="tech-card__title">SQL (Fundamentos)</h3>
+                </div>
+                <span class="tech-status-badge tech-status-badge--active">Aprendizado Ativo</span>
+              </div>
+              <p class="text-xs text-text-muted leading-relaxed">
+                Estudado para estruturação física, modelagem de tabelas relacionais simples, criação de chaves e execução de 
+                queries básicas (inserts, selects, joins).
+              </p>
+            </div>
+            <div>
+              <div class="tech-card__usage">
+                <p class="tech-card__usage-title">Como utilizo na prática</p>
+                <p class="tech-card__usage-text">Desenho diagramas de tabelas iniciais e implemento rotinas de persistência integradas ao Python.</p>
+              </div>
+              <p class="tech-card__projects-title">Projetos Relacionados</p>
+              <div class="flex flex-wrap gap-1">
+                <span class="tag tag--sm">Pesquisar+</span>
+                <span class="tag tag--sm">Estudos SQL</span>
+              </div>
+            </div>
+          </div>
+        </article>
+        
+      </div>
+    </div>
+    
+    <!-- CATEGORIA 2: Backend -->
+    <div class="mb-16">
+      <div class="level-header mb-6" data-aos="fade-up">
+        <span class="level-header__number">Backend</span>
+        <h2 class="level-header__title">Desenvolvimento Backend & Dados</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- FastAPI -->
+        <div class="card p-5" data-aos="fade-up">
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">FastAPI</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-4">
+            Utilizado para a construção rápida de APIs assíncronas assentes em tipos Python. Garante performance próxima ao 
+            NodeJS e auto-documentação de endpoints.
+          </p>
+          <span class="tag tag--sm mt-auto">Pesquisar+</span>
+        </div>
+        
+        <!-- Jinja2 -->
+        <div class="card p-5" data-aos="fade-up" data-aos-delay="50">
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">Jinja2</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-4">
+            Empregado para renderização dinâmica de dados do backend em templates HTML seguros no lado do servidor, dividindo 
+            dados e visual.
+          </p>
+          <span class="tag tag--sm mt-auto">Pesquisar+ / Portfólio</span>
+        </div>
+        
+        <!-- SQLite -->
+        <div class="card p-5" data-aos="fade-up" data-aos-delay="100">
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">SQLite</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-4">
+            Banco relacional leve embutido, ideal para as fases de prototipagem e desenvolvimento local de sistemas Python.
+          </p>
+          <span class="tag tag--sm mt-auto">Pesquisar+</span>
+        </div>
+        
+        <!-- PostgreSQL -->
+        <div class="card p-5" data-aos="fade-up" data-aos-delay="150">
+          <h3 class="font-heading font-bold text-sm text-text-base mb-2">PostgreSQL</h3>
+          <p class="text-xxs text-text-muted leading-relaxed mb-4">
+            Mapeamento de banco de dados robusto. Lógica de tabelas no Pesquisar+ preparada estruturalmente para migração de produção.
+          </p>
+          <span class="tag tag--sm mt-auto">Em estudo</span>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- CATEGORIA 3: Desenvolvimento Web (trabalho conjunto) -->
+    <div class="mb-16">
+      <div class="level-header mb-6" data-aos="fade-up">
+        <span class="level-header__number">Web</span>
+        <h2 class="level-header__title">Desenvolvimento Web Integrado</h2>
+      </div>
+      <div class="card p-6 leading-relaxed text-sm text-text-muted" data-aos="fade-up">
+        <p>
+          Entendo que <strong>HTML, CSS e JavaScript</strong> devem trabalhar juntos de forma harmônica. 
+          Enquanto o HTML5 garante a base semântica da página, o CSS3 define uma identidade visual flexível baseada em 
+          Custom Properties, e o JavaScript entra pontualmente para refinar a experiência do usuário — controlando estados de modais 
+          e filtros instantâneos. Essa integração resulta em aplicações web rápidas, responsivas e leves.
+        </p>
+      </div>
+    </div>
+
+    <!-- CATEGORIA 4: Engenharia CAD -->
+    <div class="mb-16">
+      <div class="level-header mb-6" data-aos="fade-up">
+        <span class="level-header__number">CAD</span>
+        <h2 class="level-header__title">Projetos CAD & Modelagem 3D</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Fusion 360 -->
+        <div class="card p-6 flex flex-col justify-between" data-aos="fade-up">
+          <div>
+            <h3 class="font-heading font-bold text-text-base text-base mb-2">Autodesk Fusion 360</h3>
+            <p class="text-xs text-text-muted leading-relaxed mb-4">
+              Modelagem paramétrica, junções cinemáticas de montagens e estruturação de peças mecânicas detalhadas.
+            </p>
+          </div>
+          <span class="status-badge status-badge--evolving">Aprendizado Contínuo</span>
+        </div>
+        
+        <!-- AutoCAD -->
+        <div class="card p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50">
+          <div>
+            <h3 class="font-heading font-bold text-text-base text-base mb-2">AutoCAD</h3>
+            <p class="text-xs text-text-muted leading-relaxed mb-4">
+              Elaboração técnica de desenhos mecânicos bidimensionais e projeções ortogonais normatizadas.
+            </p>
+          </div>
+          <span class="status-badge status-badge--completed">Experiência Acadêmica</span>
+        </div>
+        
+        <!-- Inventor -->
+        <div class="card p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
+          <div>
+            <h3 class="font-heading font-bold text-text-base text-base mb-2">Autodesk Inventor</h3>
+            <p class="text-xs text-text-muted leading-relaxed mb-4">
+              Estudos tridimensionais básicos efetuados anteriormente durante o curso Técnico em Mecânica.
+            </p>
+          </div>
+          <span class="status-badge status-badge--completed">Conhecimentos do Técnico</span>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- CATEGORIA 5: Ferramentas -->
+    <div class="mb-16">
+      <div class="level-header mb-6" data-aos="fade-up">
+        <span class="level-header__number">Ferramentas</span>
+        <h2 class="level-header__title">Ferramentas de Desenvolvimento & Análise</h2>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        
+        <div class="card p-4 text-center" data-aos="fade-up">
+          <i class="fa-brands fa-git-alt text-accent text-lg mb-2" aria-hidden="true"></i>
+          <h4 class="font-bold text-xs text-text-base mb-1">Git</h4>
+          <p class="text-xxs text-text-muted leading-relaxed">Versionamento</p>
+        </div>
+        
+        <div class="card p-4 text-center" data-aos="fade-up" data-aos-delay="40">
+          <i class="fa-brands fa-github text-accent text-lg mb-2" aria-hidden="true"></i>
+          <h4 class="font-bold text-xs text-text-base mb-1">GitHub</h4>
+          <p class="text-xxs text-text-muted leading-relaxed">Documentação</p>
+        </div>
+        
+        <div class="card p-4 text-center" data-aos="fade-up" data-aos-delay="80">
+          <i class="fa-solid fa-file-excel text-accent text-lg mb-2" aria-hidden="true"></i>
+          <h4 class="font-bold text-xs text-text-base mb-1">Excel</h4>
+          <p class="text-xxs text-text-muted leading-relaxed">Organização</p>
+        </div>
+        
+        <div class="card p-4 text-center" data-aos="fade-up" data-aos-delay="120">
+          <i class="fa-solid fa-chart-line text-accent text-lg mb-2" aria-hidden="true"></i>
+          <h4 class="font-bold text-xs text-text-base mb-1">Power BI</h4>
+          <p class="text-xxs text-text-muted leading-relaxed">Dashboards</p>
+        </div>
+        
+        <div class="card p-4 text-center" data-aos="fade-up" data-aos-delay="160">
+          <i class="fa-solid fa-robot text-accent text-lg mb-2" aria-hidden="true"></i>
+          <h4 class="font-bold text-xs text-text-base mb-1">Antigravity IDE</h4>
+          <p class="text-xxs text-text-muted leading-relaxed">IA Coding</p>
+        </div>
+        
+        <div class="card p-4 text-center" data-aos="fade-up" data-aos-delay="200">
+          <i class="fa-solid fa-terminal text-accent text-lg mb-2" aria-hidden="true"></i>
+          <h4 class="font-bold text-xs text-text-base mb-1">VS Code</h4>
+          <p class="text-xxs text-text-muted leading-relaxed">IDE principal</p>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ATUALMENTE ESTUDANDO
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-16 section--alt" aria-label="Tecnologias em aprendizado ativo">
+  <div class="container">
+    
+    <div class="text-center max-w-xl mx-auto mb-10" data-aos="fade-up">
+      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-2">Atualmente Estudando</h2>
+      <p class="text-xs md:text-sm text-text-muted">Conhecimentos e ferramentas nos quais estou focando meus estudos atualmente.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Item 1 -->
+      <div class="card p-6" data-aos="fade-up">
+        <h3 class="font-heading font-bold text-sm text-text-base mb-2">Fusion 360 — Em Evolução</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Aprofundando estudos em modelagem paramétrica de peças mecânicas, criação de assemblies e documentação técnica. 
+          Conforme o aprendizado avança, novos projetos serão adicionados ao portfólio.
+        </p>
+      </div>
+      
+      <!-- Item 2 -->
+      <div class="card p-6" data-aos="fade-up" data-aos-delay="50">
+        <h3 class="font-heading font-bold text-sm text-text-base mb-2">FastAPI & APIs Assíncronas</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Aprofundamento em paginação de endpoints, validação robusta de dados via Pydantic e segurança estruturada de rotas.
+        </p>
+      </div>
+      
+      <!-- Item 3 -->
+      <div class="card p-6" data-aos="fade-up" data-aos-delay="100">
+        <h3 class="font-heading font-bold text-sm text-text-base mb-2">Arquitetura Backend</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Apreciação de padrões de design, código limpo modularizado, encapsulamento lógico e divisão limpa entre rotas e dados.
+        </p>
+      </div>
+      
+      <!-- Item 4 -->
+      <div class="card p-6" data-aos="fade-up" data-aos-delay="150">
+        <h3 class="font-heading font-bold text-sm text-text-base mb-2">PostgreSQL</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Estudo focado no gerenciamento de banco de dados corporativo, integridade referencial complexa, transações e performance.
+        </p>
+      </div>
+      
+      <!-- Item 5 -->
+      <div class="card p-6" data-aos="fade-up" data-aos-delay="200">
+        <h3 class="font-heading font-bold text-sm text-text-base mb-2">Engenharia Mecânica</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Dedicação às disciplinas do ciclo profissional, focando em modelagem estruturada e aplicação física em sólidos.
+        </p>
+      </div>
+      
+      <!-- Item 6 -->
+      <div class="card p-6" data-aos="fade-up" data-aos-delay="250">
+        <h3 class="font-heading font-bold text-sm text-text-base mb-2">Inglês Técnico</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Aprimoramento constante da leitura técnica e conversação no Centro de Línguas de Maracanaú (CLM), visando interações internacionais em inglês.
+        </p>
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COMPETÊNCIAS PROFISSIONAIS
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-16" aria-label="Competências profissionais">
+  <div class="container">
+    
+    <div class="text-center max-w-xl mx-auto mb-10" data-aos="fade-up">
+      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-2">Competências Desenvolvidas</h2>
+      <p class="text-xs md:text-sm text-text-muted">Características e atitudes que guiam minha postura acadêmica e profissional.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      
+      <!-- Competência 1 -->
+      <div class="card p-6 flex flex-col items-center text-center" data-aos="fade-up">
+        <i class="fa-solid fa-graduation-cap text-accent text-2xl mb-4" aria-hidden="true"></i>
+        <h3 class="font-heading font-bold text-base text-text-base mb-2">Aprendizagem Contínua</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Dedicação ativa a descobrir e aprender novas teorias de cálculo, física de sólidos e linguagens backend aplicadas.
+        </p>
+      </div>
+      
+      <!-- Competência 2 -->
+      <div class="card p-6 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="50">
+        <i class="fa-solid fa-list-check text-accent text-2xl mb-4" aria-hidden="true"></i>
+        <h3 class="font-heading font-bold text-base text-text-base mb-2">Organização</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Estruturação minuciosa e limpa de diretórios de projetos, cronogramas de estudo e rotinas de manutenção.
+        </p>
+      </div>
+      
+      <!-- Competência 3 -->
+      <div class="card p-6 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
+        <i class="fa-solid fa-magnifying-glass-chart text-accent text-2xl mb-4" aria-hidden="true"></i>
+        <h3 class="font-heading font-bold text-base text-text-base mb-2">Resolução de Problemas</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Competência de quebrar falhas técnicas complexas em partes menores para projetar soluções lógicas e funcionais.
+        </p>
+      </div>
+      
+      <!-- Competência 4 -->
+      <div class="card p-6 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="150">
+        <i class="fa-solid fa-book-open-reader text-accent text-2xl mb-4" aria-hidden="true"></i>
+        <h3 class="font-heading font-bold text-base text-text-base mb-2">Autodidatismo</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Fluidez para estudar de forma autônoma ferramentas complexas como Python, FastAPI e modelagem Fusion 360.
+        </p>
+      </div>
+      
+      <!-- Competência 5 -->
+      <div class="card p-6 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
+        <i class="fa-solid fa-calculator text-accent text-2xl mb-4" aria-hidden="true"></i>
+        <h3 class="font-heading font-bold text-base text-text-base mb-2">Pensamento Analítico</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Raciocínio lógico lapidado pelo rigor científico e de cálculo cursados na Engenharia Mecânica e programação.
+        </p>
+      </div>
+      
+      <!-- Competência 6 -->
+      <div class="card p-6 flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="250">
+        <i class="fa-solid fa-people-group text-accent text-2xl mb-4" aria-hidden="true"></i>
+        <h3 class="font-heading font-bold text-base text-text-base mb-2">Trabalho em Equipe</h3>
+        <p class="text-xs text-text-muted leading-relaxed">
+          Colaboração e escuta ativa adquiridas durante as pesquisas do NEABI e no estágio técnico operacional AMG.
+        </p>
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     COMO EU ESTUDO (Horizontal Timeline)
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-16 section--alt" aria-label="Meu método de estudos">
+  <div class="container">
+    
+    <div class="text-center max-w-xl mx-auto mb-10" data-aos="fade-up">
+      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-2">Como eu estudo</h2>
+      <p class="text-xs md:text-sm text-text-muted">A linha estruturada que sigo para dominar novos conhecimentos e tecnologias.</p>
+    </div>
+    
+    <div class="study-timeline-container" data-aos="fade-up">
+      <div class="study-timeline">
+        
+        <!-- Step 1 -->
+        <div class="study-timeline__step">
+          <div class="study-timeline__dot">1</div>
+          <h4 class="study-timeline__title">Descobrir um tema</h4>
+          <p class="study-timeline__desc">Identificação de uma necessidade técnica ou problema de engenharia.</p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="study-timeline__step">
+          <div class="study-timeline__dot">2</div>
+          <h4 class="study-timeline__title">Estudar fundamentos</h4>
+          <p class="study-timeline__desc">Leitura de documentação, sintaxe e regras físicas bases.</p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="study-timeline__step">
+          <div class="study-timeline__dot">3</div>
+          <h4 class="study-timeline__title">Criar pequenos projetos</h4>
+          <p class="study-timeline__desc">Construção de scripts isolados e exercícios práticos de lógica.</p>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="study-timeline__step">
+          <div class="study-timeline__dot">4</div>
+          <h4 class="study-timeline__title">Criar projeto intermediário</h4>
+          <p class="study-timeline__desc">Estruturação de um sistema integrado local (dados físicos ou web).</p>
+        </div>
+        
+        <!-- Step 5 -->
+        <div class="study-timeline__step">
+          <div class="study-timeline__dot">5</div>
+          <h4 class="study-timeline__title">Aplicar em projeto real</h4>
+          <p class="study-timeline__desc">Integração do conhecimento em plataformas completas e reais.</p>
+        </div>
+        
+        <!-- Step 6 -->
+        <div class="study-timeline__step">
+          <div class="study-timeline__dot">6</div>
+          <h4 class="study-timeline__title">Documentar</h4>
+          <p class="study-timeline__desc">Escrita de Readmes claros estruturando o escopo e aprendizado obtido.</p>
+        </div>
+        
+        <!-- Step 7 -->
+        <div class="study-timeline__step">
+          <div class="study-timeline__dot">7</div>
+          <h4 class="study-timeline__title">Publicar</h4>
+          <p class="study-timeline__desc">Subida em ambiente de deploy e atualização estruturada deste portfólio.</p>
+        </div>
+        
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TECNOLOGIAS E PROJETOS (Mapeamento Grade Visual)
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-16" aria-label="Mapeamento de tecnologias nos projetos">
+  <div class="container">
+    
+    <div class="text-center max-w-xl mx-auto mb-10" data-aos="fade-up">
+      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-2">Tecnologias e Projetos</h2>
+      <p class="text-xs md:text-sm text-text-muted">A relação direta mapeando onde cada tecnologia foi aplicada na prática.</p>
+    </div>
+    
+    <div class="tech-mapping-grid">
+      
+      <!-- Python mapping -->
+      <div class="tech-mapping-card" data-aos="fade-up">
+        <div class="tech-mapping-card__header">
+          <span class="tech-mapping-card__icon"><i class="fa-brands fa-python" aria-hidden="true"></i></span>
+          <h3 class="tech-mapping-card__name">Python</h3>
+        </div>
+        <ul class="tech-mapping-card__list" role="list">
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Pesquisar+</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Web Scraper</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Biblioteca</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> App Clima e Tempo</li>
+        </ul>
+      </div>
+      
+      <!-- FastAPI mapping -->
+      <div class="tech-mapping-card" data-aos="fade-up" data-aos-delay="50">
+        <div class="tech-mapping-card__header">
+          <span class="tech-mapping-card__icon"><i class="fa-solid fa-gears" aria-hidden="true"></i></span>
+          <h3 class="tech-mapping-card__name">FastAPI</h3>
+        </div>
+        <ul class="tech-mapping-card__list" role="list">
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Pesquisar+</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Backend do Portfólio</li>
+        </ul>
+      </div>
+      
+      <!-- HTML5 / CSS3 mapping -->
+      <div class="tech-mapping-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="tech-mapping-card__header">
+          <span class="tech-mapping-card__icon"><i class="fa-solid fa-code" aria-hidden="true"></i></span>
+          <h3 class="tech-mapping-card__name">HTML & CSS</h3>
+        </div>
+        <ul class="tech-mapping-card__list" role="list">
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Pesquisar+</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Layout deste Portfólio</li>
+        </ul>
+      </div>
+      
+      <!-- Fusion 360 mapping -->
+      <div class="tech-mapping-card" data-aos="fade-up" data-aos-delay="150">
+        <div class="tech-mapping-card__header">
+          <span class="tech-mapping-card__icon"><i class="fa-solid fa-cube" aria-hidden="true"></i></span>
+          <h3 class="tech-mapping-card__name">Fusion 360</h3>
+        </div>
+        <ul class="tech-mapping-card__list" role="list">
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Laboratório CAD (Projeto 01)</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Montagens Acadêmicas</li>
+        </ul>
+      </div>
+      
+      <!-- Excel mapping -->
+      <div class="tech-mapping-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="tech-mapping-card__header">
+          <span class="tech-mapping-card__icon"><i class="fa-solid fa-file-excel" aria-hidden="true"></i></span>
+          <h3 class="tech-mapping-card__name">Excel</h3>
+        </div>
+        <ul class="tech-mapping-card__list" role="list">
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Controle Financeiro CSV</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Mapeamento de Estudos</li>
+        </ul>
+      </div>
+      
+      <!-- GitHub mapping -->
+      <div class="tech-mapping-card" data-aos="fade-up" data-aos-delay="250">
+        <div class="tech-mapping-card__header">
+          <span class="tech-mapping-card__icon"><i class="fa-brands fa-github" aria-hidden="true"></i></span>
+          <h3 class="tech-mapping-card__name">GitHub</h3>
+        </div>
+        <ul class="tech-mapping-card__list" role="list">
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Controle de Versão dos Projetos</li>
+          <li class="tech-mapping-card__item" role="listitem"><i class="fa-solid fa-angle-right" aria-hidden="true"></i> Hospedagem do Portfólio</li>
+        </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     DIFERENCIAL / FILOSOFIA
+═══════════════════════════════════════════════════════════════ -->
+<section class="pb-16 section--alt" aria-label="Filosofia profissional">
+  <div class="container">
+    <div class="card p-10 hover-glow" data-aos="fade-up">
+      <div class="max-w-3xl mx-auto text-center">
+        <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-2 block">Diferencial</span>
+        <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-4">
+          Meu foco não é aprender ferramentas. É aprender a resolver problemas.
+        </h2>
+        <p class="text-sm text-text-muted leading-relaxed">
+          Tecnologias e linguagens mudam constantemente — novas frameworks surgem a cada semestre. 
+          Entendo que o mais importante na carreira técnica é desenvolver adaptabilidade e capacidade analítica 
+          para resolver gargalos. Esta filosofia guia todos os meus estudos, garantindo que eu consiga absorver 
+          novas linguagens e ferramentas rapidamente quando a solução de um problema exige.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CHAMADA FINAL
+═══════════════════════════════════════════════════════════════ -->
+<section class="py-24" aria-label="Seguir para projetos ou contato">
+  <div class="container">
+    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
+      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-3 block">Próxima Ação</span>
+      <h2 class="text-2xl font-bold font-heading text-text-base mb-4">Conhecimento só faz sentido quando colocado em prática.</h2>
+      <p class="text-sm text-text-muted leading-relaxed mb-8 max-w-md mx-auto">
+        Convido você a navegar pela minha galeria completa de projetos e utilitários para observar estas ferramentas em funcionamento real.
+      </p>
+      
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="/projetos" class="btn-primary">
+          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+          Ver Projetos
+        </a>
+        <a href="/contato" class="btn-outline">
+          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+          Entrar em Contato
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

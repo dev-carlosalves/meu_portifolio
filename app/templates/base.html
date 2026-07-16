@@ -1,0 +1,161 @@
+{#
+  base.html — Layout base de todas as páginas.
+
+  Blocks disponíveis para as páginas filhas:
+    {% block page_title %}    → título da aba <title>
+    {% block head_extra %}    → links/scripts adicionais no <head>
+    {% block og_override %}   → substituir Open Graph por página
+    {% block content %}       → conteúdo principal da página
+    {% block scripts_extra %} → scripts adicionais antes do </body>
+#}
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── SEO primário ───────────────────────────────────────────────── -->
+  <title>{% block page_title %}{{ page_title | default(seo.site_name) }}{% endblock %}</title>
+  <meta name="description" content="{{ description | default(seo.description) }}" />
+  <meta name="keywords"    content="{{ seo.keywords }}" />
+  <meta name="author"      content="{{ seo.author }}" />
+  <meta name="robots"      content="{{ seo.robots }}" />
+
+  <!-- ── Open Graph ────────────────────────────────────────────────── -->
+  {% block og_override %}
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="{{ seo.site_name }}" />
+  <meta property="og:title"       content="{{ page_title | default(seo.site_name) }}" />
+  <meta property="og:description" content="{{ description | default(seo.description) }}" />
+  <meta property="og:image"       content="{{ seo.base_url }}{{ seo.og_image }}" />
+  <meta property="og:url"         content="{{ seo.base_url }}{{ request.url.path }}" />
+  <meta property="og:locale"      content="{{ seo.locale }}" />
+  {% endblock %}
+
+  <!-- ── Twitter Card ──────────────────────────────────────────────── -->
+  <meta name="twitter:card"        content="{{ seo.twitter_card }}" />
+  <meta name="twitter:title"       content="{{ page_title | default(seo.site_name) }}" />
+  <meta name="twitter:description" content="{{ description | default(seo.description) }}" />
+  <meta name="twitter:image"       content="{{ seo.base_url }}{{ seo.og_image }}" />
+
+  <!-- ── Favicon ───────────────────────────────────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="/static/icons/favicon.svg" />
+  <link rel="apple-touch-icon"          href="/static/icons/apple-touch-icon.png" />
+
+  <!-- ── Google Fonts ──────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'"
+  />
+  <noscript>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+  </noscript>
+
+  <!-- ── Font Awesome 6 ────────────────────────────────────────────── -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- ── AOS — Animate On Scroll ───────────────────────────────────── -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+  <!-- ── Tailwind CSS com tema customizado ─────────────────────────── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            /* Paleta principal — Vercel Dark inspirado */
+            'bg-primary':   '#09090B',
+            'bg-secondary': '#18181B',
+            'bg-card':      '#27272A',
+            'text-base':    '#FAFAFA',
+            'text-muted':   '#A1A1AA',
+            'accent':       '#06B6D4',
+            'accent-hover': '#22D3EE',
+            'border-dark':  'rgba(255,255,255,0.08)',
+          },
+          fontFamily: {
+            heading: ['Poppins', 'sans-serif'],
+            body:    ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            'glow':      '0 0 20px rgba(6,182,212,0.15)',
+            'glow-md':   '0 0 40px rgba(6,182,212,0.20)',
+            'card':      '0 4px 24px rgba(0,0,0,0.4)',
+          },
+          backdropBlur: {
+            'xs': '4px',
+          },
+          animation: {
+            'float':      'float 6s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+            'fade-in':    'fadeIn 0.6s ease forwards',
+          },
+        },
+      },
+    }
+  </script>
+
+  <!-- ── CSS customizado (ordem importa) ───────────────────────────── -->
+  <link rel="stylesheet" href="/static/css/base.css" />
+  <link rel="stylesheet" href="/static/css/layout.css" />
+  <link rel="stylesheet" href="/static/css/components.css" />
+  <link rel="stylesheet" href="/static/css/sections.css" />
+  <link rel="stylesheet" href="/static/css/animations.css" />
+
+  {% block head_extra %}{% endblock %}
+</head>
+
+<body class="bg-bg-primary text-text-base font-body antialiased">
+
+  <!-- Skip to main (acessibilidade) -->
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-accent focus:text-bg-primary focus:rounded-lg focus:font-semibold"
+  >
+    Pular para o conteúdo principal
+  </a>
+
+  <!-- ── Navbar ────────────────────────────────────────────────────── -->
+  {% include "partials/navbar.html" %}
+
+  <!-- ── Conteúdo principal ────────────────────────────────────────── -->
+  <main id="main-content" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────────────── -->
+  {% include "partials/footer.html" %}
+
+  <!-- ── Botão Voltar ao Topo ──────────────────────────────────────── -->
+  <button
+    id="back-to-top"
+    class="back-to-top"
+    aria-label="Voltar ao topo da página"
+    title="Voltar ao topo"
+  >
+    <i class="fa-solid fa-chevron-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- ── Scripts (ordem importa) ───────────────────────────────────── -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="/static/js/navbar.js"></script>
+  <script src="/static/js/aos-init.js"></script>
+  <script src="/static/js/main.js"></script>
+  {% block scripts_extra %}{% endblock %}
+
+</body>
+</html>

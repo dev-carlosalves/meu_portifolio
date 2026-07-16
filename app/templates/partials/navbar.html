@@ -1,0 +1,165 @@
+{#
+  partials/navbar.html — Navbar fixa e responsiva.
+
+  Comportamento:
+  - Desktop: logo à esquerda, links centrais, CTA à direita
+  - Mobile: hamburger + drawer lateral
+  - Ao rolar > 60px: ganha backdrop-blur e borda sutil
+  - Link ativo é destacado com a cor accent
+#}
+
+<header
+  id="navbar"
+  role="banner"
+  aria-label="Navegação principal"
+  class="navbar"
+>
+  <div class="container">
+    <nav class="navbar__inner" aria-label="Menu principal">
+
+      <!-- ── Logo ──────────────────────────────────────────────────── -->
+      <a
+        href="/"
+        class="navbar__logo"
+        aria-label="Carlos Daniel — Início"
+      >
+        <span class="navbar__logo-bracket" aria-hidden="true">&lt;</span>
+        <span class="navbar__logo-name">CD</span>
+        <span class="navbar__logo-bracket" aria-hidden="true">/&gt;</span>
+      </a>
+
+      <!-- ── Links Desktop ─────────────────────────────────────────── -->
+      <ul
+        class="navbar__links"
+        role="list"
+        aria-label="Links de navegação"
+      >
+        {% for item in nav_items %}
+          <li>
+            <a
+              href="{{ item.href }}"
+              id="{{ item.id }}"
+              class="navbar__link {% if page_id == item.id | replace('nav-', '') %}navbar__link--active{% endif %}"
+              {% if page_id == item.id | replace('nav-', '') %}aria-current="page"{% endif %}
+            >
+              {{ item.label }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <!-- ── CTA Desktop ───────────────────────────────────────────── -->
+      <div class="navbar__cta hidden md:flex">
+        <a
+          href="/contato"
+          class="btn-primary btn--sm"
+          id="nav-cta-btn"
+          aria-label="Entre em contato"
+        >
+          <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+          <span>Contato</span>
+        </a>
+      </div>
+
+      <!-- ── Hamburger Mobile ──────────────────────────────────────── -->
+      <button
+        id="hamburger"
+        class="hamburger md:hidden"
+        aria-label="Abrir menu de navegação"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        type="button"
+      >
+        <span class="hamburger__line" aria-hidden="true"></span>
+        <span class="hamburger__line" aria-hidden="true"></span>
+        <span class="hamburger__line" aria-hidden="true"></span>
+      </button>
+
+    </nav>
+  </div>
+</header>
+
+<!-- ── Overlay Mobile ──────────────────────────────────────────────── -->
+<div
+  id="mobile-overlay"
+  class="mobile-overlay"
+  role="presentation"
+  aria-hidden="true"
+></div>
+
+<!-- ── Drawer Mobile ───────────────────────────────────────────────── -->
+<nav
+  id="mobile-menu"
+  class="mobile-menu"
+  aria-label="Menu mobile"
+  aria-hidden="true"
+>
+  <div class="mobile-menu__header">
+    <a href="/" class="navbar__logo" aria-label="Início">
+      <span class="navbar__logo-bracket" aria-hidden="true">&lt;</span>
+      <span class="navbar__logo-name">CD</span>
+      <span class="navbar__logo-bracket" aria-hidden="true">/&gt;</span>
+    </a>
+    <button
+      id="mobile-close"
+      class="mobile-menu__close"
+      aria-label="Fechar menu"
+      type="button"
+    >
+      <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <ul class="mobile-menu__links" role="list">
+    {% for item in nav_items %}
+      <li>
+        <a
+          href="{{ item.href }}"
+          class="mobile-menu__link {% if page_id == item.id | replace('nav-', '') %}mobile-menu__link--active{% endif %}"
+          {% if page_id == item.id | replace('nav-', '') %}aria-current="page"{% endif %}
+        >
+          {{ item.label }}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="mobile-menu__footer">
+    <a
+      href="/contato"
+      class="btn-primary"
+      style="justify-content:center; width:100%;"
+    >
+      <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+      Entre em Contato
+    </a>
+    <!-- Redes sociais no mobile -->
+    <div class="mobile-menu__socials">
+      <a
+        href="{{ student.github }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="social-link"
+        aria-label="GitHub de Carlos Daniel"
+      >
+        <i class="fa-brands fa-github" aria-hidden="true"></i>
+      </a>
+      <a
+        href="{{ student.linkedin }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="social-link"
+        aria-label="LinkedIn de Carlos Daniel"
+      >
+        <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+      </a>
+      <a
+        href="mailto:{{ student.email }}"
+        class="social-link"
+        aria-label="E-mail de Carlos Daniel"
+      >
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+      </a>
+    </div>
+  </div>
+</nav>
