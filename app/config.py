@@ -23,7 +23,7 @@ STUDENT = {
     "whatsapp_note": "Preferencialmente mensagens. Não realizo atendimento por chamadas.",
     "availability": "Disponível para estágios e projetos",
     "photo":        "/static/images/profile/carlos-daniel.webp",
-    "cv":           "/static/documents/curriculo/carlos-daniel-cv.pdf",
+    "cv":           "/static/documents/curriculo/Curriculo_Carlos_Daniel_Alves_da_Silva.pdf",
     "github":       "https://github.com/dev-carlosalves",
     "linkedin":     "https://www.linkedin.com/in/carlos-daniel-alves-da-silva-a07128311",
 }

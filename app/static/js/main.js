@@ -113,6 +113,22 @@ function initSmoothAnchorLinks() {
   });
 }
 
+/* ── Botões de download ───────────────────────────────────────── */
+function initDownloadButtons() {
+  document.querySelectorAll('a[download]').forEach((btn) => {
+    btn.addEventListener('click', function () {
+      const originalHTML = this.innerHTML;
+      this.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i><span>Download iniciado</span>';
+      this.style.pointerEvents = 'none';
+      
+      setTimeout(() => {
+        this.innerHTML = originalHTML;
+        this.style.pointerEvents = 'auto';
+      }, 3000);
+    });
+  });
+}
+
 /* ── Bootstrap ────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Layout e navegação
@@ -131,4 +147,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. UX
   initSmoothAnchorLinks();
   setFooterYear();
+  initDownloadButtons();
 });
