@@ -1,285 +1,152 @@
-{#
-  pages/cad_lab.html — Laboratório CAD (evolução em modelagem mecânica 3D).
-  Conteúdo real: Sprint 5.
-#}
 {% extends "base.html" %}
 
 {% block page_title %}Laboratório CAD | Carlos Daniel{% endblock %}
 
 {% block content %}
-
-<!-- ═══════════════════════════════════════════════════════════════
-     CABEÇALHO / HERO DA PÁGINA
-═══════════════════════════════════════════════════════════════ -->
-<section class="section section--hero-pad pb-12" aria-label="Apresentação do Laboratório CAD">
+<section class="cad-catalog-section section-padding">
   <div class="container">
-    
-    <div class="cad-hero__grid">
-      
-      <!-- Lado Esquerdo: Descrição e Badges -->
-      <div data-aos="fade-right">
-        <div class="flex flex-wrap gap-2 mb-4">
-          <span class="badge badge--dev">
-            <i class="fa-solid fa-person-digging" aria-hidden="true"></i>
-            Em desenvolvimento
-          </span>
-          <span class="badge badge--ongoing">
-            <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i>
-            Atualizado continuamente
-          </span>
+
+    <!-- ── Cabeçalho ────────────────────────────────────── -->
+    <div class="cad-catalog-header" data-aos="fade-down">
+      <div class="section-label">
+        <i class="fa-solid fa-cube" aria-hidden="true"></i>
+        Laboratório CAD
+      </div>
+      <h1 class="cad-catalog-title">
+        Projetos de <span class="gradient-text">Modelagem 3D</span>
+      </h1>
+      <p class="cad-catalog-subtitle">
+        Estudo de casos reais desenvolvidos no <strong>Fusion 360</strong>.<br>
+        Cada projeto documenta o processo completo de modelagem, montagem e detalhamento técnico.
+      </p>
+      <div class="cad-catalog-stats">
+        <div class="cad-stat-item">
+          <span class="cad-stat-number">{{ projects | length }}</span>
+          <span class="cad-stat-label">{{ 'Projeto' if projects | length == 1 else 'Projetos' }}</span>
         </div>
-        
-        <h1 class="text-3xl md:text-4xl font-extrabold font-heading text-text-base leading-tight mb-4">
-          Laboratório <span class="text-accent">CAD</span>
-        </h1>
-        
-        <p class="text-sm text-text-muted leading-relaxed mb-6">
-          Esta área reúne meus estudos, experimentos e projetos desenvolvidos utilizando softwares de modelagem 
-          tridimensional. Meu objetivo é documentar de forma transparente toda a minha evolução técnica nesta área 
-          ao longo da graduação em Engenharia Mecânica.
-        </p>
-        
-        <div class="flex">
-          <a href="#projects" class="btn-primary">
-            <i class="fa-solid fa-cube" aria-hidden="true"></i>
-            Explorar Laboratório
+        <div class="cad-stat-divider"></div>
+        <div class="cad-stat-item">
+          <span class="cad-stat-number">Fusion 360</span>
+          <span class="cad-stat-label">Principal Software</span>
+        </div>
+        <div class="cad-stat-divider"></div>
+        <div class="cad-stat-item">
+          <span class="cad-stat-number">IFCE</span>
+          <span class="cad-stat-label">Engenharia Mecânica</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Grid de projetos ─────────────────────────────── -->
+    {% if projects %}
+    <div class="cad-catalog-grid">
+      {% for project in projects %}
+      <article
+        class="cad-catalog-card"
+        data-aos="fade-up"
+        data-aos-delay="{{ loop.index0 * 80 }}"
+        aria-label="Projeto: {{ project.title }}"
+      >
+        <!-- Capa -->
+        <a href="/laboratorio-cad/{{ project.slug }}" class="cad-card-cover-link" tabindex="-1" aria-hidden="true">
+          <div class="cad-card-cover">
+            {% if project.cover_image %}
+            <img
+              src="{{ project.cover_image }}"
+              alt="Imagem de capa do projeto {{ project.title }}"
+              loading="lazy"
+            />
+            {% else %}
+            <div class="cad-card-cover-placeholder">
+              <i class="fa-solid fa-cube" aria-hidden="true"></i>
+            </div>
+            {% endif %}
+            <div class="cad-card-cover-overlay">
+              <span class="cad-card-cover-cta">
+                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                Ver Projeto
+              </span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Corpo -->
+        <div class="cad-card-body">
+          <!-- Badges de status e software -->
+          <div class="cad-card-badges">
+            <span class="badge-software">
+              <i class="fa-solid fa-cube" aria-hidden="true"></i>
+              {{ project.software }}
+            </span>
+            <span class="badge-status badge-status--{{ project.status | lower | replace(' ', '-') }}">
+              {% if project.status == 'Concluído' %}
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              {% elif project.status == 'Em desenvolvimento' %}
+              <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+              {% else %}
+              <i class="fa-solid fa-circle-pause" aria-hidden="true"></i>
+              {% endif %}
+              {{ project.status }}
+            </span>
+          </div>
+
+          <!-- Título -->
+          <h2 class="cad-card-title">
+            <a href="/laboratorio-cad/{{ project.slug }}">{{ project.title }}</a>
+          </h2>
+
+          <!-- Descrição curta -->
+          <p class="cad-card-desc">{{ project.short_desc }}</p>
+
+          <!-- Skills preview (3 primeiras) -->
+          {% if project.skills %}
+          <div class="cad-card-skills">
+            {% for skill in project.skills[:3] %}
+            <span class="cad-skill-chip">{{ skill }}</span>
+            {% endfor %}
+            {% if project.skills | length > 3 %}
+            <span class="cad-skill-chip cad-skill-chip--more">+{{ project.skills | length - 3 }}</span>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Rodapé -->
+        <div class="cad-card-footer">
+          <div class="cad-card-meta">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            {% set year, month = project.date.split('-') %}
+            {% set months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'] %}
+            {{ months[month | int - 1] }} / {{ year }}
+          </div>
+          <a
+            href="/laboratorio-cad/{{ project.slug }}"
+            class="btn-primary btn-sm"
+            id="btn-acessar-{{ project.slug }}"
+            aria-label="Acessar o projeto {{ project.title }}"
+          >
+            Acessar
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
           </a>
         </div>
-      </div>
-      
-      <!-- Lado Direito: Ilustração Geométrica SVG -->
-      <div class="flex justify-center" data-aos="fade-left" data-aos-delay="100">
-        <svg class="cad-hero-svg animate-float" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="max-width: 100%; width: 320px; height: 320px;">
-          <defs>
-            <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.8"/>
-              <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.3"/>
-            </linearGradient>
-            <filter id="glow-svg" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="8" result="blur"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <!-- Grid decorativo -->
-          <line x1="50" y1="50" x2="350" y2="50" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          <line x1="50" y1="150" x2="350" y2="150" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          <line x1="50" y1="250" x2="350" y2="250" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          <line x1="50" y1="350" x2="350" y2="350" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          <line x1="50" y1="50" x2="50" y2="350" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          <line x1="150" y1="50" x2="150" y2="350" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          <line x1="250" y1="50" x2="250" y2="350" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          <line x1="350" y1="50" x2="350" y2="350" stroke="rgba(255,255,255,0.03)" stroke-dasharray="4,4"/>
-          
-          <!-- Isometric Part Wireframe -->
-          <ellipse cx="200" cy="130" rx="90" ry="38" stroke="#06B6D4" stroke-width="2" fill="rgba(6, 182, 212, 0.05)" filter="url(#glow-svg)"/>
-          <ellipse cx="200" cy="130" rx="40" ry="17" stroke="rgba(6, 182, 212, 0.5)" stroke-width="1.5" fill="none"/>
-          
-          <line x1="110" y1="130" x2="110" y2="250" stroke="#06B6D4" stroke-width="2"/>
-          <line x1="290" y1="130" x2="290" y2="250" stroke="#06B6D4" stroke-width="2"/>
-          
-          <path d="M110,250 A90,38 0 0,0 290,250" stroke="#06B6D4" stroke-width="2" fill="none" filter="url(#glow-svg)"/>
-          <path d="M110,250 A90,38 0 0,1 290,250" stroke="rgba(255,255,255,0.12)" stroke-dasharray="4,4" stroke-width="1" fill="none"/>
-          
-          <path d="M60,270 L200,200 L340,270 L200,340 Z" stroke="url(#accent-grad)" stroke-width="2.5" fill="rgba(255,255,255,0.02)" filter="url(#glow-svg)"/>
-          <path d="M60,270 L60,290 L200,360 L340,290 L340,270" stroke="url(#accent-grad)" stroke-width="2.5" fill="none"/>
-          <line x1="200" y1="340" x2="200" y2="360" stroke="url(#accent-grad)" stroke-width="2.5"/>
-          
-          <!-- Axes lines -->
-          <line x1="200" y1="75" x2="200" y2="375" stroke="rgba(239, 68, 68, 0.5)" stroke-dasharray="10,4,2,4" stroke-width="1.5"/>
-          <line x1="75" y1="210" x2="325" y2="210" stroke="rgba(239, 68, 68, 0.25)" stroke-dasharray="10,4,2,4" stroke-width="1"/>
-          
-          <!-- Dimensions annotations -->
-          <path d="M60,260 L60,240" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-          <path d="M200,190 L200,170" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-          <path d="M60,250 L200,180" stroke="rgba(6, 182, 212, 0.4)" stroke-width="1"/>
-          <polygon points="60,250 68,248 64,254" fill="rgba(6, 182, 212, 0.6)"/>
-          <polygon points="200,180 192,182 196,176" fill="rgba(6, 182, 212, 0.6)"/>
-          <text x="125" y="205" fill="rgba(255,255,255,0.5)" font-family="monospace" font-size="9" transform="rotate(-26 125 205)">R90.00</text>
-        </svg>
-      </div>
-      
+      </article>
+      {% endfor %}
     </div>
-    
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SOBRE ESTA ÁREA & OBJETIVOS
-═══════════════════════════════════════════════════════════════ -->
-<section class="pb-16 section--alt" aria-label="Por que estudar CAD">
-  <div class="container">
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-      
-      <!-- Texto explicativo -->
-      <div data-aos="fade-right">
-        <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-4">Por que estudar CAD?</h2>
-        <p class="text-sm text-text-muted leading-relaxed mb-4">
-          A modelagem mecânica em ambiente 3D é o elo que conecta os cálculos físicos ao mundo físico. Através dos softwares CAD, 
-          é possível planejar o desenvolvimento de produtos, realizar prototipagens virtuais de forma acelerada, efetuar simulações 
-          estáticas básicas de tensão e desenhar montagens e mecanismos complexos.
-        </p>
-        <p class="text-sm text-text-muted leading-relaxed">
-          Para o futuro engenheiro mecânico, o domínio destas ferramentas permite estruturar projetos industriais de alta precisão 
-          e estabelecer uma perfeita integração entre a teoria da engenharia e os processos práticos de manufatura.
-        </p>
+    {% else %}
+    <!-- Estado vazio -->
+    <div class="cad-empty-state" data-aos="fade-up">
+      <div class="cad-empty-icon">
+        <i class="fa-solid fa-drafting-compass" aria-hidden="true"></i>
       </div>
-      
-      <!-- Meu objetivo -->
-      <div class="card p-6" data-aos="fade-left" data-aos-delay="100">
-        <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-2 block">Meu objetivo</span>
-        <h3 class="text-lg font-bold font-heading text-text-base mb-3">Modelagem Focada em Projetos</h3>
-        <p class="text-sm text-text-muted leading-relaxed">
-          Atualmente estou aprofundando meus estudos em Fusion 360, desenvolvendo projetos mecânicos cada vez mais completos. Meu foco atual está na modelagem paramétrica, criação de conjuntos (assemblies) e documentação técnica. Conforme avanço nos estudos, novos projetos serão adicionados ao portfólio.
-        </p>
-      </div>
-      
-    </div>
-    
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     SOFTWARES UTILIZADOS
-═══════════════════════════════════════════════════════════════ -->
-<section class="py-16" aria-label="Softwares utilizados">
-  <div class="container">
-    
-    <div class="text-center max-w-xl mx-auto mb-10" data-aos="fade-up">
-      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-2">Softwares Utilizados</h2>
-      <p class="text-xs md:text-sm text-text-muted">Ferramentas que integram meus estudos de desenho e modelagem mecânica.</p>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <!-- Software 1 -->
-      <div class="card p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="0">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-3xl text-accent"><i class="fa-solid fa-cube" aria-hidden="true"></i></span>
-            <span class="status-badge status-badge--evolving">Aprendizado Contínuo</span>
-          </div>
-          <h3 class="font-heading font-bold text-text-base text-base mb-2">Fusion 360</h3>
-          <p class="text-xs text-text-muted leading-relaxed">
-            Ferramenta principal dos meus estudos em modelagem mecânica paramétrica. Atualmente estou aprofundando o desenvolvimento 
-            de peças, conjuntos (assemblies) e documentação técnica. Conforme evoluo, novos projetos serão adicionados aqui.
-          </p>
-        </div>
-        <div class="mt-4 pt-3 border-t border-border-dark text-xxs uppercase tracking-wider text-text-subtle font-medium">
-          Autodesk Suite
-        </div>
-      </div>
-      
-      <!-- Software 2 -->
-      <div class="card p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="50">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-3xl text-text-subtle"><i class="fa-regular fa-compass" aria-hidden="true"></i></span>
-            <span class="status-badge status-badge--completed">Conhecimento Prévio</span>
-          </div>
-          <h3 class="font-heading font-bold text-text-base text-base mb-2">AutoCAD</h3>
-          <p class="text-xs text-text-muted leading-relaxed">
-            Experiência sólida adquirida na elaboração de desenhos técnicos 2D e layouts geométricos durante o curso técnico em 
-            Mecânica realizado no IFCE.
-          </p>
-        </div>
-        <div class="mt-4 pt-3 border-t border-border-dark text-xxs uppercase tracking-wider text-text-subtle font-medium">
-          Desenho 2D / Técnico
-        </div>
-      </div>
-      
-      <!-- Software 3 -->
-      <div class="card p-6 flex flex-col justify-between" data-aos="fade-up" data-aos-delay="100">
-        <div>
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-3xl text-text-subtle"><i class="fa-solid fa-gears" aria-hidden="true"></i></span>
-            <span class="status-badge status-badge--completed">Conhecimento Prévio</span>
-          </div>
-          <h3 class="font-heading font-bold text-text-base text-base mb-2">Autodesk Inventor</h3>
-          <p class="text-xs text-text-muted leading-relaxed">
-            Utilizado em atividades acadêmicas de representação gráfica e montagens, servindo como base importante para a modelagem 
-            paramétrica tridimensional de mecanismos.
-          </p>
-        </div>
-        <div class="mt-4 pt-3 border-t border-border-dark text-xxs uppercase tracking-wider text-text-subtle font-medium">
-          Modelagem Paramétrica
-        </div>
-      </div>
-      
-    </div>
-    
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     ÁREA DE PROJETOS (Card Único)
-═══════════════════════════════════════════════════════════════ -->
-<section id="projects" class="py-16 section--alt" aria-label="Projetos CAD em desenvolvimento">
-  <div class="container">
-    
-    <div class="text-center max-w-xl mx-auto mb-10" data-aos="fade-up">
-      <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base mb-2">Projetos CAD</h2>
-      <p class="text-xs md:text-sm text-text-muted">
-        Estudos práticos e projetos que desenvolvo no Fusion 360.
+      <h2 class="cad-empty-title">Nenhum projeto publicado ainda</h2>
+      <p class="cad-empty-desc">
+        Em breve, os primeiros projetos de modelagem CAD serão publicados aqui.<br>
+        Acompanhe meu progresso nas redes sociais.
       </p>
     </div>
-    
-    <!-- Card Único Centralizado -->
-    <div class="flex justify-center" data-aos="fade-up">
-      <div class="cad-project-card max-w-md w-full">
-        <div class="cad-project-card__thumb" aria-hidden="true">
-          <i class="fa-solid fa-compass-drafting" aria-hidden="true"></i>
-          <span class="text-xxs uppercase tracking-wider font-semibold text-accent">Projeto 01</span>
-        </div>
-        <div class="cad-project-card__body">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="cad-project-card__title">Projeto 01</h3>
-            <span class="status-badge status-badge--evolving">Em desenvolvimento</span>
-          </div>
-          <p class="cad-project-card__desc">
-            Projeto em andamento e aprendido de forma independente no Autodesk Fusion 360, focado no estudo prático de modelagem paramétrica tridimensional de peças mecânicas, aplicação de restrições geométricas, montagem de conjuntos e documentação técnica.
-          </p>
-        </div>
-      </div>
-    </div>
+    {% endif %}
 
-    <!-- Informativo abaixo do card -->
-    <div class="text-center mt-8" data-aos="fade-up" data-aos-delay="100">
-      <p class="text-xs md:text-sm text-text-muted max-w-lg mx-auto leading-relaxed">
-        <i class="fa-solid fa-circle-info text-accent mr-1" aria-hidden="true"></i>
-        Novos projetos serão adicionados conforme avanço nos estudos.
-      </p>
-    </div>
-    
   </div>
 </section>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     CHAMADA FINAL
-═══════════════════════════════════════════════════════════════ -->
-<section class="py-24" aria-label="Seguir para a próxima seção">
-  <div class="container">
-    
-    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
-      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-3 block">Próxima Seção</span>
-      <h2 class="text-2xl font-bold font-heading text-text-base mb-4">Esta é apenas a primeira etapa.</h2>
-      <p class="text-sm text-text-muted leading-relaxed mb-8 max-w-md mx-auto">
-        Novos modelos mecânicos, montagens e análises estáticas estruturadas serão continuamente adicionados de acordo com a 
-        minha evolução acadêmica e profissional.
-      </p>
-      
-      <div class="flex justify-center">
-        <a href="/curriculo" class="btn-primary">
-          <i class="fa-solid fa-file-contract" aria-hidden="true"></i>
-          Conhecer meu currículo
-        </a>
-      </div>
-    </div>
-    
-  </div>
-</section>
-
 {% endblock %}

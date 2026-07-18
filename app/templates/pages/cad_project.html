@@ -1,0 +1,438 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ project.title }} | Laboratório CAD | Carlos Daniel{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* ── Lightbox overlay ───────────────────────────────── */
+  #lightbox-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(8px);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  #lightbox-overlay.active { display: flex; }
+  #lightbox-img {
+    max-width: 94vw;
+    max-height: 82vh;
+    border-radius: 0.75rem;
+    box-shadow: 0 0 80px rgba(6,182,212,0.25);
+    object-fit: contain;
+  }
+  #lightbox-caption {
+    color: #e4e4e7;
+    font-size: 0.875rem;
+    text-align: center;
+    max-width: 700px;
+    line-height: 1.6;
+  }
+  #lightbox-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.125rem;
+    transition: all 0.2s;
+  }
+  #lightbox-close:hover { background: rgba(255,255,255,0.18); }
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(6,182,212,0.15);
+    border: 1px solid rgba(6,182,212,0.3);
+    color: #06B6D4;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+  .lightbox-nav:hover { background: rgba(6,182,212,0.3); }
+  #lightbox-prev { left: 1rem; }
+  #lightbox-next { right: 1rem; }
+  @media (max-width: 640px) {
+    #lightbox-prev { left: 0.25rem; }
+    #lightbox-next { right: 0.25rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ── LIGHTBOX ───────────────────────────────────────────────────────── -->
+<div id="lightbox-overlay" role="dialog" aria-modal="true" aria-label="Visualizador de imagem ampliada">
+  <button id="lightbox-close" aria-label="Fechar visualizador"><i class="fa-solid fa-xmark"></i></button>
+  <button class="lightbox-nav" id="lightbox-prev" aria-label="Imagem anterior"><i class="fa-solid fa-chevron-left"></i></button>
+  <img id="lightbox-img" src="" alt="" />
+  <p id="lightbox-caption"></p>
+  <button class="lightbox-nav" id="lightbox-next" aria-label="Próxima imagem"><i class="fa-solid fa-chevron-right"></i></button>
+</div>
+
+<!-- ── CONTEÚDO PRINCIPAL ─────────────────────────────────────────────── -->
+<div class="cad-project-page section-padding">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="cad-breadcrumb" aria-label="Navegação estrutural" data-aos="fade-right">
+      <a href="/laboratorio-cad" class="cad-breadcrumb__link">
+        <i class="fa-solid fa-cube" aria-hidden="true"></i>
+        Laboratório CAD
+      </a>
+      <i class="fa-solid fa-chevron-right cad-breadcrumb__sep" aria-hidden="true"></i>
+      <span class="cad-breadcrumb__current">{{ project.title }}</span>
+    </nav>
+
+    <!-- ── HERO ──────────────────────────────────────────── -->
+    <header class="cad-project-hero" data-aos="fade-up">
+      <div class="cad-project-hero__badges">
+        <span class="badge-software badge-software--lg">
+          <i class="fa-solid fa-cube" aria-hidden="true"></i>
+          {{ project.software }}
+        </span>
+        <span class="badge-category">{{ project.category }}</span>
+        <span class="badge-status badge-status--{{ project.status | lower | replace(' ', '-') }}">
+          {% if project.status == 'Concluído' %}
+          <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+          {% else %}
+          <i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+          {% endif %}
+          {{ project.status }}
+        </span>
+      </div>
+
+      <h1 class="cad-project-hero__title">{{ project.title }}</h1>
+      <p class="cad-project-hero__lead">{{ project.short_desc }}</p>
+
+      <div class="cad-project-hero__actions">
+        {% if project.pdf_path %}
+        <a href="{{ project.pdf_path }}" target="_blank" rel="noopener noreferrer" class="btn-secondary" id="btn-download-pdf">
+          <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+          Baixar Documentação PDF
+        </a>
+        {% endif %}
+        {% if project.youtube_url %}
+        <a href="{{ project.youtube_url }}" target="_blank" rel="noopener noreferrer" class="btn-outline" id="btn-watch-video">
+          <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+          Assistir no YouTube
+        </a>
+        {% endif %}
+      </div>
+
+      <div class="cad-project-hero__date">
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        {% set parts = project.date.split('-') %}
+        {% set months_full = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'] %}
+        {{ months_full[parts[1] | int - 1] }} de {{ parts[0] }}
+      </div>
+    </header>
+
+    <!-- ── DESCRIÇÃO TÉCNICA ─────────────────────────────── -->
+    {% if project.desc_objective or project.desc_modeling %}
+    <section class="cad-section" aria-labelledby="section-desc" data-aos="fade-up">
+      <div class="cad-section-label" id="section-desc">
+        <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+        Descrição Técnica
+      </div>
+      <div class="cad-desc-grid">
+        {% if project.desc_objective %}
+        <div class="cad-desc-card">
+          <div class="cad-desc-card__icon">
+            <i class="fa-solid fa-bullseye" aria-hidden="true"></i>
+          </div>
+          <h2 class="cad-desc-card__title">Objetivo e Finalidade</h2>
+          <p class="cad-desc-card__text">{{ project.desc_objective }}</p>
+        </div>
+        {% endif %}
+        {% if project.desc_modeling %}
+        <div class="cad-desc-card">
+          <div class="cad-desc-card__icon">
+            <i class="fa-solid fa-gears" aria-hidden="true"></i>
+          </div>
+          <h2 class="cad-desc-card__title">Modelagem e Montagem</h2>
+          <p class="cad-desc-card__text">{{ project.desc_modeling }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ── GALERIA DE VISTAS TÉCNICAS ─────────────────────── -->
+    {% if project.sheet_images %}
+    <section class="cad-section" aria-labelledby="section-gallery" data-aos="fade-up">
+      <div class="cad-section-label" id="section-gallery">
+        <i class="fa-solid fa-images" aria-hidden="true"></i>
+        Documentação Técnica — {{ project.sheet_images | length }} Folhas
+      </div>
+
+      <div class="cad-gallery-layout">
+        <!-- Viewer principal -->
+        <div class="cad-gallery-viewer">
+          <div class="cad-gallery-viewer__frame">
+            <img
+              id="viewer-img"
+              src="{{ project.sheet_images[0].path }}"
+              alt="{{ project.sheet_images[0].caption }}"
+              loading="eager"
+            />
+            <button
+              class="cad-gallery-viewer__zoom"
+              id="btn-zoom-0"
+              onclick="openLightbox(0)"
+              aria-label="Ampliar imagem: {{ project.sheet_images[0].caption }}"
+              title="Ampliar"
+            >
+              <i class="fa-solid fa-up-right-and-down-left-from-center" aria-hidden="true"></i>
+            </button>
+            <div class="cad-gallery-viewer__counter">
+              <span id="viewer-counter">1 / {{ project.sheet_images | length }}</span>
+            </div>
+          </div>
+
+          <!-- Legenda dinâmica -->
+          <div class="cad-gallery-viewer__info">
+            <p class="cad-gallery-caption" id="viewer-caption">{{ project.sheet_images[0].caption }}</p>
+            <p class="cad-gallery-desc" id="viewer-desc">{{ project.sheet_images[0].description }}</p>
+          </div>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="cad-gallery-thumbs" role="listbox" aria-label="Selecionar folha técnica">
+          {% for sheet in project.sheet_images %}
+          <button
+            class="cad-thumb {% if loop.first %}active{% endif %}"
+            role="option"
+            aria-selected="{{ 'true' if loop.first else 'false' }}"
+            id="thumb-{{ loop.index0 }}"
+            data-index="{{ loop.index0 }}"
+            data-src="{{ sheet.path }}"
+            data-caption="{{ sheet.caption }}"
+            data-desc="{{ sheet.description }}"
+            onclick="selectSheet({{ loop.index0 }})"
+            title="{{ sheet.caption }}"
+          >
+            <img src="{{ sheet.path }}" alt="Miniatura: {{ sheet.caption }}" loading="lazy" />
+            <span class="cad-thumb__num">{{ loop.index }}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ── VISUALIZADOR DE PDF ───────────────────────────── -->
+    {% if project.pdf_path %}
+    <section class="cad-section" aria-labelledby="section-pdf" data-aos="fade-up">
+      <div class="cad-section-label" id="section-pdf">
+        <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+        Documentação Oficial (PDF)
+      </div>
+      <div class="cad-pdf-wrapper">
+        <iframe
+          src="{{ project.pdf_path }}#toolbar=1&navpanes=1&scrollbar=1"
+          title="Documentação técnica: {{ project.title }}"
+          class="cad-pdf-iframe"
+          loading="lazy"
+          allow="fullscreen"
+        >
+          <p>Seu navegador não suporta visualização de PDF.
+            <a href="{{ project.pdf_path }}" target="_blank" rel="noopener noreferrer">Clique aqui para baixar</a>.
+          </p>
+        </iframe>
+        <div class="cad-pdf-actions">
+          <a href="{{ project.pdf_path }}" target="_blank" rel="noopener noreferrer" class="btn-secondary" id="btn-pdf-download">
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+            Baixar PDF completo
+          </a>
+          <span class="cad-pdf-meta">
+            <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+            {{ project.sheet_images | length if project.sheet_images else '—' }} folhas técnicas
+          </span>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ── VÍDEO — VISTA EXPLODIDA ───────────────────────── -->
+    {% if project.embed_url %}
+    <section class="cad-section" aria-labelledby="section-video" data-aos="fade-up">
+      <div class="cad-section-label" id="section-video">
+        <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+        Vista Explodida Animada
+      </div>
+      <div class="cad-video-card">
+        <div class="cad-video-card__header">
+          <div class="cad-video-card__icon">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+          </div>
+          <div>
+            <h2 class="cad-video-card__title">Animação da Montagem</h2>
+            <p class="cad-video-card__subtitle">{{ project.title }} — Vista Explodida no {{ project.software }}</p>
+          </div>
+        </div>
+        <div class="cad-video-wrapper">
+          <iframe
+            src="{{ project.embed_url }}?rel=0&color=white&modestbranding=1"
+            title="Vista explodida: {{ project.title }}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ── COMPETÊNCIAS ADQUIRIDAS ───────────────────────── -->
+    {% if project.skills %}
+    <section class="cad-section" aria-labelledby="section-skills" data-aos="fade-up">
+      <div class="cad-section-label" id="section-skills">
+        <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+        Ferramentas e Competências Aplicadas
+      </div>
+      <div class="cad-skills-grid">
+        {% for skill in project.skills %}
+        <div
+          class="cad-skill-card"
+          data-aos="zoom-in"
+          data-aos-delay="{{ loop.index0 * 50 }}"
+        >
+          <div class="cad-skill-card__num">{{ '%02d' | format(loop.index) }}</div>
+          <div class="cad-skill-card__name">{{ skill }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ── MINHA EVOLUÇÃO ────────────────────────────────── -->
+    {% if project.evolution_text %}
+    <section class="cad-section" aria-labelledby="section-evolution" data-aos="fade-up">
+      <div class="cad-section-label" id="section-evolution">
+        <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+        Minha Evolução
+      </div>
+      <div class="cad-evolution-card">
+        <div class="cad-evolution-card__accent"></div>
+        <p class="cad-evolution-card__text">{{ project.evolution_text }}</p>
+      </div>
+    </section>
+    {% endif %}
+
+    <!-- ── CTA — VOLTAR AO CATÁLOGO ─────────────────────── -->
+    <div class="cad-project-cta" data-aos="fade-up">
+      <a href="/laboratorio-cad" class="btn-outline" id="btn-back-catalog">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Voltar ao Catálogo
+      </a>
+      <a href="/contato" class="btn-primary" id="btn-project-contact">
+        <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+        Entrar em Contato
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+  // ── Dados das folhas para JS ──────────────────────────
+  const SHEETS = {{ project.sheet_images | tojson }};
+  let currentIndex = 0;
+
+  // ── Selecionar folha no viewer ────────────────────────
+  function selectSheet(index) {
+    const sheet   = SHEETS[index];
+    const viewerImg = document.getElementById('viewer-img');
+    const caption   = document.getElementById('viewer-caption');
+    const desc      = document.getElementById('viewer-desc');
+    const counter   = document.getElementById('viewer-counter');
+
+    viewerImg.src       = sheet.path;
+    viewerImg.alt       = sheet.caption;
+    caption.textContent = sheet.caption;
+    desc.textContent    = sheet.description;
+    counter.textContent = `${index + 1} / ${SHEETS.length}`;
+    currentIndex = index;
+
+    // Atualiza estado dos thumbs
+    document.querySelectorAll('.cad-thumb').forEach((btn, i) => {
+      btn.classList.toggle('active', i === index);
+      btn.setAttribute('aria-selected', i === index ? 'true' : 'false');
+    });
+  }
+
+  // ── Lightbox ──────────────────────────────────────────
+  function openLightbox(index) {
+    currentIndex = index;
+    const overlay = document.getElementById('lightbox-overlay');
+    _setLightboxImage(index);
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('lightbox-close').focus();
+  }
+
+  function _setLightboxImage(index) {
+    const sheet = SHEETS[index];
+    document.getElementById('lightbox-img').src         = sheet.path;
+    document.getElementById('lightbox-img').alt         = sheet.caption;
+    document.getElementById('lightbox-caption').textContent = `${sheet.caption} — ${sheet.description}`;
+    currentIndex = index;
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox-overlay').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function lightboxPrev() {
+    _setLightboxImage((currentIndex - 1 + SHEETS.length) % SHEETS.length);
+  }
+
+  function lightboxNext() {
+    _setLightboxImage((currentIndex + 1) % SHEETS.length);
+  }
+
+  // ── Event listeners ───────────────────────────────────
+  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+  document.getElementById('lightbox-prev').addEventListener('click', lightboxPrev);
+  document.getElementById('lightbox-next').addEventListener('click', lightboxNext);
+
+  document.getElementById('lightbox-overlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('lightbox-overlay')) closeLightbox();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    const overlay = document.getElementById('lightbox-overlay');
+    if (!overlay.classList.contains('active')) return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowLeft')   lightboxPrev();
+    if (e.key === 'ArrowRight')  lightboxNext();
+  });
+
+  // ── Botão de zoom no viewer principal ────────────────
+  document.getElementById('viewer-img').addEventListener('click', () => openLightbox(currentIndex));
+</script>
+{% endblock %}

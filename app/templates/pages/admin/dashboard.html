@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block page_title %}Painel Admin | Laboratório CAD{% endblock %}
+
+{% block content %}
+<section class="admin-section section-padding">
+  <div class="container">
+
+    <!-- ── Cabeçalho Admin ──────────────────────────── -->
+    <div class="admin-header" data-aos="fade-down">
+      <div class="admin-header__left">
+        <div class="admin-header__label">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          Painel Administrativo
+        </div>
+        <h1 class="admin-header__title">Laboratório CAD</h1>
+        <p class="admin-header__sub">Gerencie os projetos de modelagem exibidos no portfólio.</p>
+      </div>
+      <a href="/admin-panel/novo" class="btn-primary" id="btn-novo-projeto">
+        <i class="fa-solid fa-plus" aria-hidden="true"></i>
+        Novo Projeto
+      </a>
+    </div>
+
+    <!-- ── Stats rápidas ──────────────────────────────── -->
+    <div class="admin-stats" data-aos="fade-up">
+      <div class="admin-stat-card">
+        <span class="admin-stat-card__num">{{ projects | length }}</span>
+        <span class="admin-stat-card__label">Total de Projetos</span>
+      </div>
+      <div class="admin-stat-card">
+        <span class="admin-stat-card__num">{{ projects | selectattr('status', 'equalto', 'Concluído') | list | length }}</span>
+        <span class="admin-stat-card__label">Concluídos</span>
+      </div>
+      <div class="admin-stat-card">
+        <span class="admin-stat-card__num">{{ projects | selectattr('status', 'equalto', 'Em desenvolvimento') | list | length }}</span>
+        <span class="admin-stat-card__label">Em Desenvolvimento</span>
+      </div>
+    </div>
+
+    <!-- ── Tabela de projetos ─────────────────────────── -->
+    {% if projects %}
+    <div class="admin-table-wrapper" data-aos="fade-up">
+      <table class="admin-table" role="grid" aria-label="Lista de projetos CAD">
+        <thead>
+          <tr>
+            <th scope="col">Capa</th>
+            <th scope="col">Título</th>
+            <th scope="col">Software</th>
+            <th scope="col">Status</th>
+            <th scope="col">Data</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in projects %}
+          <tr>
+            <td class="admin-table__thumb">
+              {% if project.cover_image %}
+              <img src="{{ project.cover_image }}" alt="Capa: {{ project.title }}" />
+              {% else %}
+              <div class="admin-table__no-thumb"><i class="fa-solid fa-cube"></i></div>
+              {% endif %}
+            </td>
+            <td class="admin-table__title">
+              <a href="/laboratorio-cad/{{ project.slug }}" target="_blank" rel="noopener">
+                {{ project.title }}
+              </a>
+              <span class="admin-table__slug">/{{ project.slug }}</span>
+            </td>
+            <td><span class="badge-software">{{ project.software }}</span></td>
+            <td>
+              <span class="badge-status badge-status--{{ project.status | lower | replace(' ', '-') }}">
+                {{ project.status }}
+              </span>
+            </td>
+            <td class="admin-table__date">{{ project.date }}</td>
+            <td class="admin-table__actions">
+              <a
+                href="/laboratorio-cad/{{ project.slug }}"
+                target="_blank"
+                class="btn-icon"
+                title="Ver projeto"
+                aria-label="Ver projeto {{ project.title }}"
+              >
+                <i class="fa-solid fa-eye"></i>
+              </a>
+              <a
+                href="/admin-panel/editar/{{ project.id }}"
+                class="btn-icon btn-icon--edit"
+                title="Editar"
+                aria-label="Editar {{ project.title }}"
+              >
+                <i class="fa-solid fa-pen-to-square"></i>
+              </a>
+              <a
+                href="/admin-panel/excluir/{{ project.id }}"
+                class="btn-icon btn-icon--delete"
+                title="Excluir"
+                aria-label="Excluir {{ project.title }}"
+              >
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% else %}
+    <div class="admin-empty" data-aos="fade-up">
+      <i class="fa-solid fa-folder-open admin-empty__icon" aria-hidden="true"></i>
+      <p class="admin-empty__text">Nenhum projeto cadastrado. Clique em <strong>Novo Projeto</strong> para começar.</p>
+    </div>
+    {% endif %}
+
+    <!-- ── Link de volta ao portfólio ─────────────────── -->
+    <div class="admin-footer-nav" data-aos="fade-up">
+      <a href="/laboratorio-cad" class="btn-outline" id="btn-ver-catalogo">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Ver Catálogo Público
+      </a>
+      <a href="/" class="btn-outline">
+        <i class="fa-solid fa-house" aria-hidden="true"></i>
+        Início do Portfólio
+      </a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

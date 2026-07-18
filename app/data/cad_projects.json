@@ -1,0 +1,78 @@
+[
+  {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "title": "Grampo de Mesa",
+    "slug": "grampo-de-mesa",
+    "short_desc": "Modelagem paramétrica e detalhamento técnico completo de um grampo de bancada com 7 componentes em aço, desenvolvido no Fusion 360 com montagem, vista explodida animada e documentação técnica normalizada.",
+    "desc_objective": "Este projeto consiste na modelagem paramétrica e detalhamento técnico completo de um Grampo de Mesa (Bench Clamp), um dispositivo mecânico amplamente utilizado em oficinas mecânicas e bancadas de manufatura para a fixação rápida e rígida de peças de trabalho durante operações de furação, lixamento, colagem ou montagem. O intuito principal deste estudo foi aplicar e consolidar metodologias de design em sistemas CAD 3D, estabelecendo uma sólida ligação entre a construção volumétrica digital, a definição de restrições dimensionais padronizadas e a elaboração de desenhos técnicos normalizados para manufatura.",
+    "desc_modeling": "A modelagem foi iniciada pelo desenvolvimento individual de cada um dos sete componentes estruturais em aço (Base, Parafuso M18, Forquilha, Cunha, Alavanca, Rolo e Manivela). Utilizou-se esboços bidimensionais (sketches) controlados por restrições geométricas (horizontalidade, concentricidade e tangência) e variáveis paramétricas, garantindo flexibilidade e consistência do design. No ambiente de montagem (assembly), os corpos foram acoplados por meio de juntas mecânicas (joints), respeitando os limites físicos de movimento linear e de rotação dos componentes na transmissão de esforços do parafuso e da alavanca. A documentação foi gerada com 9 folhas técnicas normalizadas, incluindo vista explodida e BOM.",
+    "cover_image": "/static/images/cad/covers/grampo-de-mesa.png",
+    "pdf_path": "/static/documents/cad/grampo-de-mesa.pdf",
+    "youtube_url": "https://youtu.be/BkqUHD9g0Dg",
+    "embed_url": "https://www.youtube-nocookie.com/embed/BkqUHD9g0Dg",
+    "software": "Fusion 360",
+    "category": "Modelagem 3D",
+    "status": "Concluído",
+    "date": "2026-07",
+    "skills": [
+      "Esboços (Sketches)",
+      "Restrições Geométricas",
+      "Modelagem Paramétrica",
+      "Extrusão & Revolução",
+      "Furos Técnicos (Holes)",
+      "Filetes & Chanfros",
+      "Montagem (Assemblies)",
+      "Vista Explodida",
+      "Desenho Técnico",
+      "Lista de Peças (BOM)"
+    ],
+    "evolution_text": "Este projeto representa uma etapa importante da minha evolução em modelagem CAD. Embora eu já possuísse experiência anterior utilizando AutoCAD e Autodesk Inventor durante o curso técnico em Mecânica, decidi aprofundar meus conhecimentos no Fusion 360 por ser uma plataforma em nuvem amplamente utilizada na Engenharia Mecânica contemporânea, capaz de integrar modelagem paramétrica de peças, montagens mecânicas estruturadas, documentação técnica oficial e simulações físicas avançadas em um único fluxo de trabalho ágil. Este é o primeiro projeto publicado no meu Laboratório CAD e faz parte de uma trajetória contínua de aprendizado e desenvolvimento técnico-científico.",
+    "sheet_images": [
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_1.png",
+        "caption": "Folha 1/9 — Vista Explodida e Lista de Peças (BOM)",
+        "description": "Apresenta a montagem completa com seus 7 componentes de aço em vista isométrica explodida, acompanhados da lista oficial de peças (BOM) com quantidades e identificação técnica de cada item."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_2.png",
+        "caption": "Folha 2/9 — Desenho Geral do Conjunto",
+        "description": "Demonstra o conjunto mecânico montado em escala 1:2. Apresenta projeções em Vista Frontal, Vista Superior, Vista Lateral Esquerda e a projeção isométrica do modelo finalizado."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_3.png",
+        "caption": "Folha 3/9 — Componente 1: Base",
+        "description": "Detalhamento dimensional completo da base em escala 1:2, com cotas de comprimento (205mm) e largura (100mm), furos de Ø8 e Ø15 com rebaixos e rasgo central."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_4.png",
+        "caption": "Folha 4/9 — Componente 2: Parafuso M18",
+        "description": "Folha técnica do parafuso de avanço (escala 1:1) com comprimento total (155mm), diâmetro de cabeça cilíndrica (Ø32), rosca métrica ISO M18 x 2,5 e chanfros de proteção."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_5.png",
+        "caption": "Folha 5/9 — Componente 3: Forquilha",
+        "description": "Representação da forquilha de suporte em forma de U (escala 1:1) com largura de 70mm, altura de 57mm, furos concêntricos de Ø8 e Ø6 e raio de dobramento R12."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_6.png",
+        "caption": "Folha 6/9 — Componente 4: Cunha",
+        "description": "Cotagem da cunha móvel de aperto (escala 1:1) com comprimento de 60mm, altura de 50mm, largura de 42mm e plano inclinado de transmissão de força."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_7.png",
+        "caption": "Folha 7/9 — Componente 5: Alavanca",
+        "description": "Detalhamento da alavanca de controle (escala 1:2) com comprimento de 135mm, perfil curvo de empunhadura com raios R15 e R20 e alojamento retangular de 30mm."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_8.png",
+        "caption": "Folha 8/9 — Componente 6: Rolo",
+        "description": "Desenho técnico do rolo cilíndrico (escala 1:1) com diâmetro externo de Ø36 e largura de acoplamento de 30mm. Atua como elemento de transmissão e redução de atrito."
+      },
+      {
+        "path": "/static/images/cad/grampo-de-mesa/sheet_9.png",
+        "caption": "Folha 9/9 — Componente 7: Manivela",
+        "description": "Desenho técnico da manivela (escala 1:1) com corpo cilíndrico de Ø10 e vista auxiliar em corte demonstrando o furo de acoplamento de Ø6."
+      }
+    ]
+  }
+]

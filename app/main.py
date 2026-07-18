@@ -20,6 +20,7 @@ from fastapi.templating import Jinja2Templates
 
 from app.config import get_base_context
 from app.routers import (
+    admin,
     cad_lab,
     contact,
     home,
@@ -68,6 +69,7 @@ app.include_router(cad_lab.router)
 app.include_router(technologies.router)
 app.include_router(resume.router)
 app.include_router(contact.router)
+app.include_router(admin.router)
 
 
 # ──────────────────────────────────────────────────────────────────────────────

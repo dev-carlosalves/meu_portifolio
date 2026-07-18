@@ -1,0 +1,400 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ 'Novo Projeto' if mode == 'create' else 'Editar: ' ~ project.title }} | Admin{% endblock %}
+
+{% block content %}
+<section class="admin-section section-padding">
+  <div class="container">
+
+    <!-- ── Cabeçalho ──────────────────────────────────── -->
+    <div class="admin-header" data-aos="fade-down">
+      <div class="admin-header__left">
+        <div class="admin-header__label">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          Painel Administrativo
+        </div>
+        <h1 class="admin-header__title">
+          {{ 'Novo Projeto CAD' if mode == 'create' else 'Editar Projeto' }}
+        </h1>
+        <p class="admin-header__sub">
+          {{ 'Preencha os dados para publicar um novo estudo de caso.' if mode == 'create' else 'Atualize as informações do projeto.' }}
+        </p>
+      </div>
+      <a href="/admin-panel" class="btn-outline" id="btn-back-admin">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Dashboard
+      </a>
+    </div>
+
+    <!-- ── Formulário ─────────────────────────────────── -->
+    <form
+      method="post"
+      enctype="multipart/form-data"
+      class="admin-form"
+      action="{{ '/admin-panel/novo' if mode == 'create' else '/admin-panel/editar/' ~ project.id }}"
+      data-aos="fade-up"
+      novalidate
+    >
+
+      <!-- SEÇÃO 1: Identificação -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">01</span>
+          Identificação do Projeto
+        </h2>
+        <div class="admin-form-grid admin-form-grid--full">
+          <div class="admin-form-field">
+            <label for="title" class="admin-form-label">
+              Título <span class="required">*</span>
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              class="admin-form-input"
+              value="{{ project.title if project else '' }}"
+              placeholder="Ex.: Grampo de Mesa"
+              required
+              maxlength="120"
+            />
+            <div class="admin-form-hint">
+              Slug gerado automaticamente:
+              <code id="slug-preview">/laboratorio-cad/{{ project.slug if project else '...' }}</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-form-grid admin-form-grid--3">
+          <div class="admin-form-field">
+            <label for="software" class="admin-form-label">Software <span class="required">*</span></label>
+            <select id="software" name="software" class="admin-form-select" required>
+              {% set softwares = ['Fusion 360', 'AutoCAD', 'Inventor', 'SolidWorks', 'CATIA', 'FreeCAD', 'Outro'] %}
+              {% for sw in softwares %}
+              <option value="{{ sw }}" {{ 'selected' if project and project.software == sw }}>{{ sw }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="admin-form-field">
+            <label for="status" class="admin-form-label">Status <span class="required">*</span></label>
+            <select id="status" name="status" class="admin-form-select" required>
+              {% set statuses = ['Concluído', 'Em desenvolvimento', 'Em pausa'] %}
+              {% for s in statuses %}
+              <option value="{{ s }}" {{ 'selected' if project and project.status == s }}>{{ s }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="admin-form-field">
+            <label for="date" class="admin-form-label">Data (Mês/Ano) <span class="required">*</span></label>
+            <input
+              type="month"
+              id="date"
+              name="date"
+              class="admin-form-input"
+              value="{{ project.date if project else '' }}"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="admin-form-grid admin-form-grid--2">
+          <div class="admin-form-field">
+            <label for="category" class="admin-form-label">Categoria</label>
+            <input
+              type="text"
+              id="category"
+              name="category"
+              class="admin-form-input"
+              value="{{ project.category if project else 'Modelagem 3D' }}"
+              placeholder="Ex.: Modelagem 3D, Análise FEA..."
+            />
+          </div>
+          <div class="admin-form-field">
+            <label for="youtube_url" class="admin-form-label">
+              Link do YouTube
+              <span class="admin-form-label__hint">(youtu.be ou youtube.com)</span>
+            </label>
+            <input
+              type="url"
+              id="youtube_url"
+              name="youtube_url"
+              class="admin-form-input"
+              value="{{ project.youtube_url if project else '' }}"
+              placeholder="https://youtu.be/..."
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 2: Descrições -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">02</span>
+          Descrições
+        </h2>
+
+        <div class="admin-form-field">
+          <label for="short_desc" class="admin-form-label">
+            Descrição Curta <span class="required">*</span>
+            <span class="admin-form-label__hint">(exibida no card do catálogo)</span>
+          </label>
+          <textarea
+            id="short_desc"
+            name="short_desc"
+            class="admin-form-textarea admin-form-textarea--sm"
+            rows="3"
+            maxlength="300"
+            placeholder="Resumo breve do projeto para exibição no catálogo..."
+            required
+          >{{ project.short_desc if project else '' }}</textarea>
+          <div class="admin-form-hint admin-form-hint--counter">
+            <span id="short-desc-counter">0</span>/300 caracteres
+          </div>
+        </div>
+
+        <div class="admin-form-grid admin-form-grid--2">
+          <div class="admin-form-field">
+            <label for="desc_objective" class="admin-form-label">
+              Objetivo e Finalidade
+              <span class="admin-form-label__hint">(página do projeto)</span>
+            </label>
+            <textarea
+              id="desc_objective"
+              name="desc_objective"
+              class="admin-form-textarea"
+              rows="7"
+              placeholder="Descreva o objetivo, contexto e aplicação real do projeto..."
+            >{{ project.desc_objective if project else '' }}</textarea>
+          </div>
+          <div class="admin-form-field">
+            <label for="desc_modeling" class="admin-form-label">
+              Modelagem e Montagem
+              <span class="admin-form-label__hint">(página do projeto)</span>
+            </label>
+            <textarea
+              id="desc_modeling"
+              name="desc_modeling"
+              class="admin-form-textarea"
+              rows="7"
+              placeholder="Descreva o processo de modelagem, componentes, assembly..."
+            >{{ project.desc_modeling if project else '' }}</textarea>
+          </div>
+        </div>
+
+        <div class="admin-form-field">
+          <label for="evolution_text" class="admin-form-label">
+            Minha Evolução
+            <span class="admin-form-label__hint">(texto reflexivo exibido no rodapé da página)</span>
+          </label>
+          <textarea
+            id="evolution_text"
+            name="evolution_text"
+            class="admin-form-textarea"
+            rows="5"
+            placeholder="Relate seu aprendizado, desafios e crescimento com este projeto..."
+          >{{ project.evolution_text if project else '' }}</textarea>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 3: Arquivos -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">03</span>
+          Arquivos do Projeto
+        </h2>
+
+        <div class="admin-form-grid admin-form-grid--2">
+          <!-- Imagem de capa -->
+          <div class="admin-form-field">
+            <label for="cover_image" class="admin-form-label">
+              Imagem de Capa
+              <span class="admin-form-label__hint">(PNG, JPG, WEBP)</span>
+            </label>
+            {% if project and project.cover_image %}
+            <div class="admin-file-preview">
+              <img src="{{ project.cover_image }}" alt="Capa atual" />
+              <span class="admin-file-preview__badge">Atual</span>
+            </div>
+            {% endif %}
+            <label for="cover_image" class="admin-file-dropzone" id="cover-dropzone">
+              <i class="fa-solid fa-image admin-file-dropzone__icon" aria-hidden="true"></i>
+              <span class="admin-file-dropzone__text">
+                <strong>Clique para selecionar</strong> ou arraste aqui
+              </span>
+              <span class="admin-file-dropzone__sub">PNG, JPG, WEBP — max 5MB</span>
+              <span class="admin-file-dropzone__name" id="cover-filename">Nenhum arquivo selecionado</span>
+              <input
+                type="file"
+                id="cover_image"
+                name="cover_image"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                class="admin-file-input"
+                aria-describedby="cover-filename"
+              />
+            </label>
+          </div>
+
+          <!-- PDF técnico -->
+          <div class="admin-form-field">
+            <label for="pdf_file" class="admin-form-label">
+              Documentação Técnica (PDF)
+              <span class="admin-form-label__hint">As folhas serão extraídas automaticamente</span>
+            </label>
+            {% if project and project.pdf_path %}
+            <div class="admin-file-preview admin-file-preview--pdf">
+              <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+              <span>PDF atual cadastrado — <a href="{{ project.pdf_path }}" target="_blank">visualizar</a></span>
+            </div>
+            {% endif %}
+            <label for="pdf_file" class="admin-file-dropzone" id="pdf-dropzone">
+              <i class="fa-solid fa-file-pdf admin-file-dropzone__icon admin-file-dropzone__icon--pdf" aria-hidden="true"></i>
+              <span class="admin-file-dropzone__text">
+                <strong>Clique para selecionar</strong> ou arraste aqui
+              </span>
+              <span class="admin-file-dropzone__sub">Somente PDF — as páginas serão extraídas como imagens</span>
+              <span class="admin-file-dropzone__name" id="pdf-filename">Nenhum arquivo selecionado</span>
+              <input
+                type="file"
+                id="pdf_file"
+                name="pdf_file"
+                accept="application/pdf"
+                class="admin-file-input"
+                aria-describedby="pdf-filename"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 4: Competências -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">04</span>
+          Competências Aplicadas
+        </h2>
+
+        <div class="admin-form-field">
+          <label class="admin-form-label" for="skill-input">
+            Skills e Ferramentas
+            <span class="admin-form-label__hint">(pressione Enter ou clique em + para adicionar)</span>
+          </label>
+          <div class="admin-skills-wrapper">
+            <div class="admin-skills-tags" id="skills-tags">
+              {% if project and project.skills %}
+                {% for skill in project.skills %}
+                <span class="admin-skill-tag" data-skill="{{ skill }}">
+                  {{ skill }}
+                  <button type="button" class="admin-skill-tag__remove" onclick="removeSkill(this)" aria-label="Remover {{ skill }}">
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                  <input type="hidden" name="skills" value="{{ skill }}" />
+                </span>
+                {% endfor %}
+              {% endif %}
+            </div>
+            <div class="admin-skills-input-row">
+              <input
+                type="text"
+                id="skill-input"
+                class="admin-form-input admin-skills-input"
+                placeholder="Ex.: Extrusão, Assembly, Vista Explodida..."
+                autocomplete="off"
+              />
+              <button type="button" class="btn-secondary" onclick="addSkill()" id="btn-add-skill">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Botões de ação ──────────────────────────── -->
+      <div class="admin-form-actions">
+        <a href="/admin-panel" class="btn-outline" id="btn-cancel-form">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          Cancelar
+        </a>
+        <button type="submit" class="btn-primary" id="btn-submit-form">
+          <i class="fa-solid fa-{{ 'plus' if mode == 'create' else 'floppy-disk' }}" aria-hidden="true"></i>
+          {{ 'Publicar Projeto' if mode == 'create' else 'Salvar Alterações' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+  // ── Auto-slug em tempo real ───────────────────────────
+  const titleInput   = document.getElementById('title');
+  const slugPreview  = document.getElementById('slug-preview');
+
+  titleInput.addEventListener('input', () => {
+    const slug = titleInput.value
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    slugPreview.textContent = '/laboratorio-cad/' + (slug || '...');
+  });
+
+  // ── Contador de caracteres (short_desc) ───────────────
+  const shortDesc  = document.getElementById('short_desc');
+  const shortCount = document.getElementById('short-desc-counter');
+  function updateCounter() {
+    shortCount.textContent = shortDesc.value.length;
+    shortCount.style.color = shortDesc.value.length > 270 ? 'var(--color-accent)' : '';
+  }
+  shortDesc.addEventListener('input', updateCounter);
+  updateCounter();
+
+  // ── File input labels ─────────────────────────────────
+  document.getElementById('cover_image').addEventListener('change', function () {
+    document.getElementById('cover-filename').textContent =
+      this.files[0] ? this.files[0].name : 'Nenhum arquivo selecionado';
+  });
+  document.getElementById('pdf_file').addEventListener('change', function () {
+    document.getElementById('pdf-filename').textContent =
+      this.files[0] ? this.files[0].name : 'Nenhum arquivo selecionado';
+  });
+
+  // ── Skills tag manager ────────────────────────────────
+  function addSkill() {
+    const input  = document.getElementById('skill-input');
+    const skill  = input.value.trim();
+    if (!skill) return;
+
+    const container = document.getElementById('skills-tags');
+    const tag = document.createElement('span');
+    tag.className      = 'admin-skill-tag';
+    tag.dataset.skill  = skill;
+    tag.innerHTML = `
+      ${skill}
+      <button type="button" class="admin-skill-tag__remove" onclick="removeSkill(this)" aria-label="Remover ${skill}">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <input type="hidden" name="skills" value="${skill}" />
+    `;
+    container.appendChild(tag);
+    input.value = '';
+    input.focus();
+  }
+
+  function removeSkill(btn) {
+    btn.closest('.admin-skill-tag').remove();
+  }
+
+  document.getElementById('skill-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); addSkill(); }
+  });
+
+  // ── Submit feedback ──────────────────────────────────
+  document.querySelector('.admin-form').addEventListener('submit', () => {
+    const btn = document.getElementById('btn-submit-form');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
+  });
+</script>
+{% endblock %}

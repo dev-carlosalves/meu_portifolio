@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block page_title %}Excluir: {{ project.title }} | Admin{% endblock %}
+
+{% block content %}
+<section class="admin-section section-padding">
+  <div class="container admin-container--narrow">
+
+    <div class="admin-delete-card" data-aos="fade-up">
+      <!-- Ícone de alerta -->
+      <div class="admin-delete-icon">
+        <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+      </div>
+
+      <h1 class="admin-delete-title">Confirmar Exclusão</h1>
+      <p class="admin-delete-subtitle">
+        Esta ação <strong>não pode ser desfeita</strong>. O projeto e todos os seus arquivos serão permanentemente removidos.
+      </p>
+
+      <!-- Preview do projeto -->
+      <div class="admin-delete-preview">
+        {% if project.cover_image %}
+        <img src="{{ project.cover_image }}" alt="Capa: {{ project.title }}" class="admin-delete-preview__img" />
+        {% endif %}
+        <div class="admin-delete-preview__info">
+          <strong class="admin-delete-preview__title">{{ project.title }}</strong>
+          <span class="admin-delete-preview__meta">
+            {{ project.software }} · {{ project.status }} · {{ project.date }}
+          </span>
+          <span class="admin-delete-preview__slug">/laboratorio-cad/{{ project.slug }}</span>
+        </div>
+      </div>
+
+      <!-- Aviso sobre arquivos -->
+      <div class="admin-delete-warning">
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+        <div>
+          <strong>Arquivos que serão removidos permanentemente:</strong>
+          <ul class="admin-delete-warning__list">
+            {% if project.cover_image %}<li>Imagem de capa: <code>{{ project.cover_image }}</code></li>{% endif %}
+            {% if project.pdf_path %}<li>Documentação PDF: <code>{{ project.pdf_path }}</code></li>{% endif %}
+            {% if project.sheet_images %}
+            <li>{{ project.sheet_images | length }} imagens de folhas técnicas</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Ações -->
+      <div class="admin-delete-actions">
+        <a href="/admin-panel" class="btn-outline" id="btn-cancel-delete">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          Cancelar
+        </a>
+        <form method="post" action="/admin-panel/excluir/{{ project.id }}">
+          <button
+            type="submit"
+            class="btn-danger"
+            id="btn-confirm-delete"
+          >
+            <i class="fa-solid fa-trash" aria-hidden="true"></i>
+            Sim, excluir permanentemente
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
