@@ -92,7 +92,6 @@ const ContactForm = (() => {
         try {
           window.emailjs.init(EMAILJS_PUBLIC_KEY);
           isEmailJsLoaded = true;
-          console.log('[EmailJS] Inicializado com sucesso.');
           resolve();
         } catch (e) {
           reject(e);

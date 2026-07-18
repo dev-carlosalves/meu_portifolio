@@ -1,0 +1,265 @@
+/*
+ * pages/technologies.css — Estilos da página Tecnologias & Competências.
+ */
+
+/* SVG das conexões do Hero */
+.tech-hero-svg {
+  filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.15));
+}
+
+.tech-hero-svg .node {
+  animation: pulse-ring 3s infinite ease-in-out;
+}
+
+.tech-hero-svg .node:nth-child(2) { animation-delay: 0.5s; }
+.tech-hero-svg .node:nth-child(3) { animation-delay: 1s; }
+.tech-hero-svg .node:nth-child(4) { animation-delay: 1.5s; }
+
+/* Status customizados dos cartões de tecnologia */
+.tech-status-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+}
+
+.tech-status-badge--main {
+  background-color: rgba(6, 182, 212, 0.12);
+  color: #22d3ee;
+  border: 1px solid rgba(6, 182, 212, 0.25);
+}
+
+.tech-status-badge--active {
+  background-color: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.tech-status-badge--prev {
+  background-color: rgba(251, 146, 60, 0.12);
+  color: #fb923c;
+  border: 1px solid rgba(251, 146, 60, 0.25);
+}
+
+/* Estrutura interna do tech card */
+.tech-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tech-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.tech-card__icon {
+  font-size: var(--text-2xl);
+  color: var(--color-accent);
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tech-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.tech-card__usage {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-dark);
+}
+
+.tech-card__usage-title {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  margin-bottom: 0.25rem;
+}
+
+.tech-card__usage-text {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.tech-card__projects-title {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+/* Timeline Horizontal de Estudos */
+.study-timeline-container {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8) var(--space-4);
+  margin-bottom: var(--space-16);
+  width: 100%;
+}
+
+.study-timeline {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-bottom: var(--space-4);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.study-timeline__step {
+  flex: 0 0 240px;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.study-timeline__step::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent), var(--color-border-hover));
+  z-index: 1;
+}
+
+.study-timeline__step:last-child::after {
+  display: none;
+}
+
+.study-timeline__dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-accent-dim);
+  border: 2px solid var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-accent);
+  position: relative;
+  z-index: 2;
+  box-shadow: var(--shadow-glow);
+  margin-bottom: var(--space-3);
+}
+
+.study-timeline__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+}
+
+.study-timeline__desc {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  padding-inline: var(--space-2);
+}
+
+/* Tecnologia x Projetos Grade Visual */
+.tech-mapping-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .tech-mapping-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .tech-mapping-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tech-mapping-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transition: all var(--transition-base);
+}
+
+.tech-mapping-card:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.tech-mapping-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--color-border-dark);
+  padding-bottom: var(--space-2);
+}
+
+.tech-mapping-card__icon {
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+}
+
+.tech-mapping-card__name {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.tech-mapping-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tech-mapping-card__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.tech-mapping-card__item i {
+  color: var(--color-accent);
+  font-size: 0.75rem;
+}

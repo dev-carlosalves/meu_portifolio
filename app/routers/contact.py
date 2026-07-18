@@ -1,7 +1,7 @@
 """contact.py — Rotas da página de Contato (/contato)."""
 
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse
 
 from app.config import get_base_context
 
@@ -21,15 +21,3 @@ async def contact_page(request: Request) -> HTMLResponse:
     )
     return templates.TemplateResponse("pages/contact.html", {"request": request, **context})
 
-
-# Rota POST reservada para integração futura (EmailJS / SMTP)
-@router.post("/api/contact", include_in_schema=False)
-async def contact_submit(request: Request) -> JSONResponse:
-    """
-    Placeholder para envio de formulário de contato.
-    Será implementado na Sprint 7 com EmailJS ou SMTP.
-    """
-    return JSONResponse(
-        {"status": "ok", "message": "Endpoint reservado para Sprint 7."},
-        status_code=200,
-    )

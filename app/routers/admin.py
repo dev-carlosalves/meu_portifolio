@@ -9,7 +9,7 @@ Rotas:
   GET  /admin-panel/excluir/{id}     → Confirmação de exclusão
   POST /admin-panel/excluir/{id}     → Executar exclusão
 
-Nota: autenticação não implementada neste sprint por decisão do desenvolvedor.
+Nota: autenticação não implementada por decisão do desenvolvedor.
 A estrutura está preparada para adicionar um middleware de autenticação
 futuramente sem alterar os handlers abaixo.
 """

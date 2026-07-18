@@ -1,0 +1,259 @@
+/*
+ * pages/journey.css — Estilos da página Minha Jornada (Timeline).
+ */
+
+.journey-intro {
+  max-width: 800px;
+  margin-inline: auto;
+  text-align: center;
+  margin-bottom: var(--space-16);
+}
+
+.journey-intro__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.journey-intro__text {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: 1.8;
+}
+
+/* Modificações do layout da Timeline para Split e responsividade */
+@media (min-width: 1024px) {
+  .timeline--split {
+    padding-left: 0;
+  }
+  
+  .timeline--split::before {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 24px;
+    height: calc(100% - 48px);
+  }
+  
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-16);
+    padding-bottom: var(--space-12);
+    width: 100%;
+  }
+  
+  /* Odd items Content on Left, Even items Content on Right */
+  .timeline-item:nth-child(odd) {
+    grid-template-areas: "leftcard .";
+  }
+  .timeline-item:nth-child(odd) .timeline-card {
+    grid-area: leftcard;
+    text-align: right;
+  }
+  .timeline-item:nth-child(odd) .timeline-card__period,
+  .timeline-item:nth-child(odd) .timeline-card__org,
+  .timeline-item:nth-child(odd) .timeline-card__tags {
+    justify-content: flex-end;
+  }
+  .timeline-item:nth-child(odd) .timeline-card__buttons {
+    justify-content: flex-end;
+  }
+  
+  .timeline-item:nth-child(even) {
+    grid-template-areas: ". rightcard";
+  }
+  .timeline-item:nth-child(even) .timeline-card {
+    grid-area: rightcard;
+    text-align: left;
+  }
+  
+  /* Centering dot on Desktop */
+  .timeline-item .timeline-dot {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 24px;
+  }
+}
+
+/* Tablet e Mobile Fallback styling */
+@media (max-width: 1023px) {
+  .timeline--split {
+    padding-left: var(--space-8);
+  }
+  .timeline--split::before {
+    left: 10px;
+    top: 8px;
+    height: calc(100% - 16px);
+  }
+  .timeline-item {
+    padding-bottom: var(--space-8);
+  }
+  .timeline-item .timeline-dot {
+    left: calc(-1 * var(--space-8) + 4px);
+    top: 8px;
+  }
+}
+
+/* Cores específicas de badges para a jornada */
+.badge--tech {
+  background-color: rgba(6, 182, 212, 0.12);
+  color: #22d3ee;
+  border-color: rgba(6, 182, 212, 0.25);
+}
+.badge--grad {
+  background-color: rgba(168, 85, 247, 0.12);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.25);
+}
+.badge--work {
+  background-color: rgba(249, 115, 22, 0.12);
+  color: #fb923c;
+  border-color: rgba(249, 115, 22, 0.25);
+}
+.badge--self {
+  background-color: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+.badge--acad {
+  background-color: rgba(99, 102, 241, 0.12);
+  color: #818cf8;
+  border-color: rgba(99, 102, 241, 0.25);
+}
+.badge--main {
+  background-color: rgba(6, 182, 212, 0.15);
+  color: #22d3ee;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+}
+.badge--dev {
+  background-color: rgba(234, 179, 8, 0.12);
+  color: #facc15;
+  border-color: rgba(234, 179, 8, 0.25);
+}
+.badge--ongoing {
+  background-color: rgba(20, 184, 166, 0.12);
+  color: #2dd4bf;
+  border-color: rgba(20, 184, 166, 0.25);
+}
+
+/* Estilos adicionais dos cards e tags da jornada */
+.timeline-card__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.timeline-card--future {
+  border: 1px dashed var(--color-border-hover);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.01) 0%, rgba(255, 255, 255, 0.02) 100%);
+}
+
+.timeline-card--future__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-left: 0;
+  list-style: none;
+}
+
+.timeline-card--future__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.timeline-card--future__item i {
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  flex-shrink: 0;
+}
+
+/* Modal Estilizado */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(9, 9, 11, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+}
+
+.modal-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-container {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border-hover);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  width: 90%;
+  max-width: 480px;
+  box-shadow: var(--shadow-glow-md);
+  transform: scale(0.95);
+  transition: transform var(--transition-base);
+  text-align: center;
+  position: relative;
+}
+
+.modal-overlay.is-active .modal-container {
+  transform: scale(1);
+}
+
+.modal-close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: transparent;
+  transition: all var(--transition-base);
+}
+
+.modal-close:hover {
+  color: var(--color-text);
+  border-color: var(--color-border-hover);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  color: var(--color-accent);
+  margin-bottom: var(--space-4);
+}
+
+.modal-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.modal-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.75;
+  margin-bottom: var(--space-6);
+}

@@ -1,7 +1,5 @@
 /**
  * aos-init.js — Configuração centralizada do AOS (Animate On Scroll).
- *
- * Documentação AOS: https://michalsnik.github.io/aos/
  */
 
 const AOSInit = (() => {

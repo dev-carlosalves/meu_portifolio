@@ -1,0 +1,183 @@
+/*
+ * pages/resume.css — Estilos da página Currículo.
+ */
+
+.resume__viewer {
+  margin-top: var(--space-8);
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Layout split do Currículo */
+.resume-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+@media (min-width: 1024px) {
+  .resume-layout {
+    grid-template-columns: 320px 1fr;
+    gap: var(--space-12);
+    align-items: start;
+  }
+}
+
+.resume-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.resume-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+/* Card de Dados Pessoais */
+.personal-data-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.personal-data-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.personal-data-item__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-sm);
+  flex-shrink: 0;
+}
+
+.personal-data-item__content {
+  display: flex;
+  flex-direction: column;
+}
+
+.personal-data-item__label {
+  font-size: 0.65rem;
+  color: var(--color-text-subtle);
+  text-transform: uppercase;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.personal-data-item__value {
+  font-size: var(--text-xs);
+  color: var(--color-text);
+  font-weight: 600;
+  transition: color var(--transition-base);
+  word-break: break-all;
+}
+
+a.personal-data-item__value:hover {
+  color: var(--color-accent);
+}
+
+/* Indicadores de Habilidade Discretos */
+.skill-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.skill-bar-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.skill-bar-ticks {
+  display: flex;
+  gap: 3px;
+}
+
+.skill-bar-tick {
+  width: 14px;
+  height: 6px;
+  border-radius: 2px;
+  background-color: var(--color-border);
+  transition: background-color var(--transition-base);
+}
+
+.skill-bar-tick--active {
+  background-color: var(--color-accent);
+}
+
+.skill-bar-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-subtle);
+}
+
+.skill-bar-wrapper:hover .skill-bar-tick--active {
+  box-shadow: 0 0 5px rgba(6, 182, 212, 0.5);
+}
+
+/* Certificados list card */
+.certificate-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  transition: border-color var(--transition-base);
+}
+
+.certificate-card:hover {
+  border-color: var(--color-border-hover);
+}
+
+.certificate-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.certificate-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  background-color: rgba(6, 182, 212, 0.08);
+  border: 1px solid var(--color-accent-border);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-lg);
+  flex-shrink: 0;
+}
+
+.certificate-name {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 0.1rem;
+}
+
+.certificate-org {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}

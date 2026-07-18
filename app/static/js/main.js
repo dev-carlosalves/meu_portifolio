@@ -5,13 +5,17 @@
  * adiciona efeitos visuais globais e utilitários compartilhados.
  */
 
-/* ── Utilitário: ano no footer ────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   1. FOOTER — Ano Dinâmico
+══════════════════════════════════════════════════════════════ */
 function setFooterYear() {
   const el = document.getElementById('footer-year');
   if (el) el.textContent = new Date().getFullYear();
 }
 
-/* ── Scroll Indicator: clique rola para seção seguinte ────── */
+/* ══════════════════════════════════════════════════════════════
+   2. SCROLL INDICATOR — Clique rola para a próxima seção
+══════════════════════════════════════════════════════════════ */
 function initScrollIndicator() {
   const indicator = document.getElementById('scroll-indicator');
   if (!indicator) return;
@@ -34,7 +38,9 @@ function initScrollIndicator() {
   });
 }
 
-/* ── Partículas decorativas no hero ──────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   3. HERO PARTICLES — Partículas decorativas animadas
+══════════════════════════════════════════════════════════════ */
 function initHeroParticles() {
   const hero = document.getElementById('hero');
   if (!hero) return;
@@ -73,7 +79,9 @@ function initHeroParticles() {
   }
 }
 
-/* ── Lazy loading de imagens via IntersectionObserver ─────── */
+/* ══════════════════════════════════════════════════════════════
+   4. LAZY LOADING — Imagens (IntersectionObserver)
+══════════════════════════════════════════════════════════════ */
 function initLazyImages() {
   const images = document.querySelectorAll('img[data-src]');
   if (!images.length) return;
@@ -95,7 +103,9 @@ function initLazyImages() {
   images.forEach((img) => observer.observe(img));
 }
 
-/* ── Smooth scroll para âncoras internas ─────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   5. SMOOTH SCROLL — Âncoras internas acessíveis
+══════════════════════════════════════════════════════════════ */
 function initSmoothAnchorLinks() {
   document.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
@@ -113,7 +123,9 @@ function initSmoothAnchorLinks() {
   });
 }
 
-/* ── Botões de download ───────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   6. DOWNLOAD BUTTONS — Feedback visual imediato
+══════════════════════════════════════════════════════════════ */
 function initDownloadButtons() {
   document.querySelectorAll('a[download]').forEach((btn) => {
     btn.addEventListener('click', function () {
@@ -129,7 +141,9 @@ function initDownloadButtons() {
   });
 }
 
-/* ── Bootstrap ────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════════
+   BOOTSTRAP — Aguarda DOM
+══════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   // 1. Layout e navegação
   Navbar.init();
