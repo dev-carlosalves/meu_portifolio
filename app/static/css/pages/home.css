@@ -294,270 +294,273 @@
   .hero__right { align-items: stretch; }
 }
 
-.hero__photo-card {
+/* Card de Perfil Único (Foto + Informações + Vídeo) */
+.hero__profile-card {
   position: relative;
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
-  border: 1px solid var(--color-border);
   background-color: var(--color-bg-card);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
   transition: border-color var(--transition-base), box-shadow var(--transition-base);
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
   margin-inline: auto;
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  z-index: 1;
 }
 
 @media (min-width: 768px) {
-  .hero__photo-card { max-width: none; }
+  .hero__profile-card {
+    max-width: 100%;
+  }
 }
 
-.hero__photo-card:hover {
+.hero__profile-card:hover {
   border-color: var(--color-accent-border);
   box-shadow: var(--shadow-glow-md);
 }
 
-.hero__photo-glow {
+.hero__profile-glow {
   position: absolute;
   inset: -20px;
   background: radial-gradient(
-    ellipse 70% 60% at 50% 40%,
-    rgba(6, 182, 212, 0.1) 0%,
+    ellipse 70% 60% at 50% 30%,
+    rgba(6, 182, 212, 0.08) 0%,
     transparent 70%
   );
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
-.hero__photo-wrapper {
+/* Parte Superior */
+.hero__profile-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+}
+
+@media (min-width: 480px) {
+  .hero__profile-top {
+    flex-direction: row;
+    text-align: left;
+    align-items: center;
+    gap: var(--space-5);
+  }
+}
+
+/* Foto Wrapper */
+.hero__profile-photo-wrapper {
   position: relative;
-  width: 100%;
-  aspect-ratio: 4 / 3.6;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border-hover);
   overflow: hidden;
   background: linear-gradient(160deg, var(--color-bg-secondary) 0%, var(--color-bg-card) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-card);
+  transition: border-color var(--transition-base);
 }
 
-.hero__photo-img {
+.hero__profile-card:hover .hero__profile-photo-wrapper {
+  border-color: var(--color-accent);
+}
+
+.hero__profile-photo-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: top center;
   display: block;
-  transition: transform var(--transition-slow);
 }
 
-.hero__photo-card:hover .hero__photo-img { transform: scale(1.03); }
-
-.hero__photo-placeholder {
+/* Fallback da foto */
+.hero__profile-photo-placeholder {
   display: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
-  padding: var(--space-8);
-  text-align: center;
+  gap: 4px;
   width: 100%;
   height: 100%;
+  padding: var(--space-3);
+  text-align: center;
 }
 
-.hero__photo-wrapper--fallback .hero__photo-placeholder { display: flex; }
-
-.hero__photo-placeholder-avatar {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 2px dashed var(--color-border-hover);
+.hero__profile-photo-wrapper--fallback .hero__profile-photo-placeholder {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.5rem;
+}
+
+.hero__profile-photo-avatar {
+  font-size: 1.8rem;
   color: var(--color-text-subtle);
+  margin-bottom: 2px;
 }
 
-.hero__photo-placeholder-label {
-  font-size: var(--text-sm);
-  font-weight: 600;
+.hero__profile-photo-label {
+  font-size: 0.65rem;
+  font-weight: 700;
   color: var(--color-text-muted);
-}
-
-.hero__photo-placeholder-hint {
-  font-size: var(--text-xs);
-  color: var(--color-accent);
-  background-color: var(--color-accent-dim);
-  border: 1px solid var(--color-accent-border);
-  padding: 0.15rem 0.6rem;
-  border-radius: var(--radius-full);
-  font-weight: 500;
-}
-
-/* Tags flutuantes sobre o card */
-.hero__float-tag {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0.4rem 0.85rem;
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--color-text);
-  background: rgba(9, 9, 11, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--color-border-hover);
-  border-radius: var(--radius-full);
-  white-space: nowrap;
-  z-index: 2;
-  box-shadow: var(--shadow-card);
-}
-
-.hero__float-tag--top {
-  top: var(--space-4);
-  right: -12px;
-  animation: float 5s ease-in-out infinite;
-}
-
-.hero__float-tag--bottom {
-  bottom: var(--space-5);
-  left: var(--space-4);
-  animation: float 5s ease-in-out infinite reverse;
-  animation-delay: -2.5s;
-}
-
-/* Card de vídeo */
-.hero__video-card {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  transition: border-color var(--transition-base);
-  width: 100%;
-  max-width: 400px;
-  margin-inline: auto;
-}
-
-@media (min-width: 768px) {
-  .hero__video-card { max-width: none; }
-}
-
-.hero__video-card:hover { border-color: var(--color-border-hover); }
-
-.hero__video-header {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.hero__video-icon {
-  font-size: var(--text-lg);
-  color: #ff0000;
-}
-
-.hero__video-title {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-text);
-}
-
-.hero__video-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.04) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(139, 92, 246, 0.03) 100%);
-  border: 1px dashed var(--color-border-hover);
-  border-radius: var(--radius-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  overflow: hidden;
-  position: relative;
-  padding: var(--space-5);
-}
-
-/* Barra decorativa simulando player */
-.hero__video-placeholder::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--color-accent) 0%, rgba(6, 182, 212, 0.2) 60%, transparent 100%);
-  border-radius: var(--radius-full) var(--radius-full) 0 0;
-}
-
-.hero__video-soon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.hero__video-soon-icon {
-  font-size: 2.5rem;
-  color: var(--color-accent);
-  opacity: 0.55;
-  transition: opacity var(--transition-base), transform var(--transition-base);
-}
-
-.hero__video-placeholder:hover .hero__video-soon-icon {
-  opacity: 0.85;
-  transform: scale(1.1);
-}
-
-.hero__video-soon-label {
-  font-size: var(--text-xs);
-  font-weight: 600;
-  color: var(--color-accent);
-  background-color: var(--color-accent-dim);
-  border: 1px solid var(--color-accent-border);
-  padding: 0.15rem 0.65rem;
-  border-radius: var(--radius-full);
+  text-transform: uppercase;
   letter-spacing: 0.05em;
+}
+
+.hero__profile-photo-hint {
+  font-size: 0.58rem;
+  color: var(--color-accent);
+  background-color: var(--color-accent-dim);
+  border: 1px solid var(--color-accent-border);
+  padding: 0.05rem 0.4rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
   text-transform: uppercase;
 }
 
-.hero__video-soon-topics {
+/* Informações do Perfil */
+.hero__profile-info {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex-grow: 1;
+}
+
+.hero__profile-name {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.hero__profile-role {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-accent);
+}
+
+.hero__profile-institution {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  display: flex;
   align-items: center;
   justify-content: center;
+  gap: var(--space-1);
+}
+
+@media (min-width: 480px) {
+  .hero__profile-institution {
+    justify-content: flex-start;
+  }
+}
+
+.hero__profile-institution i {
+  color: var(--color-accent);
+  font-size: 0.85rem;
+}
+
+.hero__profile-badges {
+  margin-top: var(--space-2);
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .hero__profile-badges {
+    justify-content: flex-start;
+  }
+}
+
+.hero__profile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  background-color: var(--color-accent-dim);
+  border: 1px solid var(--color-accent-border);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.02em;
+}
+
+.hero__profile-badge i {
+  font-size: 0.75rem;
+}
+
+/* Divisor sutil */
+.hero__profile-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent 100%
+  );
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Parte Inferior (Vídeo) */
+.hero__profile-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.hero__profile-video-header {
+  display: flex;
+  align-items: center;
   gap: var(--space-2);
 }
 
-.hero__video-soon-topic {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--color-text-subtle);
-  letter-spacing: 0.03em;
+.hero__profile-video-icon {
+  font-size: var(--text-base);
+  color: #ff0000;
 }
 
-.hero__video-soon-topic::before {
-  content: '';
-  display: block;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background-color: var(--color-accent);
-  opacity: 0.5;
-  flex-shrink: 0;
+.hero__profile-video-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.hero__video-soon-topic:first-child::before { display: none; }
-
-.hero__video-caption {
+.hero__profile-video-description {
   font-size: var(--text-xs);
   color: var(--color-text-subtle);
-  line-height: 1.6;
+  line-height: 1.5;
+}
+
+.hero__profile-video-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.hero__profile-video-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 /* Override do scroll indicator para o hero split */

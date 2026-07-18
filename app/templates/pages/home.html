@@ -166,76 +166,79 @@
     <!-- ── COLUNA DIREITA: Foto + Vídeo ───────────────────────── -->
     <div class="hero__right" data-aos="fade-left" data-aos-duration="900" data-aos-delay="150">
 
-      <!-- Card da foto profissional -->
-      <div class="hero__photo-card" aria-label="Foto profissional de Carlos Daniel">
-
+      <!-- Painel Único de Apresentação -->
+      <div class="hero__profile-card" aria-label="Painel de apresentação de Carlos Daniel Alves da Silva">
+        
         <!-- Glow decorativo atrás do card -->
-        <div class="hero__photo-glow" aria-hidden="true"></div>
+        <div class="hero__profile-glow" aria-hidden="true"></div>
 
-        <!-- Foto / Placeholder -->
-        <div class="hero__photo-wrapper">
-          <img
-            src="{{ student.photo }}"
-            alt="Carlos Daniel Alves da Silva, estudante de Engenharia Mecânica no IFCE Campus Maracanaú"
-            class="hero__photo-img"
-            width="400"
-            height="460"
-            loading="lazy"
-            onerror="this.parentElement.classList.add('hero__photo-wrapper--fallback'); this.style.display='none';"
-          />
-          <!-- Fallback elegante quando a foto ainda não foi inserida -->
-          <div class="hero__photo-placeholder" aria-hidden="true">
-            <div class="hero__photo-placeholder-avatar">
-              <i class="fa-solid fa-user" aria-hidden="true"></i>
+        <!-- PARTE SUPERIOR: Foto + Informações -->
+        <div class="hero__profile-top">
+          <!-- Foto / Placeholder -->
+          <div class="hero__profile-photo-wrapper">
+            <img
+              src="{{ student.photo }}"
+              alt="Carlos Daniel Alves da Silva, estudante de Engenharia Mecânica no IFCE Campus Maracanaú"
+              class="hero__profile-photo-img"
+              width="150"
+              height="150"
+              loading="lazy"
+              onerror="this.parentElement.classList.add('hero__profile-photo-wrapper--fallback'); this.style.display='none';"
+            />
+            <!-- Fallback elegante quando a foto ainda não foi inserida -->
+            <div class="hero__profile-photo-placeholder" aria-hidden="true">
+              <div class="hero__profile-photo-avatar">
+                <i class="fa-solid fa-user" aria-hidden="true"></i>
+              </div>
+              <p class="hero__profile-photo-label">Foto profissional</p>
+              <span class="hero__profile-photo-hint">em breve</span>
             </div>
-            <p class="hero__photo-placeholder-label">Foto profissional</p>
-            <p class="hero__photo-placeholder-hint">em breve</p>
+          </div>
+
+          <!-- Informações de Perfil -->
+          <div class="hero__profile-info">
+            <h3 class="hero__profile-name">Carlos Daniel Alves da Silva</h3>
+            <p class="hero__profile-role">Estudante de Engenharia Mecânica</p>
+            <p class="hero__profile-institution">
+              <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+              IFCE Campus Maracanaú
+            </p>
+            
+            <!-- Badge do projeto Pesquisar+ -->
+            <div class="hero__profile-badges">
+              <span class="hero__profile-badge">
+                <i class="fa-brands fa-python" aria-hidden="true"></i>
+                Pesquisar+
+              </span>
+            </div>
           </div>
         </div>
 
-        <!-- Tag flutuante: IFCE -->
-        <div class="hero__float-tag hero__float-tag--top" aria-hidden="true">
-          <i class="fa-solid fa-graduation-cap"></i>
-          IFCE · Eng. Mecânica
-        </div>
+        <!-- Divisor Visual Sutil -->
+        <hr class="hero__profile-divider" aria-hidden="true" />
 
-        <!-- Tag flutuante: Python -->
-        <div class="hero__float-tag hero__float-tag--bottom" aria-hidden="true">
-          <i class="fa-brands fa-python"></i>
-          Pesquisar+
-        </div>
-
-      </div><!-- /.hero__photo-card -->
-
-      <!-- Componente de Vídeo (estrutura preparada para YouTube) -->
-      <div
-        class="hero__video-card"
-        id="hero-video-container"
-        aria-label="Vídeo de apresentação de Carlos Daniel"
-      >
-        <div class="hero__video-header">
-          <i class="fa-brands fa-youtube hero__video-icon" aria-hidden="true"></i>
-          <span class="hero__video-title">Vídeo de apresentação</span>
-        </div>
-
-        <div class="hero__video-placeholder">
-          <!-- Quando disponível: <iframe width="100%" height="100%" src="https://www.youtube.com/embed/VIDEO_ID" ... /> -->
-          <div class="hero__video-soon">
-            <i class="fa-regular fa-circle-play hero__video-soon-icon" aria-hidden="true"></i>
-            <span class="hero__video-soon-label">Em produção</span>
+        <!-- PARTE INFERIOR: Vídeo de Apresentação -->
+        <div class="hero__profile-bottom">
+          <div class="hero__profile-video-header">
+            <i class="fa-brands fa-youtube hero__profile-video-icon" aria-hidden="true"></i>
+            <h4 class="hero__profile-video-title">Vídeo de Apresentação</h4>
           </div>
-          <div class="hero__video-soon-topics" aria-label="Tópicos do vídeo">
-            <span class="hero__video-soon-topic">Apresentação pessoal</span>
-            <span class="hero__video-soon-topic">Trajetória</span>
-            <span class="hero__video-soon-topic">Principais projetos</span>
-            <span class="hero__video-soon-topic">Objetivos profissionais</span>
+          <p class="hero__profile-video-description">
+            Conheça minha trajetória, meus projetos e os objetivos deste portfólio.
+          </p>
+          <div class="hero__profile-video-wrapper">
+            <iframe
+              class="hero__profile-video-iframe"
+              src="https://www.youtube.com/embed/RHgqOt6mGtk"
+              title="Vídeo de apresentação de Carlos Daniel Alves da Silva"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
 
-        <p class="hero__video-caption">
-          Um vídeo curto sobre quem sou, minha trajetória e o que estou construindo.
-        </p>
-      </div><!-- /.hero__video-card -->
+      </div><!-- /.hero__profile-card -->
 
     </div><!-- /.hero__right -->
 
