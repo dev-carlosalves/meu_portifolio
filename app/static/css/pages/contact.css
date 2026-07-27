@@ -1,11 +1,21 @@
 /*
  * pages/contact.css — Estilos da página de Contato e integrações.
+ *
+ * Revisão de espaçamento (v2):
+ *   - Card "Escolha a melhor forma": mais espaço entre título/parágrafo e entre blocos de canal
+ *   - Formulário: mais espaço entre campos e entre label → input
+ *   - Seção "Disponibilidade": mais espaço interno e margens externas
+ *   - FAQ: mais espaço entre título e accordion, e entre itens
+ *   - Geral: separação consistente entre todas as seções
  */
 
+/* ──────────────────────────────────────────────────────────────────
+   GRID PRINCIPAL (2 colunas: canais + formulário)
+   ────────────────────────────────────────────────────────────────── */
 .contact__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-6);
+  gap: var(--space-8);          /* era --space-6 → aumentado para mais respiro */
   max-width: 1040px;
   margin-inline: auto;
 }
@@ -13,10 +23,295 @@
 @media (min-width: 768px) {
   .contact__grid {
     grid-template-columns: 1fr 1.4fr;
+    gap: var(--space-10);       /* gap maior em desktop */
   }
 }
 
-/* WhatsApp FAB */
+
+/* ──────────────────────────────────────────────────────────────────
+   CARD "ESCOLHA A MELHOR FORMA" — coluna esquerda
+   ────────────────────────────────────────────────────────────────── */
+
+/* 1. Mais espaço entre o título do card e o parágrafo descritivo */
+.contact__grid > div:first-child h3 {
+  margin-bottom: var(--space-5) !important;  /* era mb-4 (1rem) → 1.25rem */
+}
+
+/* 2. Mais espaço entre o parágrafo e a lista de canais */
+.contact__grid > div:first-child h3 + p {
+  margin-bottom: var(--space-8) !important;  /* era mb-6 (1.5rem) → 2rem */
+}
+
+/* 3. Mais espaço entre os blocos de canal (E-mail, WhatsApp, LinkedIn, GitHub) */
+.contact__grid > div:first-child .flex.flex-col {
+  gap: var(--space-6) !important;            /* era gap-5 (1.25rem) → 1.5rem */
+}
+
+/* 4. Mais espaço entre o header do canal (ícone+texto) e o botão/nota */
+.contact__grid > div:first-child .flex.items-center.gap-3 {
+  margin-bottom: var(--space-4) !important;  /* era mb-2/mb-3 → 1rem uniforme */
+}
+
+/* 5. Nota informativa do WhatsApp e GitHub: mais espaço abaixo antes do botão */
+.contact__grid > div:first-child p.text-xxs.text-text-subtle.mb-3 {
+  margin-bottom: var(--space-5) !important;  /* era mb-3 (0.75rem) → 1.25rem */
+}
+
+/* 6. Padding interno de cada bloco de canal */
+.contact__grid > div:first-child > div > div > div.flex.flex-col.gap-5 > div,
+.contact__grid > div:first-child > div > div > div.flex.flex-col > div {
+  padding: var(--space-5) !important;        /* era p-4 (1rem) → 1.25rem */
+}
+
+/* 7. Rodapé "Respondo em 24h": mais espaço acima */
+.contact__grid > div:first-child .mt-6 {
+  margin-top: var(--space-8) !important;     /* era mt-6 (1.5rem) → 2rem */
+  padding-top: var(--space-5) !important;    /* era pt-4 (1rem) → 1.25rem */
+}
+
+
+/* ──────────────────────────────────────────────────────────────────
+   FORMULÁRIO "ENVIAR MENSAGEM" — coluna direita
+   ────────────────────────────────────────────────────────────────── */
+
+/* 8. Mais espaço entre o título do formulário e os campos */
+.contact__grid > div:last-child h3 {
+  margin-bottom: var(--space-6) !important;  /* era mb-4 (1rem) → 1.5rem */
+}
+
+/* 9. form-group: aumenta gap label→input e margem entre grupos */
+.form-group {
+  gap: var(--space-3);           /* era --space-2 (0.5rem) → 0.75rem */
+  margin-bottom: var(--space-6); /* era --space-4 (1rem) → 1.5rem */
+}
+
+/* 10. Último grupo antes do botão: margem extra embaixo */
+.contact__grid .form-group.mb-6 {
+  margin-bottom: var(--space-8) !important;  /* era mb-6 (1.5rem) → 2rem */
+}
+
+/* 11. Grid dos dois primeiros campos (Nome + E-mail): mais gap vertical */
+.contact__grid .grid.grid-cols-1 {
+  gap: var(--space-6) !important;  /* era gap-4 (1rem) → 1.5rem */
+  margin-bottom: var(--space-6) !important;  /* era mb-4 → 1.5rem */
+}
+
+/* 12. Padding do card do formulário: mais folgado */
+.contact__grid > div:last-child > div.card {
+  padding: var(--space-8) !important;  /* era p-6 (1.5rem) → 2rem */
+}
+
+/* 13. Label do formulário: mais peso visual e espaço */
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);  /* pequeno reforço adicional */
+}
+
+/* 14. Input com mais padding interno para "respirar" */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;         /* era 0.65rem 1rem → mais alto */
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  transition: border-color var(--transition-base),
+              box-shadow var(--transition-base);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-dim);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-subtle);
+}
+
+.form-input--textarea {
+  min-height: 150px;             /* era 140px → um pouco mais alto */
+  resize: vertical;
+}
+
+/* 15. Aviso de campos obrigatórios: mais respiro acima */
+.contact__grid form > p.text-xxs {
+  margin-top: var(--space-5) !important;  /* era mt-4 (1rem) → 1.25rem */
+}
+
+
+/* ──────────────────────────────────────────────────────────────────
+   SEÇÃO "DISPONIBILIDADE"
+   ────────────────────────────────────────────────────────────────── */
+
+/* 16. Padding da seção: mais espaço externo acima e abaixo */
+section[aria-label="Informações de Disponibilidade Profissional"] {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+}
+
+/* 17. Padding interno do card de disponibilidade */
+section[aria-label="Informações de Disponibilidade Profissional"] .card {
+  padding: var(--space-10) var(--space-8) !important;  /* era p-8 → mais folgado */
+}
+
+/* 18. Título da disponibilidade: mais espaço abaixo */
+section[aria-label="Informações de Disponibilidade Profissional"] h2 {
+  margin-bottom: var(--space-8) !important;  /* era mb-5 → mais espaço */
+}
+
+/* 19. Espaço entre parágrafos da disponibilidade */
+section[aria-label="Informações de Disponibilidade Profissional"] .space-y-4 > p {
+  padding-bottom: var(--space-2);  /* reforça o espaço entre parágrafos */
+}
+
+section[aria-label="Informações de Disponibilidade Profissional"] .space-y-4 {
+  --tw-space-y-reverse: 0;
+}
+
+/* Garante espaço real entre os parágrafos (sem depender de Tailwind) */
+section[aria-label="Informações de Disponibilidade Profissional"] .text-sm.leading-relaxed p + p,
+section[aria-label="Informações de Disponibilidade Profissional"] .text-sm.leading-relaxed p {
+  margin-bottom: var(--space-5);
+}
+
+
+/* ──────────────────────────────────────────────────────────────────
+   SEÇÃO FAQ — "Perguntas Frequentes"
+   ────────────────────────────────────────────────────────────────── */
+
+/* 20. Padding externo da seção FAQ */
+section[aria-label="Perguntas Frequentes"] {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-20);
+}
+
+/* 21. Mais espaço entre o cabeçalho (badge + título) e o accordion */
+section[aria-label="Perguntas Frequentes"] .text-center.max-w-xl {
+  margin-bottom: var(--space-16) !important;  /* era mb-12 → mb-16 */
+}
+
+/* 22. Espaço entre o badge "Dúvidas Comuns" e o título H2 */
+section[aria-label="Perguntas Frequentes"] .text-center span {
+  margin-bottom: var(--space-3) !important;  /* era mb-2 → 0.75rem */
+  display: block;
+}
+
+/* 23. Espaço entre itens do accordion: aumenta gap */
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);           /* era --space-6 — mantido, mas reforçado */
+  max-width: 800px;
+  margin-inline: auto;
+}
+
+/* 24. Padding do summary (pergunta) */
+.faq-item__summary {
+  padding: var(--space-6) var(--space-8);  /* mais padding horizontal */
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  user-select: none;
+  outline: none;
+  line-height: 1.6;
+}
+
+/* 25. Padding do conteúdo expandido (resposta) */
+.faq-item__content {
+  padding: var(--space-5) var(--space-8) var(--space-8) var(--space-8);  /* mais espaço lateral e inferior */
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.9;              /* um pouco mais de linha para respirar */
+  border-top: 1px solid transparent;
+}
+
+.faq-item[open] {
+  border-color: var(--color-border-hover);
+}
+
+.faq-item__summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item__summary::after {
+  content: '\f078';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  transition: transform var(--transition-base);
+  flex-shrink: 0;
+}
+
+.faq-item[open] .faq-item__summary::after {
+  transform: rotate(180deg);
+  color: var(--color-accent);
+}
+
+.faq-item[open] .faq-item__content {
+  border-top-color: var(--color-border-dark);
+}
+
+
+/* ──────────────────────────────────────────────────────────────────
+   SEÇÃO "OBRIGADO PELA VISITA"
+   ────────────────────────────────────────────────────────────────── */
+
+/* 26. Padding da seção final */
+section[aria-label="Agradecimento da Visita"] {
+  padding-top: var(--space-20);
+  padding-bottom: var(--space-24);
+}
+
+/* 27. Padding interno do card de agradecimento */
+section[aria-label="Agradecimento da Visita"] .card {
+  padding: var(--space-16) var(--space-12) !important;  /* era p-12 → mais folgado */
+}
+
+
+/* ──────────────────────────────────────────────────────────────────
+   SEÇÃO "ENTRE EM CONTATO" (wrapper dos dois blocos)
+   ────────────────────────────────────────────────────────────────── */
+
+/* 28. Espaço externo da seção principal de contato */
+section[aria-label="Canais de Contato"] {
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-20);
+}
+
+/* 29. Padding do card esquerdo */
+.contact__grid > div:first-child > div.card {
+  padding: var(--space-8) !important;  /* era p-6 → 2rem */
+}
+
+
+/* ──────────────────────────────────────────────────────────────────
+   HERO / CABEÇALHO DA PÁGINA
+   ────────────────────────────────────────────────────────────────── */
+
+/* 30. Espaço extra abaixo do hero */
+section[aria-label="Apresentação de Contato"] {
+  padding-bottom: var(--space-6);
+}
+
+
+/* ──────────────────────────────────────────────────────────────────
+   WHATSAPP FAB — mantido inalterado
+   ────────────────────────────────────────────────────────────────── */
 .whatsapp-fab {
   position: fixed;
   bottom: var(--space-6);
@@ -42,75 +337,10 @@
   box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
 }
 
-/* Accordion FAQ */
-.faq-accordion {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  max-width: 800px;
-  margin-inline: auto;
-}
 
-.faq-item {
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  transition: border-color var(--transition-base);
-}
-
-.faq-item[open] {
-  border-color: var(--color-border-hover);
-}
-
-.faq-item__summary {
-  padding: var(--space-6);
-  font-family: var(--font-heading);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--color-text);
-  cursor: pointer;
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-4);
-  user-select: none;
-  outline: none;
-  line-height: 1.5;
-}
-
-.faq-item__summary::-webkit-details-marker {
-  display: none;
-}
-
-.faq-item__summary::after {
-  content: '\f078';
-  font-family: 'Font Awesome 6 Free';
-  font-weight: 900;
-  font-size: var(--text-xs);
-  color: var(--color-text-subtle);
-  transition: transform var(--transition-base);
-}
-
-.faq-item[open] .faq-item__summary::after {
-  transform: rotate(180deg);
-  color: var(--color-accent);
-}
-
-.faq-item__content {
-  padding: var(--space-4) var(--space-6) var(--space-6) var(--space-6);
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  line-height: 1.8;
-  border-top: 1px solid transparent;
-}
-
-.faq-item[open] .faq-item__content {
-  border-top-color: var(--color-border-dark);
-}
-
-/* Campos inválidos */
+/* ──────────────────────────────────────────────────────────────────
+   VALIDAÇÃO DE FORMULÁRIO — mantido inalterado
+   ────────────────────────────────────────────────────────────────── */
 .form-input.is-invalid {
   border-color: #ef4444;
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.15);

@@ -65,17 +65,17 @@
       <div data-aos="fade-right">
         <div class="card p-6 h-full flex flex-col justify-between">
           <div>
-            <h3 class="font-heading font-bold text-text-base text-base mb-4">Escolha a melhor forma</h3>
-            <p class="text-xs text-text-muted leading-relaxed mb-6">
+            <h3 class="font-heading font-bold text-text-base text-base mb-5">Escolha a melhor forma</h3>
+            <p class="text-xs text-text-muted leading-relaxed mb-8">
               Estou conectado nos principais canais profissionais e costumo responder mensagens com rapidez. 
               Sinta-se à vontade para usar qualquer um dos canais abaixo.
             </p>
             
-            <div class="flex flex-col gap-5">
+            <div class="flex flex-col gap-6">
               
               <!-- E-mail -->
-              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
-                <div class="flex items-center gap-3 mb-3">
+              <div class="p-5 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-4">
                   <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
                     <i class="fa-solid fa-envelope" aria-hidden="true"></i>
                   </div>
@@ -96,8 +96,8 @@
               </div>
               
               <!-- WhatsApp -->
-              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
-                <div class="flex items-center gap-3 mb-2">
+              <div class="p-5 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-3">
                   <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
                     <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
                   </div>
@@ -106,7 +106,7 @@
                     <p class="text-xs text-text-base font-bold">{{ student.whatsapp }}</p>
                   </div>
                 </div>
-                <p class="text-xxs text-text-subtle mb-3 pl-1">
+                <p class="text-xxs text-text-subtle mb-5 pl-1">
                   <i class="fa-solid fa-circle-info text-accent mr-1" aria-hidden="true"></i>
                   {{ student.whatsapp_note }}
                 </p>
@@ -123,8 +123,8 @@
               </div>
               
               <!-- LinkedIn -->
-              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
-                <div class="flex items-center gap-3 mb-3">
+              <div class="p-5 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-4">
                   <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
                     <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
                   </div>
@@ -146,8 +146,8 @@
               </div>
               
               <!-- GitHub -->
-              <div class="p-4 bg-white/3 border border-border-dark rounded-xl">
-                <div class="flex items-center gap-3 mb-3">
+              <div class="p-5 bg-white/3 border border-border-dark rounded-xl">
+                <div class="flex items-center gap-3 mb-4">
                   <div class="text-accent text-lg w-10 h-10 rounded-lg bg-white/3 border border-border-dark flex items-center justify-center flex-shrink-0">
                     <i class="fa-brands fa-github" aria-hidden="true"></i>
                   </div>
@@ -156,7 +156,7 @@
                     <p class="text-xs text-text-base font-medium">github.com/dev-carlosalves</p>
                   </div>
                 </div>
-                <p class="text-xxs text-text-subtle mb-3 pl-1">
+                <p class="text-xxs text-text-subtle mb-5 pl-1">
                   Repositório onde publico meus projetos, estudos e aplicações desenvolvidas durante minha formação.
                 </p>
                 <a 
@@ -174,7 +174,7 @@
             </div>
           </div>
           
-          <div class="mt-6 pt-4 border-t border-border-dark">
+          <div class="mt-8 pt-5 border-t border-border-dark">
             <p class="text-xxs text-text-subtle">
               <i class="fa-solid fa-clock text-accent mr-1" aria-hidden="true"></i>
               Respondo mensagens em até 24 horas úteis.
@@ -185,15 +185,15 @@
       
       <!-- ── BLOCO DIREITO: Formulário com EmailJS ── -->
       <div data-aos="fade-left">
-        <div class="card p-6">
-          <h3 class="font-heading font-bold text-text-base text-base mb-4">Enviar Mensagem</h3>
+        <div class="card p-8">
+          <h3 class="font-heading font-bold text-text-base text-base mb-6">Enviar Mensagem</h3>
           
           <form 
             id="contact-form" 
             novalidate 
             aria-label="Formulário para envio de mensagem de e-mail direto"
           >
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
               <div class="form-group">
                 <label for="name" class="form-label">Nome Completo *</label>
                 <input 
@@ -212,7 +212,7 @@
               </div>
             </div>
             
-            <div class="form-group mb-4">
+            <div class="form-group mb-6">
               <label for="subject" class="form-label">Assunto *</label>
               <input 
                 type="text" id="subject" name="subject" class="form-input" 
@@ -222,7 +222,7 @@
               <p class="form-error" id="subject-error" role="alert" aria-live="polite"></p>
             </div>
             
-            <div class="form-group mb-6">
+            <div class="form-group mb-8">
               <label for="message" class="form-label">Mensagem *</label>
               <textarea 
                 id="message" name="message" class="form-input form-input--textarea" 
@@ -243,7 +243,7 @@
               <span id="submit-btn-text">Enviar Mensagem</span>
             </button>
             
-            <p class="text-xxs text-text-subtle mt-4 text-center">
+            <p class="text-xxs text-text-subtle mt-5 text-center">
               * Todos os campos são obrigatórios. Os dados de contato são tratados de forma sigilosa.
             </p>
           </form>
@@ -257,11 +257,11 @@
 <!-- ═══════════════════════════════════════════════════════════════
      DISPONIBILIDADE
 ═══════════════════════════════════════════════════════════════ -->
-<section class="py-16" aria-label="Informações de Disponibilidade Profissional">
+<section class="py-20" aria-label="Informações de Disponibilidade Profissional">
   <div class="container">
-    <div class="card p-8 hover-glow" data-aos="fade-up">
+    <div class="card p-10 hover-glow" data-aos="fade-up">
       <div class="max-w-3xl mx-auto">
-        <h2 class="text-lg md:text-xl font-bold font-heading text-text-base mb-5 text-center">
+        <h2 class="text-lg md:text-xl font-bold font-heading text-text-base mb-8 text-center">
           <i class="fa-solid fa-calendar-check text-accent mr-2" aria-hidden="true"></i>
           Disponibilidade
         </h2>
@@ -284,11 +284,11 @@
 <!-- ═══════════════════════════════════════════════════════════════
      FAQ (Accordion)
 ═══════════════════════════════════════════════════════════════ -->
-<section class="py-16 section--alt" aria-label="Perguntas Frequentes">
+<section class="py-20 section--alt" aria-label="Perguntas Frequentes">
   <div class="container">
     
-    <div class="text-center max-w-xl mx-auto mb-12" data-aos="fade-up">
-      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-2 block">Dúvidas Comuns</span>
+    <div class="text-center max-w-xl mx-auto mb-16" data-aos="fade-up">
+      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-3 block">Dúvidas Comuns</span>
       <h2 class="text-xl md:text-2xl font-bold font-heading text-text-base">Perguntas Frequentes</h2>
     </div>
     
@@ -346,7 +346,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
      FRASE FINAL / AGRADECIMENTO
 ═══════════════════════════════════════════════════════════════ -->
-<section class="py-24" aria-label="Agradecimento da Visita">
+<section class="py-20" aria-label="Agradecimento da Visita">
   <div class="container">
     <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
       <i class="fa-solid fa-heart text-accent text-3xl mb-4 block" aria-hidden="true"></i>
