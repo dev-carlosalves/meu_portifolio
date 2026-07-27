@@ -13,10 +13,11 @@ async def home(request: Request) -> HTMLResponse:
     templates = request.app.state.templates
     context = get_base_context(
         page_id     = "home",
-        page_title  = "Carlos Daniel | Engenharia Mecânica · IFCE",
+        page_title  = "Carlos Daniel | Projetos CAD · Fusion 360 · SolidWorks · AutoCAD",
         description = (
-            "Portfólio de Carlos Daniel Alves da Silva, estudante de "
-            "Engenharia Mecânica no IFCE. Conheça meus projetos e trajetória."
+            "Portfólio de projetos CAD de Carlos Daniel Alves da Silva, estudante de "
+            "Engenharia Mecânica no IFCE. Modelagem 3D paramétrica, montagens e "
+            "documentação técnica em Fusion 360, SolidWorks e AutoCAD."
         ),
     )
     return templates.TemplateResponse("pages/home.html", {"request": request, **context})

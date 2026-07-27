@@ -15,8 +15,8 @@ STUDENT = {
     "nickname":     "Carlos Daniel",
     "initials":     "CD",
     "title":        "Estudante de Engenharia Mecânica · IFCE",
-    "subtitle":     "Engenharia • Tecnologia • Inovação",
-    "tagline":      "Transformando estudo em soluções reais.",
+    "subtitle":     "Fusion 360 · SolidWorks · AutoCAD",
+    "tagline":      "Projetando o futuro com precisão e criatividade.",
     "location":     "Maracanaú, Ceará – Brasil",
     "email":        "alves.silva.carlosd@gmail.com",
     "whatsapp":     "+55 (85) 98675-9763",
@@ -34,13 +34,14 @@ STUDENT = {
 SEO_BASE = {
     "site_name":    f"Portfólio · {STUDENT['name']}",
     "description":  (
-        "Portfólio profissional de Carlos Daniel Alves da Silva, "
+        "Portfólio de projetos CAD de Carlos Daniel Alves da Silva, "
         "estudante de Engenharia Mecânica no IFCE. "
-        "Projetos, habilidades técnicas e trajetória acadêmica."
+        "Modelagem 3D paramétrica, montagens e documentação técnica "
+        "em Fusion 360, SolidWorks e AutoCAD."
     ),
     "keywords":     (
-        "engenharia mecânica, IFCE, portfólio, CAD, Fusion 360, "
-        "Carlos Daniel, estudante engenharia, projetos mecânicos, Python, FastAPI"
+        "engenharia mecânica, IFCE, portfólio CAD, Fusion 360, SolidWorks, AutoCAD, "
+        "Carlos Daniel, modelagem 3D, projetos mecânicos, desenho técnico"
     ),
     "author":       STUDENT["name"],
     "og_image":     "/static/images/og/og-image.png",
@@ -55,10 +56,7 @@ SEO_BASE = {
 # ──────────────────────────────────────────────────────────────────────────────
 NAV_ITEMS = [
     {"label": "Início",          "href": "/",                "id": "nav-home"},
-    {"label": "Minha Jornada",   "href": "/jornada",         "id": "nav-journey"},
-    {"label": "Projetos",        "href": "/projetos",        "id": "nav-projects"},
     {"label": "Laboratório CAD", "href": "/laboratorio-cad", "id": "nav-cad"},
-    {"label": "Tecnologias",     "href": "/tecnologias",     "id": "nav-technologies"},
     {"label": "Currículo",       "href": "/curriculo",       "id": "nav-resume"},
     {"label": "Contato",         "href": "/contato",         "id": "nav-contact"},
 ]

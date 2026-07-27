@@ -379,6 +379,33 @@
   color: var(--color-text-subtle);
 }
 
+.footer__github-invite {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  line-height: 1.6;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.footer__github-invite i {
+  color: var(--color-accent);
+}
+
+.footer__github-link {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity var(--transition-base);
+}
+
+.footer__github-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+
 .footer__col-title {
   font-family: var(--font-heading);
   font-size: var(--text-sm);

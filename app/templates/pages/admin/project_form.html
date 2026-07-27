@@ -66,13 +66,21 @@
 
         <div class="admin-form-grid admin-form-grid--3">
           <div class="admin-form-field">
-            <label for="software" class="admin-form-label">Software <span class="required">*</span></label>
+            <label for="software" class="admin-form-label">
+              Categoria do Laboratório CAD
+              <span class="required">*</span>
+              <span class="admin-form-label__hint">(define em qual sub-área o projeto aparece)</span>
+            </label>
             <select id="software" name="software" class="admin-form-select" required>
-              {% set softwares = ['Fusion 360', 'AutoCAD', 'Inventor', 'SolidWorks', 'CATIA', 'FreeCAD', 'Outro'] %}
+              {% set softwares = ['Fusion 360', 'SolidWorks', 'AutoCAD', 'Inventor', 'CATIA', 'FreeCAD', 'Outro'] %}
               {% for sw in softwares %}
               <option value="{{ sw }}" {{ 'selected' if project and project.software == sw }}>{{ sw }}</option>
               {% endfor %}
             </select>
+            <div class="admin-form-hint">
+              <i class="fa-solid fa-circle-info" style="color: var(--color-accent);"></i>
+              As sub-áreas pública são: <strong>Fusion 360</strong>, <strong>SolidWorks</strong> e <strong>AutoCAD</strong>.
+            </div>
           </div>
           <div class="admin-form-field">
             <label for="status" class="admin-form-label">Status <span class="required">*</span></label>

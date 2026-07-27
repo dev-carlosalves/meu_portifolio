@@ -8,7 +8,7 @@
 #}
 {% extends "base.html" %}
 
-{% block page_title %}Carlos Daniel | Engenharia Mecânica · Python · CAD{% endblock %}
+{% block page_title %}Carlos Daniel | Projetos CAD · Fusion 360 · SolidWorks · AutoCAD{% endblock %}
 
 {% block content %}
 
@@ -55,40 +55,39 @@
       <!-- Subtítulos: 3 áreas com hierarquia -->
       <div class="hero__roles" aria-label="Áreas de atuação">
         <div class="hero__role hero__role--primary">
-          <i class="fa-solid fa-gears" aria-hidden="true"></i>
-          <span>Estudante de Engenharia Mecânica</span>
+          <i class="fa-solid fa-cube" aria-hidden="true"></i>
+          <span>Projetista CAD — Fusion 360 · SolidWorks · AutoCAD</span>
         </div>
         <div class="hero__role hero__role--secondary">
-          <i class="fa-brands fa-python" aria-hidden="true"></i>
-          <span>Desenvolvedor Backend Python</span>
+          <i class="fa-solid fa-gears" aria-hidden="true"></i>
+          <span>Estudante de Engenharia Mecânica · IFCE</span>
         </div>
         <div class="hero__role hero__role--tertiary">
-          <i class="fa-solid fa-cube" aria-hidden="true"></i>
-          <span>Projetista CAD</span>
+          <i class="fa-brands fa-python" aria-hidden="true"></i>
+          <span>Projetos Python no GitHub</span>
         </div>
       </div>
 
       <!-- Texto de apresentação autêntico -->
       <p class="hero__bio">
         Tenho 18 anos, sou do Ceará e estudo Engenharia Mecânica no
-        <strong>IFCE Campus Maracanaú</strong>.
-        Gosto de resolver problemas reais — por isso desenvolvo projetos em
-        <strong>Python</strong> e aprofundo meus conhecimentos em
-        <strong>Fusion 360</strong>.
-        Atualmente construo a plataforma <strong>Pesquisar+</strong> e
-        uso este portfólio para documentar cada etapa da minha evolução.
+        <strong>IFCE Campus Maracanáu</strong>.
+        Este portfólio documenta minha evolução como projetista CAD:
+        cada modelo, cada montagem e cada conjunto desenvolvidos em
+        <strong>Fusion 360</strong>, <strong>SolidWorks</strong> e <strong>AutoCAD</strong>.
+        Precisão, criatividade e rigor técnico em cada projeto.
       </p>
 
       <!-- CTAs: Primário, Secundário, Outline -->
       <div class="hero__actions">
         <a
-          href="/projetos"
+          href="/laboratorio-cad"
           class="btn-primary"
-          id="hero-cta-projects"
-          aria-label="Conhecer os projetos de Carlos Daniel"
+          id="hero-cta-cad"
+          aria-label="Explorar o Laboratório CAD de Carlos Daniel"
         >
-          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
-          <span>Conhecer meus projetos</span>
+          <i class="fa-solid fa-cube" aria-hidden="true"></i>
+          <span>Explorar Laboratório CAD</span>
         </a>
         <a
           href="{{ student.cv }}"
@@ -114,20 +113,20 @@
       <!-- Estatísticas em mini-cards -->
       <div class="hero__stats" role="list" aria-label="Estatísticas de Carlos Daniel">
         <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="100">
-          <span class="hero-stat__value" data-count="15">0</span>
-          <span class="hero-stat__label">Projetos</span>
+          <span class="hero-stat__value" data-count="3">3</span>
+          <span class="hero-stat__label">Softwares CAD</span>
         </div>
         <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="180">
-          <span class="hero-stat__value" data-count="10">0</span>
-          <span class="hero-stat__label">Tecnologias</span>
+          <span class="hero-stat__value hero-stat__value--text">3D</span>
+          <span class="hero-stat__label">Modelagem Paramétrica</span>
         </div>
         <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="260">
-          <span class="hero-stat__value hero-stat__value--text">2025</span>
-          <span class="hero-stat__label">Início na programação</span>
+          <span class="hero-stat__value hero-stat__value--text">Eng</span>
+          <span class="hero-stat__label">Engenharia Mecânica</span>
         </div>
         <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="340">
-          <span class="hero-stat__value hero-stat__value--brand">Pesquisar+</span>
-          <span class="hero-stat__label">Projeto principal</span>
+          <span class="hero-stat__value hero-stat__value--brand">CAD</span>
+          <span class="hero-stat__label">Foco total</span>
         </div>
       </div>
 
@@ -198,17 +197,25 @@
           <!-- Informações de Perfil -->
           <div class="hero__profile-info">
             <h3 class="hero__profile-name">Carlos Daniel Alves da Silva</h3>
-            <p class="hero__profile-role">Estudante de Engenharia Mecânica</p>
+            <p class="hero__profile-role">Projetista CAD · Engenharia Mecânica</p>
             <p class="hero__profile-institution">
               <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
-              IFCE Campus Maracanaú
+              IFCE Campus Maracanãu
             </p>
             
-            <!-- Badge do projeto Pesquisar+ -->
+            <!-- Badges dos softwares CAD -->
             <div class="hero__profile-badges">
               <span class="hero__profile-badge">
-                <i class="fa-brands fa-python" aria-hidden="true"></i>
-                Pesquisar+
+                <i class="fa-solid fa-cube" aria-hidden="true"></i>
+                Fusion 360
+              </span>
+              <span class="hero__profile-badge">
+                <i class="fa-solid fa-cube" aria-hidden="true"></i>
+                SolidWorks
+              </span>
+              <span class="hero__profile-badge">
+                <i class="fa-solid fa-cube" aria-hidden="true"></i>
+                AutoCAD
               </span>
             </div>
           </div>
@@ -280,116 +287,96 @@
       {% include "partials/section_header.html" %}
 
       <p class="pi__lead" data-aos="fade-up" data-aos-delay="100">
-        Este site foi criado para documentar toda minha evolução durante a graduação.
-        Aqui você encontra projetos de desenvolvimento de software, engenharia mecânica,
-        modelagem CAD e estudos contínuos.
-        <strong>Meu objetivo é transformar conhecimento em soluções reais.</strong>
+        Este portfólio documenta minha evolução como projetista CAD durante a graduação em Engenharia Mecânica.
+        Aqui você encontra projetos completos desenvolvidos em <strong>Fusion 360</strong>,
+        <strong>SolidWorks</strong> e <strong>AutoCAD</strong> —
+        da modelagem paramétrica ao detalhamento técnico.
+        <strong>Cada projeto documenta o processo completo: modelo, montagem, e análise.</strong>
       </p>
     </div>
 
-    <!-- 4 Cards de área -->
+    <!-- 3 Cards de software CAD -->
     <div class="pi__cards-grid">
 
-      <!-- Card 1: Desenvolvimento de Software -->
+      <!-- Card 1: Fusion 360 -->
       <article
         class="pi__card"
         data-aos="fade-up"
         data-aos-delay="0"
-        aria-label="Área: Desenvolvimento de Software"
-      >
-        <div class="pi__card-icon pi__card-icon--software">
-          <i class="fa-solid fa-code" aria-hidden="true"></i>
-        </div>
-        <h3 class="pi__card-title">Desenvolvimento de Software</h3>
-        <p class="pi__card-desc">
-          Projetos em Python com foco em automação, APIs e plataformas web.
-          Atualmente desenvolvendo a <strong>Pesquisar+</strong>,
-          uma plataforma de busca inteligente.
-        </p>
-        <a href="/projetos" class="pi__card-link" aria-label="Ver projetos de software">
-          Ver projetos
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </a>
-      </article>
-
-      <!-- Card 2: Engenharia Mecânica -->
-      <article
-        class="pi__card"
-        data-aos="fade-up"
-        data-aos-delay="100"
-        aria-label="Área: Engenharia Mecânica"
-      >
-        <div class="pi__card-icon pi__card-icon--eng">
-          <i class="fa-solid fa-gears" aria-hidden="true"></i>
-        </div>
-        <h3 class="pi__card-title">Engenharia Mecânica</h3>
-        <p class="pi__card-desc">
-          Estudos no <strong>IFCE Campus Maracanaú</strong> com ênfase em
-          mecânica dos sólidos, termodinâmica e fundamentos de projeto mecânico.
-        </p>
-        <a href="/jornada" class="pi__card-link" aria-label="Ver jornada acadêmica">
-          Minha jornada
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </a>
-      </article>
-
-      <!-- Card 3: Projetos CAD -->
-      <article
-        class="pi__card"
-        data-aos="fade-up"
-        data-aos-delay="200"
-        aria-label="Área: Projetos CAD"
+        aria-label="Software: Fusion 360"
       >
         <div class="pi__card-icon pi__card-icon--cad">
           <i class="fa-solid fa-cube" aria-hidden="true"></i>
         </div>
-        <h3 class="pi__card-title">Projetos CAD</h3>
+        <h3 class="pi__card-title">Fusion 360</h3>
         <p class="pi__card-desc">
-          Modelagem 3D e prototipagem no <strong>Fusion 360</strong>.
-          Desenvolvimento de peças, conjuntos e renderizações técnicas
-          para projetos reais.
+          Modelagem 3D paramétrica, montagens, vistas explodidas e
+          renderizações técnicas de alta qualidade.
+          Ideal para projetos mecânicos completos do conceito ao detalhe.
         </p>
-        <a href="/laboratorio-cad" class="pi__card-link" aria-label="Ver laboratório CAD">
-          Laboratório CAD
+        <a href="/laboratorio-cad?software=Fusion+360" class="pi__card-link" aria-label="Ver projetos Fusion 360">
+          Explorar projetos
           <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
 
-      <!-- Card 4: Aprendizagem Contínua -->
+      <!-- Card 2: SolidWorks -->
       <article
         class="pi__card"
         data-aos="fade-up"
-        data-aos-delay="300"
-        aria-label="Área: Aprendizagem Contínua"
+        data-aos-delay="100"
+        aria-label="Software: SolidWorks"
       >
-        <div class="pi__card-icon pi__card-icon--learn">
-          <i class="fa-solid fa-book-open" aria-hidden="true"></i>
+        <div class="pi__card-icon pi__card-icon--eng">
+          <i class="fa-solid fa-gears" aria-hidden="true"></i>
         </div>
-        <h3 class="pi__card-title">Aprendizagem Contínua</h3>
+        <h3 class="pi__card-title">SolidWorks</h3>
         <p class="pi__card-desc">
-          Perfil autodidata com estudo constante de novas tecnologias,
-          metodologias e ferramentas de engenharia e programação
-          — tudo documentado aqui.
+          Conjuntos mecânicos complexos, simulações estruturais
+          e documentação técnica com precisão de engenharia.
         </p>
-        <a href="/jornada" class="pi__card-link" aria-label="Acompanhar evolução">
-          Acompanhar evolução
+        <a href="/laboratorio-cad?software=SolidWorks" class="pi__card-link" aria-label="Ver projetos SolidWorks">
+          Explorar projetos
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 3: AutoCAD -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        aria-label="Software: AutoCAD"
+      >
+        <div class="pi__card-icon pi__card-icon--software">
+          <i class="fa-solid fa-drafting-compass" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">AutoCAD</h3>
+        <p class="pi__card-desc">
+          Desenho técnico 2D, plantas e projetos de detalhamento.
+          Normas ABNT, cotas, anotações e vistas ortogonais
+          para documentação de engenharia.
+        </p>
+        <a href="/laboratorio-cad?software=AutoCAD" class="pi__card-link" aria-label="Ver projetos AutoCAD">
+          Explorar projetos
           <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
 
     </div><!-- /.pi__cards-grid -->
 
+
   </div>
 </section><!-- /#portfolio-intro -->
 
 
 <!-- ═══════════════════════════════════════════════════════════════
-     #JOURNEY-CTA — Pequena chamada para a Jornada
+     #GITHUB-CTA — Convite para ver projetos Python no GitHub
 ═══════════════════════════════════════════════════════════════ -->
 <section
-  id="journey-cta"
+  id="github-cta"
   class="section journey-cta"
-  aria-label="Convite para acompanhar a jornada"
+  aria-label="Convite para ver projetos Python no GitHub"
 >
   <!-- Fundo decorativo -->
   <div class="journey-cta__bg" aria-hidden="true"></div>
@@ -398,45 +385,47 @@
     <div class="journey-cta__content" data-aos="fade-up" data-aos-duration="800">
 
       <span class="journey-cta__eyebrow">
-        <i class="fa-solid fa-route" aria-hidden="true"></i>
-        Em construção
+        <i class="fa-brands fa-github" aria-hidden="true"></i>
+        Também codifico!
       </span>
 
       <h2 class="journey-cta__title">
-        Minha trajetória está<br />
-        <span class="text-accent">apenas começando.</span>
+        Curioso sobre<br />
+        <span class="text-accent">meus projetos Python?</span>
       </h2>
 
       <p class="journey-cta__desc">
-        Cada semestre, cada projeto, cada aprendizado será documentado aqui.
-        Você pode acompanhar toda a minha evolução profissional —
-        de estudante a engenheiro — através deste portfólio.
+        Este portfólio foca nos meus projetos CAD, mas também desenvolvo
+        aplicações em <strong>Python</strong> — automações, APIs e plataformas web.
+        Se quiser explorar meus códigos e projetos de software, acesse meu GitHub.
       </p>
 
       <div class="journey-cta__actions">
         <a
-          href="/jornada"
+          href="{{ student.github }}"
+          target="_blank"
+          rel="noopener noreferrer"
           class="btn-primary"
-          id="cta-journey-btn"
-          aria-label="Ver minha jornada acadêmica completa"
+          id="cta-github-btn"
+          aria-label="Ver projetos Python de Carlos Daniel no GitHub"
         >
-          <i class="fa-solid fa-route" aria-hidden="true"></i>
-          Conheça minha jornada
+          <i class="fa-brands fa-github" aria-hidden="true"></i>
+          Ver meu GitHub
         </a>
         <a
-          href="/projetos"
+          href="/laboratorio-cad"
           class="btn-outline"
-          id="cta-projects-btn"
-          aria-label="Ver todos os projetos"
+          id="cta-cad-btn"
+          aria-label="Explorar o Laboratório CAD"
         >
-          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
-          Ver projetos
+          <i class="fa-solid fa-cube" aria-hidden="true"></i>
+          Laboratório CAD
         </a>
       </div>
 
     </div>
   </div>
-</section><!-- /#journey-cta -->
+</section><!-- /#github-cta -->
 
 {% endblock %}
 
