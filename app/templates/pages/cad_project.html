@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}{{ project.title }} | Laboratório CAD | Carlos Daniel{% endblock %}
+{% block page_title %}{{ project.title }} | Projetos CAD | Carlos Daniel{% endblock %}
 
 {% block head_extra %}
 <style>
@@ -95,9 +95,13 @@
 
     <!-- Breadcrumb -->
     <nav class="cad-breadcrumb" aria-label="Navegação estrutural" data-aos="fade-right">
-      <a href="/laboratorio-cad" class="cad-breadcrumb__link">
-        <i class="fa-solid fa-cube" aria-hidden="true"></i>
-        Laboratório CAD
+      <a href="/projetos" class="cad-breadcrumb__link">
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+        Projetos
+      </a>
+      <i class="fa-solid fa-chevron-right cad-breadcrumb__sep" aria-hidden="true"></i>
+      <a href="/projetos/cad" class="cad-breadcrumb__link">
+        Projetos CAD
       </a>
       <i class="fa-solid fa-chevron-right cad-breadcrumb__sep" aria-hidden="true"></i>
       <span class="cad-breadcrumb__current">{{ project.title }}</span>
@@ -342,9 +346,9 @@
 
     <!-- ── CTA — VOLTAR AO CATÁLOGO ─────────────────────── -->
     <div class="cad-project-cta" data-aos="fade-up">
-      <a href="/laboratorio-cad" class="btn-outline" id="btn-back-catalog">
+      <a href="/projetos/cad" class="btn-outline" id="btn-back-catalog">
         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-        Voltar ao Catálogo
+        Voltar aos Projetos CAD
       </a>
       <a href="/contato" class="btn-primary" id="btn-project-contact">
         <i class="fa-solid fa-envelope" aria-hidden="true"></i>

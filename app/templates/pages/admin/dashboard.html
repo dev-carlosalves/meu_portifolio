@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}Painel Admin | Laboratório CAD{% endblock %}
+{% block page_title %}Painel Admin | Projetos CAD{% endblock %}
 
 {% block content %}
 <section class="admin-section section-padding">
@@ -13,7 +13,7 @@
           <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
           Painel Administrativo
         </div>
-        <h1 class="admin-header__title">Laboratório CAD</h1>
+        <h1 class="admin-header__title">Projetos CAD</h1>
         <p class="admin-header__sub">Gerencie os projetos de modelagem exibidos no portfólio.</p>
       </div>
       <a href="/admin-panel/novo" class="btn-primary" id="btn-novo-projeto">
@@ -63,7 +63,7 @@
               {% endif %}
             </td>
             <td class="admin-table__title">
-              <a href="/laboratorio-cad/{{ project.slug }}" target="_blank" rel="noopener">
+              <a href="/projetos/cad/{{ project.slug }}" target="_blank" rel="noopener">
                 {{ project.title }}
               </a>
               <span class="admin-table__slug">/{{ project.slug }}</span>
@@ -77,7 +77,7 @@
             <td class="admin-table__date">{{ project.date }}</td>
             <td class="admin-table__actions">
               <a
-                href="/laboratorio-cad/{{ project.slug }}"
+                href="/projetos/cad/{{ project.slug }}"
                 target="_blank"
                 class="btn-icon"
                 title="Ver projeto"
@@ -117,7 +117,7 @@
 
     <!-- ── Link de volta ao portfólio ─────────────────── -->
     <div class="admin-footer-nav" data-aos="fade-up">
-      <a href="/laboratorio-cad" class="btn-outline" id="btn-ver-catalogo">
+      <a href="/projetos/cad" class="btn-outline" id="btn-ver-catalogo">
         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
         Ver Catálogo Público
       </a>

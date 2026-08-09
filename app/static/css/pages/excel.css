@@ -1,0 +1,93 @@
+/* ============================================================
+   excel.css — Página de Projetos Excel
+   Extensão do cad.css com tema verde (Excel)
+   ============================================================ */
+
+/* ── Importa estilos base do CAD ──────────────────────────────── */
+@import url('/static/css/pages/cad.css');
+
+/* ── Sobrescritas de cor: verde Excel ─────────────────────────── */
+
+/* Section label com tema Excel */
+.section-label--excel {
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.25);
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.section-label--excel i {
+  color: #22c55e;
+}
+
+/* Gradient text verde para Excel */
+.gradient-text--excel {
+  background: linear-gradient(135deg, #22c55e 0%, #86efac 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tabs Excel com cor verde no active */
+.excel-tabs .cad-software-tab--active {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.35);
+}
+
+.excel-tabs .cad-software-tab--active i {
+  color: #22c55e;
+}
+
+.excel-tabs .cad-software-tab:hover:not(.cad-software-tab--active) {
+  border-color: rgba(34, 197, 94, 0.2);
+  color: #d1fae5;
+}
+
+/* Badge software Excel */
+.badge-software--excel {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+/* Skill chips Excel */
+.excel-skill-chip {
+  background: rgba(34, 197, 94, 0.08);
+  color: #86efac;
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+/* Botão Excel */
+.excel-btn {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.excel-btn:hover {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3) !important;
+}
+
+/* Empty state ícone Excel */
+.excel-empty-icon {
+  color: #22c55e;
+}
+
+/* Placeholder de capa Excel */
+.excel-card-cover-placeholder {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(34, 197, 94, 0.02) 100%);
+}
+
+.excel-card-cover-placeholder i {
+  color: rgba(34, 197, 94, 0.4);
+}
+
+/* Foco / hover em cards Excel */
+.excel-catalog-card:hover {
+  border-color: rgba(34, 197, 94, 0.3);
+  box-shadow:
+    0 0 0 1px rgba(34, 197, 94, 0.1),
+    0 20px 60px rgba(34, 197, 94, 0.08),
+    0 4px 20px rgba(0, 0, 0, 0.3);
+}

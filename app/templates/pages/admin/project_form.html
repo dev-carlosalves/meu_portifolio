@@ -59,7 +59,7 @@
             />
             <div class="admin-form-hint">
               Slug gerado automaticamente:
-              <code id="slug-preview">/laboratorio-cad/{{ project.slug if project else '...' }}</code>
+              <code id="slug-preview">/projetos/cad/{{ project.slug if project else '...' }}</code>
             </div>
           </div>
         </div>
@@ -67,19 +67,19 @@
         <div class="admin-form-grid admin-form-grid--3">
           <div class="admin-form-field">
             <label for="software" class="admin-form-label">
-              Categoria do Laboratório CAD
+              Software CAD
               <span class="required">*</span>
               <span class="admin-form-label__hint">(define em qual sub-área o projeto aparece)</span>
             </label>
             <select id="software" name="software" class="admin-form-select" required>
-              {% set softwares = ['Fusion 360', 'SolidWorks', 'AutoCAD', 'Inventor', 'CATIA', 'FreeCAD', 'Outro'] %}
+              {% set softwares = ['SolidWorks', 'AutoCAD', 'Inventor', 'CATIA', 'FreeCAD', 'Outro'] %}
               {% for sw in softwares %}
               <option value="{{ sw }}" {{ 'selected' if project and project.software == sw }}>{{ sw }}</option>
               {% endfor %}
             </select>
             <div class="admin-form-hint">
               <i class="fa-solid fa-circle-info" style="color: var(--color-accent);"></i>
-              As sub-áreas pública são: <strong>Fusion 360</strong>, <strong>SolidWorks</strong> e <strong>AutoCAD</strong>.
+              As sub-áreas pública são: <strong>SolidWorks</strong> e <strong>AutoCAD</strong>.
             </div>
           </div>
           <div class="admin-form-field">
@@ -345,7 +345,7 @@
       .replace(/[^a-z0-9\s-]/g, '')
       .replace(/[\s_-]+/g, '-')
       .replace(/^-+|-+$/g, '');
-    slugPreview.textContent = '/laboratorio-cad/' + (slug || '...');
+    slugPreview.textContent = '/projetos/cad/' + (slug || '...');
   });
 
   // ── Contador de caracteres (short_desc) ───────────────

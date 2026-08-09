@@ -21,11 +21,12 @@ from fastapi.templating import Jinja2Templates
 from app.config import get_base_context
 from app.routers import (
     admin,
-    cad_lab,
+    cad_projects,
     contact,
+    excel_projects,
     home,
     journey,
-    projects,
+    projects_hub,
     resume,
     technologies,
 )
@@ -64,8 +65,9 @@ app.state.templates = templates
 # ──────────────────────────────────────────────────────────────────────────────
 app.include_router(home.router)
 app.include_router(journey.router)
-app.include_router(projects.router)
-app.include_router(cad_lab.router)
+app.include_router(projects_hub.router)
+app.include_router(cad_projects.router)
+app.include_router(excel_projects.router)
 app.include_router(technologies.router)
 app.include_router(resume.router)
 app.include_router(contact.router)

@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block page_title %}Projetos | Carlos Daniel{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/static/css/pages/projects_hub.css" />
+{% endblock %}
+
+{% block content %}
+<section class="hub-section section-padding" aria-label="Hub de Projetos">
+
+  <!-- Fundo decorativo -->
+  <div class="hub-bg" aria-hidden="true"></div>
+  <div class="hub-orb hub-orb--1" aria-hidden="true"></div>
+  <div class="hub-orb hub-orb--2" aria-hidden="true"></div>
+
+  <div class="container">
+
+    <!-- ── Cabeçalho ─────────────────────────────────────────── -->
+    <div class="hub-header" data-aos="fade-down">
+      <div class="section-label">
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+        Meus Projetos
+      </div>
+      <h1 class="hub-title">
+        Escolha uma <span class="gradient-text">área de projetos</span>
+      </h1>
+      <p class="hub-subtitle">
+        Selecione a área que deseja explorar. Cada trilha reúne projetos
+        organizados por software e categoria, com documentação completa.
+      </p>
+    </div>
+
+    <!-- ── Cards de trilha ───────────────────────────────────── -->
+    <div class="hub-cards" role="list">
+
+      <!-- Card 1: Projetos CAD -->
+      <article
+        class="hub-card hub-card--cad"
+        role="listitem"
+        data-aos="fade-up"
+        data-aos-delay="0"
+        aria-label="Trilha: Projetos CAD"
+      >
+        <!-- Glow decorativo -->
+        <div class="hub-card__glow" aria-hidden="true"></div>
+
+        <!-- Ícone -->
+        <div class="hub-card__icon-wrapper" aria-hidden="true">
+          <div class="hub-card__icon">
+            <i class="fa-solid fa-cube"></i>
+          </div>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="hub-card__content">
+          <div class="hub-card__badges">
+            <span class="hub-badge hub-badge--cad">SolidWorks</span>
+            <span class="hub-badge hub-badge--cad">AutoCAD</span>
+          </div>
+          <h2 class="hub-card__title">Projetos CAD</h2>
+          <p class="hub-card__desc">
+            Modelagem 3D paramétrica, montagens mecânicas e documentação técnica
+            desenvolvidos em <strong>SolidWorks</strong> e <strong>AutoCAD</strong>.
+            Cada projeto inclui desenhos técnicos normalizados e detalhamento completo.
+          </p>
+
+          <!-- Features -->
+          <ul class="hub-card__features" aria-label="Recursos">
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Modelagem Paramétrica 3D
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Montagens e Vistas Explodidas
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Documentação Técnica (PDF)
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Desenho Técnico Normalizado
+            </li>
+          </ul>
+        </div>
+
+        <!-- CTA -->
+        <div class="hub-card__footer">
+          <a
+            href="/projetos/cad"
+            class="hub-card__cta"
+            id="btn-acessar-cad"
+            aria-label="Acessar projetos CAD"
+          >
+            Acessar
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card 2: Projetos Excel -->
+      <article
+        class="hub-card hub-card--excel"
+        role="listitem"
+        data-aos="fade-up"
+        data-aos-delay="120"
+        aria-label="Trilha: Projetos Excel"
+      >
+        <!-- Glow decorativo -->
+        <div class="hub-card__glow" aria-hidden="true"></div>
+
+        <!-- Ícone -->
+        <div class="hub-card__icon-wrapper" aria-hidden="true">
+          <div class="hub-card__icon">
+            <i class="fa-solid fa-table"></i>
+          </div>
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="hub-card__content">
+          <div class="hub-card__badges">
+            <span class="hub-badge hub-badge--excel">Excel</span>
+            <span class="hub-badge hub-badge--excel">Power Query</span>
+          </div>
+          <h2 class="hub-card__title">Projetos Excel</h2>
+          <p class="hub-card__desc">
+            Dashboards interativos, relatórios automatizados e análise de dados
+            desenvolvidos em <strong>Microsoft Excel</strong> com fórmulas avançadas,
+            tabelas dinâmicas e visualizações profissionais.
+          </p>
+
+          <!-- Features -->
+          <ul class="hub-card__features" aria-label="Recursos">
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Dashboards Interativos
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Tabelas Dinâmicas e Gráficos
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Automações com Fórmulas
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Relatórios e Análise de Dados
+            </li>
+          </ul>
+        </div>
+
+        <!-- CTA -->
+        <div class="hub-card__footer">
+          <a
+            href="/projetos/excel"
+            class="hub-card__cta"
+            id="btn-acessar-excel"
+            aria-label="Acessar projetos Excel"
+          >
+            Acessar
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+
+    </div><!-- /.hub-cards -->
+
+  </div>
+</section>
+{% endblock %}

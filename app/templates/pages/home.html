@@ -8,7 +8,7 @@
 #}
 {% extends "base.html" %}
 
-{% block page_title %}Carlos Daniel | Projetos CAD · Fusion 360 · SolidWorks · AutoCAD{% endblock %}
+{% block page_title %}Carlos Daniel | Projetos CAD · SolidWorks · AutoCAD · Excel{% endblock %}
 
 {% block content %}
 
@@ -56,7 +56,7 @@
       <div class="hero__roles" aria-label="Áreas de atuação">
         <div class="hero__role hero__role--primary">
           <i class="fa-solid fa-cube" aria-hidden="true"></i>
-          <span>Projetista CAD — Fusion 360 · SolidWorks · AutoCAD</span>
+          <span>Projetista CAD — SolidWorks · AutoCAD</span>
         </div>
         <div class="hero__role hero__role--secondary">
           <i class="fa-solid fa-gears" aria-hidden="true"></i>
@@ -72,22 +72,22 @@
       <p class="hero__bio">
         Tenho 18 anos, sou do Ceará e estudo Engenharia Mecânica no
         <strong>IFCE Campus Maracanáu</strong>.
-        Este portfólio documenta minha evolução como projetista CAD:
-        cada modelo, cada montagem e cada conjunto desenvolvidos em
-        <strong>Fusion 360</strong>, <strong>SolidWorks</strong> e <strong>AutoCAD</strong>.
+        Este portfólio documenta minha evolução como projetista CAD e analista de dados:
+        projetos desenvolvidos em
+        <strong>SolidWorks</strong>, <strong>AutoCAD</strong> e <strong>Excel</strong>.
         Precisão, criatividade e rigor técnico em cada projeto.
       </p>
 
       <!-- CTAs: Primário, Secundário, Outline -->
       <div class="hero__actions">
         <a
-          href="/laboratorio-cad"
+          href="/projetos"
           class="btn-primary"
           id="hero-cta-cad"
-          aria-label="Explorar o Laboratório CAD de Carlos Daniel"
+          aria-label="Explorar os Projetos de Carlos Daniel"
         >
-          <i class="fa-solid fa-cube" aria-hidden="true"></i>
-          <span>Explorar Laboratório CAD</span>
+          <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+          <span>Explorar Projetos</span>
         </a>
         <a
           href="{{ student.cv }}"
@@ -113,7 +113,7 @@
       <!-- Estatísticas em mini-cards -->
       <div class="hero__stats" role="list" aria-label="Estatísticas de Carlos Daniel">
         <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="100">
-          <span class="hero-stat__value" data-count="3">3</span>
+          <span class="hero-stat__value" data-count="2">2</span>
           <span class="hero-stat__label">Softwares CAD</span>
         </div>
         <div class="hero-stat" role="listitem" data-aos="zoom-in" data-aos-delay="180">
@@ -203,19 +203,19 @@
               IFCE Campus Maracanãu
             </p>
             
-            <!-- Badges dos softwares CAD -->
+            <!-- Badges dos softwares/ferramentas -->
             <div class="hero__profile-badges">
               <span class="hero__profile-badge">
-                <i class="fa-solid fa-cube" aria-hidden="true"></i>
-                Fusion 360
-              </span>
-              <span class="hero__profile-badge">
-                <i class="fa-solid fa-cube" aria-hidden="true"></i>
+                <i class="fa-solid fa-gears" aria-hidden="true"></i>
                 SolidWorks
               </span>
               <span class="hero__profile-badge">
-                <i class="fa-solid fa-cube" aria-hidden="true"></i>
+                <i class="fa-solid fa-drafting-compass" aria-hidden="true"></i>
                 AutoCAD
+              </span>
+              <span class="hero__profile-badge">
+                <i class="fa-solid fa-table" aria-hidden="true"></i>
+                Excel
               </span>
             </div>
           </div>
@@ -287,77 +287,56 @@
       {% include "partials/section_header.html" %}
 
       <p class="pi__lead" data-aos="fade-up" data-aos-delay="100">
-        Este portfólio documenta minha evolução como projetista CAD durante a graduação em Engenharia Mecânica.
-        Aqui você encontra projetos completos desenvolvidos em <strong>Fusion 360</strong>,
-        <strong>SolidWorks</strong> e <strong>AutoCAD</strong> —
-        da modelagem paramétrica ao detalhamento técnico.
-        <strong>Cada projeto documenta o processo completo: modelo, montagem, e análise.</strong>
+        Este portfólio documenta minha evolução como projetista CAD e analista de dados durante a graduação em Engenharia Mecânica.
+        Aqui você encontra projetos completos desenvolvidos em <strong>SolidWorks</strong> e <strong>AutoCAD</strong> —
+        da modelagem paramétrica ao detalhamento técnico. Além de projetos em <strong>Excel</strong>:
+        dashboards interativos, relatórios e análise de dados.
+        <strong>Cada projeto documenta o processo completo: modelo, montagem e análise.</strong>
       </p>
     </div>
 
-    <!-- 3 Cards de software CAD -->
+    <!-- 2 Cards principais: CAD + Excel -->
     <div class="pi__cards-grid">
 
-      <!-- Card 1: Fusion 360 -->
+      <!-- Card 1: SolidWorks + AutoCAD -->
       <article
         class="pi__card"
         data-aos="fade-up"
         data-aos-delay="0"
-        aria-label="Software: Fusion 360"
+        aria-label="Projetos CAD: SolidWorks e AutoCAD"
       >
-        <div class="pi__card-icon pi__card-icon--cad">
+        <div class="pi__card-icon pi__card-icon--eng">
           <i class="fa-solid fa-cube" aria-hidden="true"></i>
         </div>
-        <h3 class="pi__card-title">Fusion 360</h3>
+        <h3 class="pi__card-title">Projetos CAD</h3>
         <p class="pi__card-desc">
-          Modelagem 3D paramétrica, montagens, vistas explodidas e
-          renderizações técnicas de alta qualidade.
-          Ideal para projetos mecânicos completos do conceito ao detalhe.
+          Modelagem 3D paramétrica, montagens mecânicas e documentação técnica em
+          <strong>SolidWorks</strong> e <strong>AutoCAD</strong>.
+          Conjuntos mecânicos com detalhamento normalizado e BOM completo.
         </p>
-        <a href="/laboratorio-cad?software=Fusion+360" class="pi__card-link" aria-label="Ver projetos Fusion 360">
+        <a href="/projetos/cad" class="pi__card-link" aria-label="Ver projetos CAD">
           Explorar projetos
           <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
       </article>
 
-      <!-- Card 2: SolidWorks -->
+      <!-- Card 2: Excel -->
       <article
         class="pi__card"
         data-aos="fade-up"
         data-aos-delay="100"
-        aria-label="Software: SolidWorks"
-      >
-        <div class="pi__card-icon pi__card-icon--eng">
-          <i class="fa-solid fa-gears" aria-hidden="true"></i>
-        </div>
-        <h3 class="pi__card-title">SolidWorks</h3>
-        <p class="pi__card-desc">
-          Conjuntos mecânicos complexos, simulações estruturais
-          e documentação técnica com precisão de engenharia.
-        </p>
-        <a href="/laboratorio-cad?software=SolidWorks" class="pi__card-link" aria-label="Ver projetos SolidWorks">
-          Explorar projetos
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </a>
-      </article>
-
-      <!-- Card 3: AutoCAD -->
-      <article
-        class="pi__card"
-        data-aos="fade-up"
-        data-aos-delay="200"
-        aria-label="Software: AutoCAD"
+        aria-label="Projetos Excel"
       >
         <div class="pi__card-icon pi__card-icon--software">
-          <i class="fa-solid fa-drafting-compass" aria-hidden="true"></i>
+          <i class="fa-solid fa-table" aria-hidden="true"></i>
         </div>
-        <h3 class="pi__card-title">AutoCAD</h3>
+        <h3 class="pi__card-title">Projetos Excel</h3>
         <p class="pi__card-desc">
-          Desenho técnico 2D, plantas e projetos de detalhamento.
-          Normas ABNT, cotas, anotações e vistas ortogonais
-          para documentação de engenharia.
+          Dashboards interativos, relatórios e análise de dados em
+          <strong>Microsoft Excel</strong>.
+          Automações com fórmulas avançadas, tabelas dinâmicas e visualizações profissionais.
         </p>
-        <a href="/laboratorio-cad?software=AutoCAD" class="pi__card-link" aria-label="Ver projetos AutoCAD">
+        <a href="/projetos/excel" class="pi__card-link" aria-label="Ver projetos Excel">
           Explorar projetos
           <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </a>
@@ -413,13 +392,13 @@
           Ver meu GitHub
         </a>
         <a
-          href="/laboratorio-cad"
+          href="/projetos"
           class="btn-outline"
           id="cta-cad-btn"
-          aria-label="Explorar o Laboratório CAD"
+          aria-label="Explorar meus Projetos"
         >
-          <i class="fa-solid fa-cube" aria-hidden="true"></i>
-          Laboratório CAD
+          <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+          Ver Projetos
         </a>
       </div>
 
