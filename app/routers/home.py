@@ -15,9 +15,9 @@ async def home(request: Request) -> HTMLResponse:
         page_id     = "home",
         page_title  = "Carlos Daniel | Projetos CAD · SolidWorks · AutoCAD · Excel",
         description = (
-            "Portfólio de Carlos Daniel Alves da Silva, estudante de "
-            "Engenharia Mecânica no IFCE. Modelagem 3D paramétrica, montagens e "
-            "documentação técnica em SolidWorks e AutoCAD. Projetos e dashboards em Excel."
+            "Portfólio de aprendizado de Carlos Daniel Alves da Silva, estudante de "
+            "Engenharia Mecânica no IFCE. Estudos de modelagem 3D paramétrica, montagens e "
+            "desenhos em SolidWorks e AutoCAD. Práticas de dashboards em Excel."
         ),
     )
     return templates.TemplateResponse("pages/home.html", {"request": request, **context})

@@ -18,8 +18,8 @@ async def projects_hub(request: Request) -> HTMLResponse:
         page_id="projetos",
         page_title="Projetos | Carlos Daniel",
         description=(
-            "Explore os projetos de Carlos Daniel: modelagem CAD em SolidWorks e AutoCAD, "
-            "e projetos de análise de dados em Excel com dashboards e automações."
+            "Explore os estudos e projetos de Carlos Daniel: modelagem CAD em SolidWorks e AutoCAD, "
+            "e práticas de análise de dados em Excel com dashboards e planilhas dinâmicas."
         ),
     )
     return templates.TemplateResponse(

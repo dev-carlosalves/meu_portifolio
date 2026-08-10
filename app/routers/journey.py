@@ -15,7 +15,7 @@ async def journey(request: Request) -> HTMLResponse:
         page_id     = "journey",
         page_title  = "Minha Jornada | Carlos Daniel",
         description = (
-            "Acompanhe a trajetória acadêmica e profissional de Carlos Daniel "
+            "Acompanhe a trajetória acadêmica e de estudos de Carlos Daniel "
             "na Engenharia Mecânica do IFCE — semestre a semestre."
         ),
     )

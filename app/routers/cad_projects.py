@@ -22,8 +22,8 @@ async def cad_software_selection(request: Request) -> HTMLResponse:
         page_id="projetos",
         page_title="Projetos CAD | Carlos Daniel",
         description=(
-            "Escolha sua trilha CAD: AutoCAD para desenho técnico 2D "
-            "ou SolidWorks para modelagem 3D paramétrica e engenharia mecânica."
+            "Escolha uma trilha de estudos CAD: desenhos técnicos 2D em AutoCAD "
+            "ou modelagem 3D paramétrica no SolidWorks aplicada a estudos de engenharia mecânica."
         ),
     )
     return templates.TemplateResponse(

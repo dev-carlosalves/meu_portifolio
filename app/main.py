@@ -43,7 +43,7 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 # ──────────────────────────────────────────────────────────────────────────────
 app = FastAPI(
     title       = "Portfólio — Carlos Daniel Alves da Silva",
-    description = "Portfólio profissional de estudante de Engenharia Mecânica do IFCE.",
+    description = "Portfólio de estudos e aprendizado de estudante de Engenharia Mecânica do IFCE.",
     version     = "1.0.0",
     docs_url    = None,   # Desabilita /docs em produção
     redoc_url   = None,
