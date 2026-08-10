@@ -1,6 +1,7 @@
 /* ============================================================
    projects_hub.css — Página Hub de Seleção de Projetos
-   Glassmorphism dark, dois cards lado a lado (ou coluna no mobile)
+   Usa exclusivamente os design tokens globais do site
+   para garantir consistência 100% com o restante do site.
    ============================================================ */
 
 /* ── Fundo decorativo ─────────────────────────────────────────── */
@@ -11,14 +12,14 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
+  padding-top: 6rem; /* compensa navbar fixa com folga segura */
+  padding-bottom: 4rem;
 }
 
 .hub-bg {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 20% 30%, rgba(6, 182, 212, 0.07) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 70%, rgba(34, 197, 94, 0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse 60% 40% at 50% 50%, var(--color-accent-dim) 0%, transparent 80%);
   pointer-events: none;
   z-index: 0;
 }
@@ -32,19 +33,21 @@
 }
 
 .hub-orb--1 {
-  width: 500px;
-  height: 500px;
-  top: -150px;
-  left: -150px;
-  background: rgba(6, 182, 212, 0.06);
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  left: -100px;
+  background: var(--color-accent-dim);
+  opacity: 0.5;
 }
 
 .hub-orb--2 {
-  width: 400px;
-  height: 400px;
-  bottom: -100px;
-  right: -100px;
-  background: rgba(34, 197, 94, 0.06);
+  width: 300px;
+  height: 300px;
+  bottom: -50px;
+  right: -50px;
+  background: var(--color-accent-dim);
+  opacity: 0.3;
 }
 
 .hub-section .container {
@@ -55,20 +58,37 @@
 /* ── Cabeçalho ────────────────────────────────────────────────── */
 .hub-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
+}
+
+/* Tag/pill flutuante de cabeçalho */
+.hub-header .section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-accent-dim);
+  border: 1px solid var(--color-accent-border);
+  color: var(--color-accent);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-4);
 }
 
 .hub-title {
   font-size: clamp(2rem, 4.5vw, 3.25rem);
   font-weight: 800;
   line-height: 1.15;
-  color: var(--text-primary, #f4f4f5);
-  margin: 0.75rem 0 1rem;
+  color: var(--color-text);
+  margin: 0.5rem 0 1rem;
 }
 
 .hub-subtitle {
   font-size: 1.0625rem;
-  color: var(--text-secondary, #a1a1aa);
+  color: var(--color-text-muted);
   max-width: 580px;
   margin: 0 auto;
   line-height: 1.7;
@@ -95,60 +115,37 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  border-radius: 1.25rem;
+  border-radius: var(--radius-2xl);
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
   padding: 2rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base),
+              border-color var(--transition-base);
   cursor: default;
 }
 
 .hub-card:hover {
   transform: translateY(-6px);
+  border-color: var(--color-accent-border);
+  box-shadow: var(--shadow-card-hover), var(--shadow-glow);
 }
 
-/* ── Glow por tipo de card ────────────────────────────────────── */
+/* Glow do card */
 .hub-card__glow {
   position: absolute;
   inset: -1px;
-  border-radius: 1.25rem;
+  border-radius: var(--radius-2xl);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease;
   z-index: 0;
-}
-
-.hub-card--cad .hub-card__glow {
-  background: linear-gradient(
-    135deg,
-    rgba(6, 182, 212, 0.15) 0%,
-    transparent 60%
-  );
-}
-
-.hub-card--excel .hub-card__glow {
-  background: linear-gradient(
-    135deg,
-    rgba(34, 197, 94, 0.15) 0%,
-    transparent 60%
-  );
+  background: linear-gradient(135deg, var(--color-accent-dim) 0%, transparent 60%);
 }
 
 .hub-card:hover .hub-card__glow {
   opacity: 1;
-}
-
-.hub-card--cad:hover {
-  border-color: rgba(6, 182, 212, 0.35);
-  box-shadow: 0 20px 60px rgba(6, 182, 212, 0.12), 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-.hub-card--excel:hover {
-  border-color: rgba(34, 197, 94, 0.35);
-  box-shadow: 0 20px 60px rgba(34, 197, 94, 0.12), 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* ── Ícone ────────────────────────────────────────────────────── */
@@ -161,25 +158,16 @@
 .hub-card__icon {
   width: 72px;
   height: 72px;
-  border-radius: 1.25rem;
+  border-radius: var(--radius-xl);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: transform 0.3s ease;
-}
-
-.hub-card--cad .hub-card__icon {
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(6, 182, 212, 0.05) 100%);
-  color: #06b6d4;
-  box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
-}
-
-.hub-card--excel .hub-card__icon {
-  background: linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.05) 100%);
-  color: #22c55e;
-  box-shadow: 0 0 30px rgba(34, 197, 94, 0.2);
+  border: 1px solid var(--color-accent-border);
+  background: linear-gradient(135deg, var(--color-accent-dim) 0%, rgba(6, 182, 212, 0.02) 100%);
+  color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+  transition: transform var(--transition-base);
 }
 
 .hub-card:hover .hub-card__icon {
@@ -206,30 +194,21 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.25rem 0.75rem;
-  border-radius: 100px;
+  border-radius: var(--radius-full);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-.hub-badge--cad {
-  background: rgba(6, 182, 212, 0.12);
-  color: #06b6d4;
-  border: 1px solid rgba(6, 182, 212, 0.25);
-}
-
-.hub-badge--excel {
-  background: rgba(34, 197, 94, 0.12);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.25);
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-border);
 }
 
 /* Título */
 .hub-card__title {
   font-size: 1.625rem;
   font-weight: 700;
-  color: var(--text-primary, #f4f4f5);
+  color: var(--color-text);
   margin: 0 0 0.875rem;
   line-height: 1.2;
 }
@@ -237,13 +216,13 @@
 /* Descrição */
 .hub-card__desc {
   font-size: 0.9375rem;
-  color: var(--text-secondary, #a1a1aa);
+  color: var(--color-text-muted);
   line-height: 1.7;
   margin: 0 0 1.5rem;
 }
 
 .hub-card__desc strong {
-  color: var(--text-primary, #f4f4f5);
+  color: var(--color-text);
 }
 
 /* Features list */
@@ -261,17 +240,11 @@
   align-items: center;
   gap: 0.625rem;
   font-size: 0.875rem;
-  color: var(--text-secondary, #a1a1aa);
+  color: var(--color-text-muted);
 }
 
-.hub-card--cad .hub-card__features li i {
-  color: #06b6d4;
-  font-size: 0.75rem;
-  flex-shrink: 0;
-}
-
-.hub-card--excel .hub-card__features li i {
-  color: #22c55e;
+.hub-card__features li i {
+  color: var(--color-accent);
   font-size: 0.75rem;
   flex-shrink: 0;
 }
@@ -282,7 +255,7 @@
   z-index: 1;
   margin-top: auto;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--color-border);
 }
 
 .hub-card__cta {
@@ -290,45 +263,22 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.75rem;
-  border-radius: 0.625rem;
+  border-radius: var(--radius-lg);
   font-size: 0.9375rem;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: all var(--transition-base);
   width: 100%;
   justify-content: center;
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-border);
 }
 
-.hub-card--cad .hub-card__cta {
-  background: rgba(6, 182, 212, 0.15);
-  color: #06b6d4;
-  border: 1px solid rgba(6, 182, 212, 0.3);
-}
-
-.hub-card--cad .hub-card__cta:hover {
-  background: rgba(6, 182, 212, 0.25);
-  border-color: rgba(6, 182, 212, 0.6);
+.hub-card__cta:hover {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+  border-color: var(--color-accent);
   transform: translateX(4px);
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
-}
-
-.hub-card--excel .hub-card__cta {
-  background: rgba(34, 197, 94, 0.15);
-  color: #22c55e;
-  border: 1px solid rgba(34, 197, 94, 0.3);
-}
-
-.hub-card--excel .hub-card__cta:hover {
-  background: rgba(34, 197, 94, 0.25);
-  border-color: rgba(34, 197, 94, 0.6);
-  transform: translateX(4px);
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
-}
-
-/* ── Gradient text para Excel ────────────────────────────────── */
-.gradient-text--excel {
-  background: linear-gradient(135deg, #22c55e 0%, #86efac 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  box-shadow: var(--shadow-glow);
 }

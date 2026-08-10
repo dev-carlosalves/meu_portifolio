@@ -1,53 +1,40 @@
-"""excel_projects.py — Rotas dos Projetos Excel.
+"""excel_projects.py — Rota da Trilha Excel.
 
-GET /projetos/excel → catálogo de projetos/planilhas em Excel
+GET /projetos/excel → página de trilha Excel diretamente
 """
 
-from typing import Optional
-
-from fastapi import APIRouter, Query, Request
+from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
 from app.config import get_base_context
-from app.database import get_all_excel_projects
+from app.database import calculate_trail_progress, get_trail_data
 
 router = APIRouter()
 
-# Categorias de projetos Excel
-EXCEL_CATEGORIES = ["Dashboard", "Relatório", "Automação", "Análise de Dados", "Financeiro"]
-
 
 @router.get("/projetos/excel", response_class=HTMLResponse, include_in_schema=False)
-async def excel_projects_catalog(
-    request: Request,
-    categoria: Optional[str] = Query(default=None),
-) -> HTMLResponse:
+async def trail_excel(request: Request) -> HTMLResponse:
+    """Página de trilha Excel — sem tela intermediária de seleção."""
     templates = request.app.state.templates
-    all_projects = get_all_excel_projects()
-
-    # Normaliza o filtro recebido via query string
-    active_category: Optional[str] = None
-    if categoria:
-        for cat in EXCEL_CATEGORIES:
-            if cat.lower() == categoria.strip().lower():
-                active_category = cat
-                break
-
+    trail = get_trail_data("excel")
+    if not trail:
+        context = get_base_context(page_id="projetos", page_title="Trilha não encontrada")
+        return templates.TemplateResponse(
+            "pages/404.html", {"request": request, **context}, status_code=404
+        )
+    progress = calculate_trail_progress(trail)
     context = get_base_context(
         page_id="projetos",
-        page_title="Projetos Excel | Carlos Daniel",
-        description=(
-            "Projetos e dashboards em Excel de Carlos Daniel: "
-            "análise de dados, automações, relatórios e dashboards interativos."
-        ),
+        page_title="Trilha Excel | Carlos Daniel",
+        description=trail.get("descricao", ""),
     )
     return templates.TemplateResponse(
-        "pages/excel_projects.html",
+        "pages/trail_page.html",
         {
             "request": request,
-            "projects": all_projects,
-            "excel_categories": EXCEL_CATEGORIES,
-            "active_category": active_category,
+            "trail": trail,
+            "progress": progress,
+            "breadcrumb_parent": {"label": "Projetos", "href": "/projetos"},
             **context,
         },
     )

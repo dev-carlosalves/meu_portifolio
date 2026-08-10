@@ -1,9 +1,10 @@
 """
-database.py — Camada de acesso aos dados dos projetos (CAD e Excel).
+database.py — Camada de acesso aos dados dos projetos (CAD, Excel e Trilhas).
 
 Persistência em JSON local:
   - app/data/cad_projects.json
   - app/data/excel_projects.json
+  - app/data/trilhas/{slug}.json  (excel, autocad, solidworks)
 
 Estrutura preparada para migração futura para SQLite ou PostgreSQL
 sem alterar routers ou templates.
@@ -27,6 +28,7 @@ import fitz  # PyMuPDF — extração de páginas do PDF como imagens
 BASE_DIR        = Path(__file__).resolve().parent
 CAD_DATA_FILE   = BASE_DIR / "data" / "cad_projects.json"
 EXCEL_DATA_FILE = BASE_DIR / "data" / "excel_projects.json"
+TRILHAS_DIR     = BASE_DIR / "data" / "trilhas"
 STATIC_DIR      = BASE_DIR / "static"
 
 # Alias de compatibilidade para código legado
@@ -258,3 +260,44 @@ def delete_excel_project(project_id: str) -> bool:
 
     _persist_file(EXCEL_DATA_FILE, [p for p in projects if p["id"] != project_id])
     return True
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# API pública — Trilhas de Aprendizado (excel / autocad / solidworks)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def get_trail_data(slug: str) -> Optional[dict]:
+    """
+    Carrega os dados de uma trilha a partir de app/data/trilhas/{slug}.json.
+    Retorna None se o arquivo não existir ou o JSON for inválido.
+    Slugs válidos: 'excel', 'autocad', 'solidworks'.
+    """
+    trail_file = TRILHAS_DIR / f"{slug}.json"
+    if not trail_file.exists():
+        return None
+    try:
+        return json.loads(trail_file.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def calculate_trail_progress(trail: dict) -> dict:
+    """
+    Calcula estatísticas de progresso de uma trilha.
+    Retorna dict com: total_aulas, concluidas, percentual (0-100).
+    Nota: 'concluida' no JSON é o estado padrão; o progresso real é
+    gerenciado no cliente via localStorage e injetado no template via JS.
+    """
+    total = 0
+    concluidas = 0
+    for modulo in trail.get("modulos", []):
+        for aula in modulo.get("aulas", []):
+            total += 1
+            if aula.get("concluida", False):
+                concluidas += 1
+    percentual = round((concluidas / total) * 100) if total > 0 else 0
+    return {
+        "total_aulas": total,
+        "concluidas": concluidas,
+        "percentual": percentual,
+    }

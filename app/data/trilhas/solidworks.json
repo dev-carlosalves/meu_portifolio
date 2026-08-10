@@ -1,0 +1,35 @@
+{
+  "id": "solidworks",
+  "slug": "solidworks",
+  "nome": "SolidWorks",
+  "descricao": "Domine a modelagem 3D paramétrica no SolidWorks: criação de peças, conjuntos mecânicos com restrições, documentação técnica e simulações estruturais para projetos de engenharia.",
+  "categoria": "Modelagem 3D",
+  "icone": "fa-gears",
+  "cor": "azul",
+  "modulos": [
+    {
+      "id": "modulo-01",
+      "numero": 1,
+      "titulo": "Introdução",
+      "aulas": []
+    },
+    {
+      "id": "modulo-02",
+      "numero": 2,
+      "titulo": "Desenhos 3D com Principais Comandos",
+      "aulas": []
+    },
+    {
+      "id": "modulo-03",
+      "numero": 3,
+      "titulo": "Conjuntos Mecânicos",
+      "aulas": []
+    },
+    {
+      "id": "modulo-04",
+      "numero": 4,
+      "titulo": "Simulações",
+      "aulas": []
+    }
+  ]
+}

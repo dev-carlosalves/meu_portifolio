@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block page_title %}Trilha {{ trail.nome }} | Carlos Daniel{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/static/css/pages/trail.css" />
+{% endblock %}
+
+{% block content %}
+<div class="trail-page">
+  <div class="container">
+
+    <!-- ── Breadcrumb ─────────────────────────────────────────── -->
+    <nav class="trail-breadcrumb" aria-label="Navegação estrutural" data-aos="fade-right">
+      <a href="/projetos" class="trail-breadcrumb__link">
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+        Trilhas
+      </a>
+      {% if breadcrumb_parent %}
+      <i class="fa-solid fa-chevron-right trail-breadcrumb__sep" aria-hidden="true"></i>
+      <a href="{{ breadcrumb_parent.href }}" class="trail-breadcrumb__link">
+        {{ breadcrumb_parent.label }}
+      </a>
+      {% endif %}
+      <i class="fa-solid fa-chevron-right trail-breadcrumb__sep" aria-hidden="true"></i>
+      <span class="trail-breadcrumb__current">{{ trail.nome }}</span>
+    </nav>
+
+    <!-- ── Layout principal ────────────────────────────────────── -->
+    <div class="trail-layout">
+
+      <!-- ═══════════════════════════════════════════════════════
+           SIDEBAR ESQUERDA — Card fixo com progresso
+      ═══════════════════════════════════════════════════════ -->
+      <aside class="trail-sidebar" aria-label="Informações da trilha" data-aos="fade-right" data-aos-delay="60">
+        <div class="trail-sidebar__card">
+
+          <!-- Tag de categoria -->
+          <div class="trail-sidebar__tag">
+            <i class="fa-solid fa-{{ trail.icone }}" aria-hidden="true"></i>
+            SOFTWARE
+          </div>
+
+          <!-- Título da trilha -->
+          <h1 class="trail-sidebar__title">{{ trail.nome }}</h1>
+
+          <!-- Descrição -->
+          <p class="trail-sidebar__desc">{{ trail.descricao }}</p>
+
+          <!-- Divisor -->
+          <div class="trail-sidebar__divider" aria-hidden="true"></div>
+
+          <!-- Progresso -->
+          <div class="trail-sidebar__progress-section">
+            <div class="trail-sidebar__progress-header">
+              <span class="trail-sidebar__progress-label">Seu progresso</span>
+              <span class="trail-sidebar__progress-pct" id="trail-pct-label">0%</span>
+            </div>
+            <div
+              class="trail-sidebar__progress-bar"
+              role="progressbar"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+              aria-label="Progresso da trilha"
+              id="trail-progress-bar"
+            >
+              <div class="trail-sidebar__progress-fill" id="trail-progress-fill"></div>
+            </div>
+            <div class="trail-sidebar__progress-meta" id="trail-progress-meta">
+              0 de {{ progress.total_aulas }} aula{{ 's' if progress.total_aulas != 1 else '' }} concluída{{ 's' if progress.total_aulas != 1 else '' }}
+            </div>
+          </div>
+
+          <!-- Botão continuar -->
+          <button
+            class="trail-sidebar__cta"
+            id="btn-continuar"
+            aria-label="Continuar de onde parei na trilha {{ trail.nome }}"
+            type="button"
+          >
+            <span class="trail-sidebar__cta-icon" aria-hidden="true">
+              <i class="fa-solid fa-circle-play"></i>
+            </span>
+            <span>Continuar de onde parei</span>
+          </button>
+
+          <!-- Estatísticas rápidas (Módulos e Aulas) -->
+          <div class="trail-sidebar__stats">
+            <div class="trail-sidebar__stat">
+              <span class="trail-sidebar__stat-value">{{ trail.modulos | length }}</span>
+              <span class="trail-sidebar__stat-label">Módulo{{ 's' if trail.modulos | length != 1 else '' }}</span>
+            </div>
+            <div class="trail-sidebar__stat-divider" aria-hidden="true"></div>
+            <div class="trail-sidebar__stat">
+              <span class="trail-sidebar__stat-value">{{ progress.total_aulas }}</span>
+              <span class="trail-sidebar__stat-label">Aula{{ 's' if progress.total_aulas != 1 else '' }}</span>
+            </div>
+          </div>
+
+        </div><!-- /.trail-sidebar__card -->
+      </aside>
+
+      <!-- ═══════════════════════════════════════════════════════
+           COLUNA DIREITA — Módulos e aulas
+      ═══════════════════════════════════════════════════════ -->
+      <main class="trail-main" aria-label="Módulos da trilha" data-aos="fade-left" data-aos-delay="80">
+
+        <!-- Título da seção -->
+        <div class="trail-main__header">
+          <h2 class="trail-main__title">MÓDULOS DA TRILHA</h2>
+          <p class="trail-main__subtitle">
+            {% if trail.modulos | length == 1 %}1 seção{% else %}{{ trail.modulos | length }} seções{% endif %} ·
+            {% if progress.total_aulas == 1 %}1 aula{% else %}{{ progress.total_aulas }} aulas{% endif %}
+          </p>
+        </div>
+
+        <!-- Accordion de módulos -->
+        <div class="trail-accordion" id="trail-accordion" role="list">
+
+          {% for modulo in trail.modulos %}
+          <div
+            class="trail-section{% if loop.first %} trail-section--open{% endif %}"
+            role="listitem"
+            data-modulo-id="{{ modulo.id }}"
+          >
+            <!-- Cabeçalho da seção -->
+            <button
+              class="trail-section__header"
+              aria-expanded="{{ 'true' if loop.first else 'false' }}"
+              aria-controls="section-body-{{ modulo.id }}"
+              id="section-btn-{{ modulo.id }}"
+              type="button"
+            >
+              <div class="trail-section__header-left">
+                <span class="trail-section__tag">SEÇÃO {{ modulo.numero }}</span>
+                <span class="trail-section__title">{{ modulo.numero }} — {{ modulo.titulo }}</span>
+              </div>
+              <div class="trail-section__header-right">
+                <span class="trail-section__count" aria-label="{{ modulo.aulas | length }} aulas">
+                  {{ modulo.aulas | length }} aula{{ 's' if modulo.aulas | length != 1 else '' }}
+                </span>
+                <span class="trail-section__chevron" aria-hidden="true">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </span>
+              </div>
+            </button>
+
+            <!-- Corpo expansível -->
+            <div
+              class="trail-section__body"
+              id="section-body-{{ modulo.id }}"
+              role="region"
+              aria-labelledby="section-btn-{{ modulo.id }}"
+            >
+              {% if modulo.aulas %}
+              <ul class="trail-lessons" role="list">
+                {% for aula in modulo.aulas %}
+                <li
+                  class="trail-lesson"
+                  role="listitem"
+                  data-aula-id="{{ aula.id }}"
+                  data-trail-id="{{ trail.id }}"
+                >
+                  <!-- Checkbox de conclusão -->
+                  <label class="trail-lesson__check" aria-label="Marcar {{ aula.titulo }} como concluída">
+                    <input
+                      type="checkbox"
+                      class="trail-lesson__checkbox"
+                      data-aula-id="{{ aula.id }}"
+                      data-trail-id="{{ trail.id }}"
+                      {% if aula.concluida %}checked{% endif %}
+                    />
+                    <span class="trail-lesson__check-box" aria-hidden="true">
+                      <i class="fa-solid fa-check"></i>
+                    </span>
+                  </label>
+
+                  <!-- Conteúdo da aula -->
+                  <div class="trail-lesson__content">
+                    <div class="trail-lesson__top">
+                      <!-- Ícone de tipo -->
+                      <span class="trail-lesson__type-icon" aria-hidden="true">
+                        {% if aula.tipoConteudo == 'video' %}
+                        <i class="fa-solid fa-circle-play"></i>
+                        {% elif aula.tipoConteudo == 'pdf' %}
+                        <i class="fa-solid fa-file-pdf"></i>
+                        {% else %}
+                        <i class="fa-solid fa-file-lines"></i>
+                        {% endif %}
+                      </span>
+                      <!-- Título da aula -->
+                      <span class="trail-lesson__title">{{ aula.titulo }}</span>
+                    </div>
+
+                    <!-- Meta: tipo + duração -->
+                    <div class="trail-lesson__meta">
+                      <span class="trail-lesson__tag trail-lesson__tag--{{ aula.tipoConteudo }}">
+                        {% if aula.tipoConteudo == 'video' %}Vídeo
+                        {% elif aula.tipoConteudo == 'pdf' %}PDF
+                        {% else %}Texto{% endif %}
+                      </span>
+                      {% if aula.duracao %}
+                      <span class="trail-lesson__meta-sep" aria-hidden="true">·</span>
+                      <span class="trail-lesson__duracao">{{ aula.duracao }}</span>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <!-- Ações (vídeo / downloads) -->
+                  <div class="trail-lesson__actions">
+                    {% if aula.urlYoutube %}
+                    <a
+                      href="{{ aula.urlYoutube }}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="trail-lesson__btn trail-lesson__btn--watch"
+                      aria-label="Assistir {{ aula.titulo }} no YouTube"
+                    >
+                      <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+                    </a>
+                    {% endif %}
+                    {% if aula.arquivosParaDownload %}
+                    {% for arquivo in aula.arquivosParaDownload %}
+                    <a
+                      href="{{ arquivo.url }}"
+                      download
+                      class="trail-lesson__btn trail-lesson__btn--download"
+                      aria-label="Baixar {{ arquivo.nome }}"
+                    >
+                      <i class="fa-solid fa-download" aria-hidden="true"></i>
+                    </a>
+                    {% endfor %}
+                    {% endif %}
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <!-- Estado vazio do módulo -->
+              <div class="trail-section__empty">
+                <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                <p>As aulas deste módulo serão publicadas em breve.</p>
+              </div>
+              {% endif %}
+            </div><!-- /.trail-section__body -->
+          </div><!-- /.trail-section -->
+          {% endfor %}
+
+        </div><!-- /#trail-accordion -->
+
+      </main>
+    </div><!-- /.trail-layout -->
+  </div><!-- /.container -->
+</div><!-- /.trail-page -->
+
+<!-- Dados da trilha para o JS (injetado como JSON seguro) -->
+<script id="trail-data" type="application/json">
+  {
+    "trailId": "{{ trail.id }}",
+    "totalAulas": {{ progress.total_aulas }}
+  }
+</script>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="/static/js/trail.js" defer></script>
+{% endblock %}

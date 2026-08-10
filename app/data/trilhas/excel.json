@@ -1,0 +1,35 @@
+{
+  "id": "excel",
+  "slug": "excel",
+  "nome": "Excel",
+  "descricao": "Domine o Microsoft Excel do básico ao avançado: fórmulas poderosas, análise de dados com tabelas dinâmicas e criação de dashboards profissionais e interativos.",
+  "categoria": "Análise de Dados",
+  "icone": "fa-table",
+  "cor": "verde",
+  "modulos": [
+    {
+      "id": "modulo-01",
+      "numero": 1,
+      "titulo": "Introdução",
+      "aulas": []
+    },
+    {
+      "id": "modulo-02",
+      "numero": 2,
+      "titulo": "Principais Fórmulas",
+      "aulas": []
+    },
+    {
+      "id": "modulo-03",
+      "numero": 3,
+      "titulo": "Projetos Práticos",
+      "aulas": []
+    },
+    {
+      "id": "modulo-04",
+      "numero": 4,
+      "titulo": "Criação de Dashboards",
+      "aulas": []
+    }
+  ]
+}

@@ -16,7 +16,7 @@ async def technologies(request: Request) -> HTMLResponse:
         page_title  = "Tecnologias & Competências | Carlos Daniel",
         description = (
             "Explore as tecnologias e competências de Carlos Daniel: "
-            "Python, FastAPI, modelagem tridimensional com Fusion 360 e mais."
+            "Python, FastAPI, modelagem tridimensional com SolidWorks e mais."
         ),
     )
     return templates.TemplateResponse("pages/technologies.html", {"request": request, **context})

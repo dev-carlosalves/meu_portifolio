@@ -1,0 +1,29 @@
+{
+  "id": "autocad",
+  "slug": "autocad",
+  "nome": "AutoCAD",
+  "descricao": "Aprenda o AutoCAD para desenho técnico 2D: desde os comandos essenciais até a produção de pranchas técnicas com cotas, anotações e vistas ortogonais conforme as normas ABNT.",
+  "categoria": "Desenho Técnico",
+  "icone": "fa-drafting-compass",
+  "cor": "laranja",
+  "modulos": [
+    {
+      "id": "modulo-01",
+      "numero": 1,
+      "titulo": "Introdução",
+      "aulas": []
+    },
+    {
+      "id": "modulo-02",
+      "numero": 2,
+      "titulo": "Desenhos com Principais Comandos e Vistas",
+      "aulas": []
+    },
+    {
+      "id": "modulo-03",
+      "numero": 3,
+      "titulo": "Vistas Isométricas",
+      "aulas": []
+    }
+  ]
+}
