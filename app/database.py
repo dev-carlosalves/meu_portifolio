@@ -1,10 +1,12 @@
 """
 database.py — Camada de acesso aos dados do portfólio (Projetos CAD, Excel e Trilhas de Aprendizado).
 
-Persistência em JSON local:
-  - app/data/cad_projects.json
-  - app/data/excel_projects.json
-  - app/data/trilhas/{slug}.json  (excel, autocad, solidworks)
+Persistência:
+  - Projetos CAD:   app/data/cad_projects.json   (arquivo local)
+  - Projetos Excel: app/data/excel_projects.json  (arquivo local)
+  - Trilhas:        Vercel Blob — trilhas/{slug}.json  (excel, autocad, solidworks)
+                    → leitura/escrita via blob_storage.blob_get / blob_put
+                    → necessário: variável de ambiente BLOB_READ_WRITE_TOKEN
 
 Estrutura preparada para migração futura para SQLite ou PostgreSQL
 sem alterar routers ou templates.
@@ -19,6 +21,8 @@ import unicodedata
 import uuid
 from pathlib import Path
 from typing import Optional
+
+from app.blob_storage import blob_get, blob_put
 
 import fitz  # PyMuPDF — extração de páginas do PDF como imagens
 
@@ -268,17 +272,11 @@ def delete_excel_project(project_id: str) -> bool:
 
 def get_trail_data(slug: str) -> Optional[dict]:
     """
-    Carrega os dados de uma trilha a partir de app/data/trilhas/{slug}.json.
-    Retorna None se o arquivo não existir ou o JSON for inválido.
+    Carrega os dados de uma trilha a partir do Vercel Blob (trilhas/{slug}.json).
+    Retorna None se o blob não existir ou o conteúdo for inválido.
     Slugs válidos: 'excel', 'autocad', 'solidworks'.
     """
-    trail_file = TRILHAS_DIR / f"{slug}.json"
-    if not trail_file.exists():
-        return None
-    try:
-        return json.loads(trail_file.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return None
+    return _load_trail(slug)
 
 
 def calculate_trail_progress(trail: dict) -> dict:
@@ -311,25 +309,22 @@ VALID_TRAILS = ("excel", "autocad", "solidworks")
 
 
 def _load_trail(slug: str) -> Optional[dict]:
-    """Carrega o JSON de uma trilha; retorna None se inválido."""
+    """
+    Carrega o JSON de uma trilha a partir do Vercel Blob.
+    Retorna None se o slug for inválido ou o blob não existir.
+    """
     if slug not in VALID_TRAILS:
         return None
-    trail_file = TRILHAS_DIR / f"{slug}.json"
-    if not trail_file.exists():
-        return None
-    try:
-        return json.loads(trail_file.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return None
+    return blob_get(f"trilhas/{slug}.json")
 
 
 def _persist_trail(slug: str, trail: dict) -> None:
-    """Persiste o objeto de trilha no JSON correspondente."""
-    trail_file = TRILHAS_DIR / f"{slug}.json"
-    trail_file.write_text(
-        json.dumps(trail, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    """
+    Persiste o objeto de trilha no Vercel Blob (trilhas/{slug}.json).
+    Usa addRandomSuffix=0 para URL determinística — mesmo pathname sempre
+    sobrescreve o mesmo blob.
+    """
+    blob_put(f"trilhas/{slug}.json", trail)
 
 
 def get_all_trails_summary() -> list[dict]:
