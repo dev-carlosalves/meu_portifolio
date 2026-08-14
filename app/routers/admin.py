@@ -230,16 +230,22 @@ async def admin_lesson_new_form(request: Request, slug: str) -> HTMLResponse:
 async def admin_lesson_create(
     request: Request,
     slug: str,
-    modulo_id: str              = Form(...),
-    titulo: str                 = Form(...),
-    tipo_conteudo: str          = Form(default="video"),
-    duracao: str                = Form(default=""),
-    url_youtube: str            = Form(default=""),
-    nova_secao_titulo: str      = Form(default=""),
-    download_files: List[UploadFile] = File(default=[]),
 ) -> RedirectResponse:
+    form = await request.form()
+    modulo_id = str(form.get("modulo_id", "")).strip()
+    titulo = str(form.get("titulo", "")).strip()
+    tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
+    duracao = str(form.get("duracao", "")).strip()
+    url_youtube = str(form.get("url_youtube", "")).strip()
+    nova_secao_titulo = str(form.get("nova_secao_titulo", "")).strip()
+
+    download_files = [
+        item for item in form.getlist("download_files")
+        if isinstance(item, UploadFile) and item.filename and item.filename.strip()
+    ]
+
     # Cria nova seção se solicitado
-    if modulo_id == "__nova__" and nova_secao_titulo.strip():
+    if modulo_id == "__nova__" and nova_secao_titulo:
         novo_mod = add_modulo_to_trail(slug, nova_secao_titulo)
         if novo_mod:
             modulo_id = novo_mod["id"]
@@ -247,10 +253,10 @@ async def admin_lesson_create(
             return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
     aula: dict = {
-        "titulo":              titulo.strip(),
+        "titulo":              titulo,
         "tipoConteudo":        tipo_conteudo,
-        "duracao":             duracao.strip(),
-        "urlYoutube":          url_youtube.strip(),
+        "duracao":             duracao,
+        "urlYoutube":          url_youtube,
         "arquivosParaDownload": [],
         "concluida":           False,
     }
@@ -324,13 +330,19 @@ async def admin_lesson_update(
     request: Request,
     slug: str,
     aula_id: str,
-    modulo_id: str              = Form(...),
-    titulo: str                 = Form(...),
-    tipo_conteudo: str          = Form(default="video"),
-    duracao: str                = Form(default=""),
-    url_youtube: str            = Form(default=""),
-    download_files: List[UploadFile] = File(default=[]),
 ) -> RedirectResponse:
+    form = await request.form()
+    modulo_id = str(form.get("modulo_id", "")).strip()
+    titulo = str(form.get("titulo", "")).strip()
+    tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
+    duracao = str(form.get("duracao", "")).strip()
+    url_youtube = str(form.get("url_youtube", "")).strip()
+
+    download_files = [
+        item for item in form.getlist("download_files")
+        if isinstance(item, UploadFile) and item.filename and item.filename.strip()
+    ]
+
     # Localiza a aula existente para preservar campos não editados
     trail = get_trail_data(slug)
     if not trail:
@@ -347,10 +359,10 @@ async def admin_lesson_update(
 
     aula = {
         "id":                  aula_id,
-        "titulo":              titulo.strip(),
+        "titulo":              titulo,
         "tipoConteudo":        tipo_conteudo,
-        "duracao":             duracao.strip(),
-        "urlYoutube":          url_youtube.strip(),
+        "duracao":             duracao,
+        "urlYoutube":          url_youtube,
         "arquivosParaDownload": arquivos_existentes,
         "concluida":           existing_aula.get("concluida", False) if existing_aula else False,
     }
@@ -363,6 +375,7 @@ async def admin_lesson_update(
 
     save_aula_to_trail(slug, modulo_id, aula)
     return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
+
 
 
 @router.post(
