@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block page_title %}Trilha {{ trail.nome }} | Admin{% endblock %}
+
+{% block content %}
+<section class="admin-section section-padding">
+  <div class="container">
+
+    <!-- ── Cabeçalho ──────────────────────────────────────────────── -->
+    <div class="admin-header" data-aos="fade-down">
+      <div class="admin-header__left">
+        <div class="admin-header__label">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          Painel Admin · Trilha
+        </div>
+        <h1 class="admin-header__title">
+          <i class="fa-solid {{ trail.icone }} admin-trail-icon--{{ trail.cor }}" aria-hidden="true"></i>
+          {{ trail.nome }}
+        </h1>
+        <p class="admin-header__sub">
+          {{ trail.modulos | length }} módulo{{ 's' if trail.modulos | length != 1 else '' }} ·
+          {% set ns = namespace(count=0) %}
+          {% for modulo in trail.modulos %}{% set ns.count = ns.count + (modulo.aulas | length) %}{% endfor %}
+          {{ ns.count }} aula{{ 's' if ns.count != 1 else '' }} cadastrada{{ 's' if ns.count != 1 else '' }}
+        </p>
+      </div>
+      <div class="admin-header__actions">
+        <a href="/admin-panel/trilhas/{{ slug }}/nova-aula" class="btn-primary" id="btn-nova-aula">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          Nova Aula
+        </a>
+        <a href="/admin-panel" class="btn-outline" id="btn-back-dashboard">
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+          Dashboard
+        </a>
+      </div>
+    </div>
+
+    <!-- ── Accordion de módulos ──────────────────────────────────── -->
+    <div class="admin-trail-manager" data-aos="fade-up">
+
+      {% for modulo in trail.modulos %}
+      <div class="admin-module" id="module-{{ modulo.id }}">
+
+        <!-- Cabeçalho do módulo -->
+        <div class="admin-module__header">
+          <div class="admin-module__header-left">
+            <span class="admin-module__tag">SEÇÃO {{ modulo.numero }}</span>
+            <span class="admin-module__title">{{ modulo.titulo }}</span>
+            <span class="admin-module__count">
+              {{ modulo.aulas | length }} aula{{ 's' if modulo.aulas | length != 1 else '' }}
+            </span>
+          </div>
+          <div class="admin-module__header-right">
+            <a
+              href="/admin-panel/trilhas/{{ slug }}/nova-aula?modulo={{ modulo.id }}"
+              class="btn-icon btn-icon--add"
+              title="Nova aula neste módulo"
+              aria-label="Nova aula em {{ modulo.titulo }}"
+            >
+              <i class="fa-solid fa-plus"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Lista de aulas -->
+        {% if modulo.aulas %}
+        <div class="admin-module__body">
+          <ul
+            class="admin-lessons-list"
+            id="lessons-list-{{ modulo.id }}"
+            data-modulo-id="{{ modulo.id }}"
+            data-trail-slug="{{ slug }}"
+          >
+            {% for aula in modulo.aulas %}
+            <li
+              class="admin-lesson-item"
+              data-aula-id="{{ aula.id }}"
+              draggable="true"
+            >
+              <!-- Handle de drag -->
+              <span class="admin-lesson-item__drag" title="Arrastar para reordenar" aria-hidden="true">
+                <i class="fa-solid fa-grip-vertical"></i>
+              </span>
+
+              <!-- Ícone de tipo -->
+              <span class="admin-lesson-item__type-icon" aria-hidden="true">
+                {% if aula.tipoConteudo == 'video' %}
+                <i class="fa-solid fa-circle-play"></i>
+                {% elif aula.tipoConteudo == 'pdf' %}
+                <i class="fa-solid fa-file-pdf"></i>
+                {% else %}
+                <i class="fa-solid fa-file-lines"></i>
+                {% endif %}
+              </span>
+
+              <!-- Conteúdo principal -->
+              <div class="admin-lesson-item__content">
+                <span class="admin-lesson-item__title">{{ aula.titulo }}</span>
+                <div class="admin-lesson-item__meta">
+                  <span class="admin-lesson-item__badge admin-lesson-item__badge--{{ aula.tipoConteudo }}">
+                    {% if aula.tipoConteudo == 'video' %}Vídeo
+                    {% elif aula.tipoConteudo == 'pdf' %}PDF
+                    {% else %}Texto{% endif %}
+                  </span>
+                  {% if aula.duracao %}
+                  <span class="admin-lesson-item__meta-sep" aria-hidden="true">·</span>
+                  <span class="admin-lesson-item__duracao">
+                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    {{ aula.duracao }}
+                  </span>
+                  {% endif %}
+                  {% if aula.urlYoutube %}
+                  <span class="admin-lesson-item__meta-sep" aria-hidden="true">·</span>
+                  <a
+                    href="{{ aula.urlYoutube }}"
+                    target="_blank"
+                    rel="noopener"
+                    class="admin-lesson-item__yt-link"
+                    aria-label="Assistir {{ aula.titulo }} no YouTube"
+                  >
+                    <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+                    YouTube
+                  </a>
+                  {% endif %}
+                  {% if aula.arquivosParaDownload %}
+                  <span class="admin-lesson-item__meta-sep" aria-hidden="true">·</span>
+                  <span class="admin-lesson-item__files">
+                    <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
+                    {{ aula.arquivosParaDownload | length }} arquivo{{ 's' if aula.arquivosParaDownload | length != 1 else '' }}
+                  </span>
+                  {% endif %}
+                </div>
+              </div>
+
+              <!-- Ações -->
+              <div class="admin-lesson-item__actions">
+                <a
+                  href="/admin-panel/trilhas/{{ slug }}/editar-aula/{{ aula.id }}"
+                  class="btn-icon btn-icon--edit"
+                  title="Editar aula"
+                  aria-label="Editar {{ aula.titulo }}"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <button
+                  type="button"
+                  class="btn-icon btn-icon--delete"
+                  title="Excluir aula"
+                  aria-label="Excluir {{ aula.titulo }}"
+                  onclick="confirmDeleteLesson('{{ aula.id }}', '{{ modulo.id }}', '{{ aula.titulo | replace("'", "\\'") }}')"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        {% else %}
+        <div class="admin-module__empty">
+          <i class="fa-regular fa-clock" aria-hidden="true"></i>
+          <span>Nenhuma aula cadastrada neste módulo.</span>
+          <a href="/admin-panel/trilhas/{{ slug }}/nova-aula?modulo={{ modulo.id }}" class="admin-module__empty-link">
+            + Adicionar primeira aula
+          </a>
+        </div>
+        {% endif %}
+
+      </div><!-- /.admin-module -->
+      {% endfor %}
+
+      <!-- Botão adicionar nova seção -->
+      <div class="admin-new-section-area">
+        <button
+          type="button"
+          class="admin-new-section-btn"
+          id="btn-nova-secao"
+          onclick="toggleNewSectionForm()"
+        >
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          Criar Nova Seção
+        </button>
+        <form
+          id="form-nova-secao"
+          method="post"
+          action="/admin-panel/trilhas/{{ slug }}/nova-secao"
+          class="admin-new-section-form"
+          style="display:none"
+        >
+          <input
+            type="text"
+            name="titulo"
+            id="input-nova-secao"
+            class="admin-form-input"
+            placeholder="Nome da nova seção..."
+            required
+            maxlength="100"
+            aria-label="Título da nova seção"
+          />
+          <button type="submit" class="btn-primary">Criar</button>
+          <button type="button" class="btn-outline" onclick="toggleNewSectionForm()">Cancelar</button>
+        </form>
+      </div>
+
+    </div><!-- /.admin-trail-manager -->
+
+    <!-- Link de volta -->
+    <div class="admin-footer-nav" data-aos="fade-up">
+      <a href="{% if slug == 'excel' %}/projetos/excel{% else %}/projetos/cad/{{ slug }}{% endif %}" class="btn-outline" target="_blank" rel="noopener">
+        <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+        Ver Trilha no Site
+      </a>
+      <a href="/admin-panel" class="btn-outline">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Voltar ao Dashboard
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Modal de confirmação de exclusão ─────────────────────────── -->
+<div class="admin-delete-modal" id="delete-modal" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" hidden>
+  <div class="admin-delete-modal__overlay" onclick="closeDeleteModal()"></div>
+  <div class="admin-delete-modal__box">
+    <div class="admin-delete-modal__icon">
+      <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+    </div>
+    <h2 class="admin-delete-modal__title" id="delete-modal-title">Excluir Aula</h2>
+    <p class="admin-delete-modal__text" id="delete-modal-text">
+      Tem certeza que deseja excluir esta aula? Esta ação não pode ser desfeita.
+    </p>
+    <div class="admin-delete-modal__actions">
+      <button type="button" class="btn-outline" onclick="closeDeleteModal()">Cancelar</button>
+      <form method="post" action="/admin-panel/trilhas/{{ slug }}/excluir-aula" id="delete-modal-form">
+        <input type="hidden" name="aula_id" id="delete-aula-id" value="">
+        <input type="hidden" name="modulo_id" id="delete-modulo-id" value="">
+        <button type="submit" class="btn-danger" id="btn-confirm-delete-lesson">
+          <i class="fa-solid fa-trash" aria-hidden="true"></i>
+          Excluir
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+  // ── Confirmação de exclusão (modal inline) ────────────────────────
+  function confirmDeleteLesson(aulaId, moduloId, titulo) {
+    document.getElementById('delete-aula-id').value  = aulaId;
+    document.getElementById('delete-modulo-id').value = moduloId;
+    document.getElementById('delete-modal-text').textContent =
+      `Tem certeza que deseja excluir a aula "${titulo}"? Todos os arquivos de download associados também serão removidos.`;
+    const modal = document.getElementById('delete-modal');
+    modal.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDeleteModal() {
+    const modal = document.getElementById('delete-modal');
+    modal.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  // Fecha modal com Esc
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDeleteModal();
+  });
+
+  // ── Toggle formulário de nova seção ─────────────────────────────
+  function toggleNewSectionForm() {
+    const form = document.getElementById('form-nova-secao');
+    const btn  = document.getElementById('btn-nova-secao');
+    const isHidden = form.style.display === 'none';
+    form.style.display = isHidden ? 'flex' : 'none';
+    btn.style.display  = isHidden ? 'none'  : '';
+    if (isHidden) document.getElementById('input-nova-secao').focus();
+  }
+
+  // ── Drag-and-drop para reordenação de aulas ──────────────────────
+  document.querySelectorAll('.admin-lessons-list').forEach(list => {
+    const trailSlug = list.dataset.trailSlug;
+    const moduloId  = list.dataset.moduloId;
+    let dragSrc     = null;
+
+    list.querySelectorAll('.admin-lesson-item').forEach(item => {
+      item.addEventListener('dragstart', function (e) {
+        dragSrc = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      item.addEventListener('dragend', function () {
+        this.classList.remove('dragging');
+        list.querySelectorAll('.admin-lesson-item').forEach(i => i.classList.remove('drag-over'));
+        // Envia nova ordem ao servidor
+        const orderedIds = [...list.querySelectorAll('.admin-lesson-item')]
+          .map(i => i.dataset.aulaId);
+        fetch(`/admin-panel/trilhas/${trailSlug}/reordenar`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ modulo_id: moduloId, ordered_ids: orderedIds }),
+        });
+      });
+
+      item.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        list.querySelectorAll('.admin-lesson-item').forEach(i => i.classList.remove('drag-over'));
+        this.classList.add('drag-over');
+      });
+
+      item.addEventListener('drop', function (e) {
+        e.preventDefault();
+        if (dragSrc !== this) {
+          const allItems = [...list.querySelectorAll('.admin-lesson-item')];
+          const srcIdx   = allItems.indexOf(dragSrc);
+          const dstIdx   = allItems.indexOf(this);
+          if (srcIdx < dstIdx) {
+            list.insertBefore(dragSrc, this.nextSibling);
+          } else {
+            list.insertBefore(dragSrc, this);
+          }
+        }
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,5 +1,5 @@
 """
-database.py — Camada de acesso aos dados dos projetos (CAD, Excel e Trilhas).
+database.py — Camada de acesso aos dados do portfólio (Projetos CAD, Excel e Trilhas de Aprendizado).
 
 Persistência em JSON local:
   - app/data/cad_projects.json
@@ -301,3 +301,170 @@ def calculate_trail_progress(trail: dict) -> dict:
         "concluidas": concluidas,
         "percentual": percentual,
     }
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# API pública — CRUD de Aulas nas Trilhas de Aprendizado
+# ──────────────────────────────────────────────────────────────────────────────
+
+VALID_TRAILS = ("excel", "autocad", "solidworks")
+
+
+def _load_trail(slug: str) -> Optional[dict]:
+    """Carrega o JSON de uma trilha; retorna None se inválido."""
+    if slug not in VALID_TRAILS:
+        return None
+    trail_file = TRILHAS_DIR / f"{slug}.json"
+    if not trail_file.exists():
+        return None
+    try:
+        return json.loads(trail_file.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def _persist_trail(slug: str, trail: dict) -> None:
+    """Persiste o objeto de trilha no JSON correspondente."""
+    trail_file = TRILHAS_DIR / f"{slug}.json"
+    trail_file.write_text(
+        json.dumps(trail, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+
+def get_all_trails_summary() -> list[dict]:
+    """
+    Retorna lista com resumo de todas as trilhas (para dashboard admin).
+    Cada item: { slug, nome, icone, cor, total_modulos, total_aulas }.
+    """
+    summaries = []
+    for slug in VALID_TRAILS:
+        trail = _load_trail(slug)
+        if not trail:
+            continue
+        total_aulas = sum(len(m.get("aulas", [])) for m in trail.get("modulos", []))
+        summaries.append({
+            "slug":          trail.get("slug", slug),
+            "nome":          trail.get("nome", slug.capitalize()),
+            "icone":         trail.get("icone", "fa-book"),
+            "cor":           trail.get("cor", "cinza"),
+            "total_modulos": len(trail.get("modulos", [])),
+            "total_aulas":   total_aulas,
+        })
+    return summaries
+
+
+def save_aula_to_trail(trail_slug: str, modulo_id: str, aula: dict) -> Optional[dict]:
+    """
+    Cria (sem 'id') ou atualiza (com 'id') uma aula dentro de um módulo da trilha.
+    Retorna a aula salva, ou None se trilha/módulo não encontrado.
+    """
+    trail = _load_trail(trail_slug)
+    if not trail:
+        return None
+
+    modulos = trail.get("modulos", [])
+    target_modulo = next((m for m in modulos if m["id"] == modulo_id), None)
+    if not target_modulo:
+        return None
+
+    aulas = target_modulo.setdefault("aulas", [])
+
+    if not aula.get("id"):
+        # Nova aula
+        aula["id"] = str(uuid.uuid4())
+        aulas.append(aula)
+    else:
+        # Atualizar existente
+        for i, a in enumerate(aulas):
+            if a["id"] == aula["id"]:
+                aulas[i] = aula
+                break
+        else:
+            aulas.append(aula)
+
+    _persist_trail(trail_slug, trail)
+    return aula
+
+
+def delete_aula_from_trail(trail_slug: str, modulo_id: str, aula_id: str) -> bool:
+    """
+    Remove uma aula de um módulo da trilha e apaga seus arquivos de download.
+    Retorna True se removida com sucesso.
+    """
+    trail = _load_trail(trail_slug)
+    if not trail:
+        return False
+
+    modulos = trail.get("modulos", [])
+    target_modulo = next((m for m in modulos if m["id"] == modulo_id), None)
+    if not target_modulo:
+        return False
+
+    aulas = target_modulo.get("aulas", [])
+    original_len = len(aulas)
+    target_aula = next((a for a in aulas if a["id"] == aula_id), None)
+
+    if not target_aula:
+        return False
+
+    # Remove arquivos de download do servidor
+    aula_files_dir = STATIC_DIR / "documents" / "trilhas" / trail_slug / aula_id
+    if aula_files_dir.exists():
+        shutil.rmtree(aula_files_dir, ignore_errors=True)
+
+    target_modulo["aulas"] = [a for a in aulas if a["id"] != aula_id]
+
+    if len(target_modulo["aulas"]) < original_len:
+        _persist_trail(trail_slug, trail)
+        return True
+    return False
+
+
+def reorder_aulas_in_modulo(trail_slug: str, modulo_id: str, ordered_ids: list[str]) -> bool:
+    """
+    Reordena as aulas de um módulo de acordo com a lista de IDs fornecida.
+    Retorna True se bem-sucedido.
+    """
+    trail = _load_trail(trail_slug)
+    if not trail:
+        return False
+
+    modulos = trail.get("modulos", [])
+    target_modulo = next((m for m in modulos if m["id"] == modulo_id), None)
+    if not target_modulo:
+        return False
+
+    aulas = target_modulo.get("aulas", [])
+    aulas_by_id = {a["id"]: a for a in aulas}
+
+    reordered = [aulas_by_id[aid] for aid in ordered_ids if aid in aulas_by_id]
+    # Inclui aulas que não estavam na lista (segurança)
+    remaining = [a for a in aulas if a["id"] not in set(ordered_ids)]
+    target_modulo["aulas"] = reordered + remaining
+
+    _persist_trail(trail_slug, trail)
+    return True
+
+
+def add_modulo_to_trail(trail_slug: str, titulo: str) -> Optional[dict]:
+    """
+    Adiciona um novo módulo/seção a uma trilha.
+    Retorna o módulo criado, ou None se trilha inválida.
+    """
+    trail = _load_trail(trail_slug)
+    if not trail:
+        return None
+
+    modulos = trail.setdefault("modulos", [])
+    novo_numero = len(modulos) + 1
+    novo_modulo = {
+        "id":     f"modulo-{novo_numero:02d}",
+        "numero": novo_numero,
+        "titulo": titulo.strip(),
+        "aulas":  [],
+    }
+    modulos.append(novo_modulo)
+    _persist_trail(trail_slug, trail)
+    return novo_modulo
+

@@ -1,0 +1,446 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ 'Nova Aula' if mode == 'create' else 'Editar Aula' }} — {{ trail.nome }} | Admin{% endblock %}
+
+{% block content %}
+<section class="admin-section section-padding">
+  <div class="container">
+
+    <!-- ── Cabeçalho ──────────────────────────────────────────────── -->
+    <div class="admin-header" data-aos="fade-down">
+      <div class="admin-header__left">
+        <div class="admin-header__label">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          Admin · {{ trail.nome }}
+        </div>
+        <h1 class="admin-header__title">
+          {{ 'Nova Aula' if mode == 'create' else 'Editar Aula' }}
+        </h1>
+        <p class="admin-header__sub">
+          {{ 'Preencha os dados abaixo para cadastrar uma nova aula na trilha.' if mode == 'create' else 'Atualize as informações da aula.' }}
+        </p>
+      </div>
+      <a href="/admin-panel/trilhas/{{ slug }}" class="btn-outline" id="btn-back-trail">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        Voltar para a Trilha
+      </a>
+    </div>
+
+    <!-- ── Formulário ──────────────────────────────────────────────── -->
+    <form
+      method="post"
+      enctype="multipart/form-data"
+      class="admin-form"
+      id="lesson-form"
+      action="{{ '/admin-panel/trilhas/' ~ slug ~ '/nova-aula' if mode == 'create' else '/admin-panel/trilhas/' ~ slug ~ '/editar-aula/' ~ aula.id }}"
+      data-aos="fade-up"
+      novalidate
+    >
+      <!-- Campo hidden com modulo_id (pode ser sobrescrito pelo select) -->
+      <input type="hidden" name="modulo_id" id="hidden-modulo-id" value="{{ modulo_id }}" />
+
+      <!-- ══════════════════════════════════════
+           SEÇÃO 1 — LINK DO YOUTUBE
+      ══════════════════════════════════════ -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">01</span>
+          Vídeo do YouTube
+        </h2>
+
+        <div class="admin-form-field">
+          <label for="url-youtube-input" class="admin-form-label">
+            Link do YouTube
+            <span class="admin-form-label__hint">(youtu.be ou youtube.com/watch)</span>
+          </label>
+          <div class="admin-yt-row">
+            <input
+              type="url"
+              id="url-youtube-input"
+              name="url_youtube"
+              class="admin-form-input"
+              value="{{ aula.urlYoutube if aula else '' }}"
+              placeholder="https://youtu.be/... ou https://www.youtube.com/watch?v=..."
+              autocomplete="off"
+            />
+            <button
+              type="button"
+              class="btn-secondary"
+              id="btn-buscar-yt"
+              onclick="fetchYouTubeInfo()"
+            >
+              <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+              Buscar dados
+            </button>
+          </div>
+          <div id="yt-status" class="admin-form-hint" style="display:none"></div>
+        </div>
+
+        <!-- Preview do YouTube -->
+        <div class="admin-yt-preview" id="yt-preview" {% if not (aula and aula.urlYoutube) %}style="display:none"{% endif %}>
+          <div class="admin-yt-preview__thumb-wrap">
+            <img
+              id="yt-thumb"
+              src="{{ 'https://img.youtube.com/vi/' ~ aula.urlYoutube.split('v=')[-1].split('&')[0] ~ '/mqdefault.jpg' if aula and aula.urlYoutube else '' }}"
+              alt="Thumbnail do vídeo"
+              class="admin-yt-preview__thumb"
+            />
+            <span class="admin-yt-preview__play" aria-hidden="true">
+              <i class="fa-brands fa-youtube"></i>
+            </span>
+          </div>
+          <div class="admin-yt-preview__info">
+            <span class="admin-yt-preview__label">Vídeo encontrado</span>
+            <span class="admin-yt-preview__title" id="yt-video-title">{{ aula.titulo if aula else '' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           SEÇÃO 2 — DESTINO (Trilha / Módulo)
+      ══════════════════════════════════════ -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">02</span>
+          Destino da Aula
+        </h2>
+
+        <div class="admin-form-grid admin-form-grid--2">
+
+          <!-- Select: Área / Trilha -->
+          <div class="admin-form-field">
+            <label for="select-area" class="admin-form-label">
+              Área <span class="required">*</span>
+            </label>
+            <select
+              id="select-area"
+              class="admin-form-select"
+              onchange="onAreaChange(this.value)"
+              required
+            >
+              <option value="excel"      {{ 'selected' if slug == 'excel' }}>Excel</option>
+              <option value="autocad"    {{ 'selected' if slug == 'autocad' }}>AutoCAD</option>
+              <option value="solidworks" {{ 'selected' if slug == 'solidworks' }}>SolidWorks</option>
+            </select>
+            <div class="admin-form-hint">
+              <i class="fa-solid fa-circle-info" style="color:var(--color-accent)"></i>
+              A área define em qual trilha a aula será inserida.
+            </div>
+          </div>
+
+          <!-- Select: Módulo / Seção -->
+          <div class="admin-form-field">
+            <label for="select-modulo" class="admin-form-label">
+              Módulo / Seção <span class="required">*</span>
+            </label>
+            <select
+              id="select-modulo"
+              class="admin-form-select"
+              onchange="onModuloChange(this.value)"
+              required
+            >
+              {% for modulo in trail.modulos %}
+              <option
+                value="{{ modulo.id }}"
+                {{ 'selected' if modulo.id == modulo_id }}
+              >
+                {{ modulo.numero }}. {{ modulo.titulo }}
+              </option>
+              {% endfor %}
+              <option value="__nova__">＋ Criar nova seção...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Campo: Nome da nova seção (aparece condicionalmente) -->
+        <div class="admin-form-field" id="nova-secao-field" style="display:none">
+          <label for="nova-secao-titulo" class="admin-form-label">
+            Nome da Nova Seção <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="nova-secao-titulo"
+            name="nova_secao_titulo"
+            class="admin-form-input"
+            placeholder="Ex.: Projetos Avançados"
+            maxlength="100"
+          />
+          <div class="admin-form-hint">A seção será criada automaticamente ao salvar a aula.</div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           SEÇÃO 3 — DADOS DA AULA
+      ══════════════════════════════════════ -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">03</span>
+          Dados da Aula
+        </h2>
+
+        <!-- Título -->
+        <div class="admin-form-field">
+          <label for="titulo" class="admin-form-label">
+            Título da Aula <span class="required">*</span>
+            <span class="admin-form-label__hint">(pré-preenchido do YouTube, editável)</span>
+          </label>
+          <input
+            type="text"
+            id="titulo"
+            name="titulo"
+            class="admin-form-input"
+            value="{{ aula.titulo if aula else '' }}"
+            placeholder="Título da aula..."
+            required
+            maxlength="200"
+          />
+        </div>
+
+        <div class="admin-form-grid admin-form-grid--2">
+
+          <!-- Tipo de conteúdo -->
+          <div class="admin-form-field">
+            <label for="tipo-conteudo" class="admin-form-label">
+              Tipo de Conteúdo <span class="required">*</span>
+            </label>
+            <select id="tipo-conteudo" name="tipo_conteudo" class="admin-form-select" required>
+              {% set tipo_atual = aula.tipoConteudo if aula else 'video' %}
+              <option value="video"  {{ 'selected' if tipo_atual == 'video' }}>
+                🎬 Vídeo
+              </option>
+              <option value="pdf"    {{ 'selected' if tipo_atual == 'pdf' }}>
+                📄 PDF
+              </option>
+              <option value="texto"  {{ 'selected' if tipo_atual == 'texto' }}>
+                📝 Texto
+              </option>
+            </select>
+          </div>
+
+          <!-- Duração estimada -->
+          <div class="admin-form-field">
+            <label for="duracao" class="admin-form-label">
+              Duração Estimada
+              <span class="admin-form-label__hint">(ex: "15 min" — preenchimento manual)</span>
+            </label>
+            <input
+              type="text"
+              id="duracao"
+              name="duracao"
+              class="admin-form-input"
+              value="{{ aula.duracao if aula else '' }}"
+              placeholder="Ex.: 15 min"
+              maxlength="30"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           SEÇÃO 4 — ARQUIVOS PARA DOWNLOAD
+      ══════════════════════════════════════ -->
+      <div class="admin-form-section">
+        <h2 class="admin-form-section__title">
+          <span class="admin-form-section__num">04</span>
+          Arquivos para Download
+          <span class="admin-form-section__optional">(opcional)</span>
+        </h2>
+
+        <!-- Arquivos existentes (modo edição) -->
+        {% if aula and aula.arquivosParaDownload %}
+        <div class="admin-existing-files">
+          <p class="admin-existing-files__label">Arquivos já cadastrados:</p>
+          <ul class="admin-existing-files__list">
+            {% for arquivo in aula.arquivosParaDownload %}
+            <li class="admin-existing-files__item">
+              <i class="fa-solid fa-file" aria-hidden="true"></i>
+              <a href="{{ arquivo.url }}" target="_blank" rel="noopener">{{ arquivo.nome }}</a>
+              <span class="admin-existing-files__tipo">{{ arquivo.tipo | upper }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          <p class="admin-form-hint">
+            <i class="fa-solid fa-circle-info" style="color:var(--color-accent)"></i>
+            Novos arquivos serão adicionados aos existentes. Para remover um arquivo, edite o JSON diretamente.
+          </p>
+        </div>
+        {% endif %}
+
+        <!-- Upload de novos arquivos -->
+        <div class="admin-form-field">
+          <label for="download-files" class="admin-form-label">
+            Adicionar Arquivos
+            <span class="admin-form-label__hint">(PDF, XLSX, DWG, SLDPRT, etc.)</span>
+          </label>
+          <label for="download-files" class="admin-file-dropzone" id="download-dropzone">
+            <i class="fa-solid fa-cloud-arrow-up admin-file-dropzone__icon" aria-hidden="true"></i>
+            <span class="admin-file-dropzone__text">
+              <strong>Clique para selecionar</strong> ou arraste aqui
+            </span>
+            <span class="admin-file-dropzone__sub">
+              PDF, XLSX, XLS, DWG, SLDPRT, STEP, IGES e outros — múltiplos arquivos permitidos
+            </span>
+            <span class="admin-file-dropzone__name" id="download-filenames">Nenhum arquivo selecionado</span>
+            <input
+              type="file"
+              id="download-files"
+              name="download_files"
+              class="admin-file-input"
+              multiple
+              accept=".pdf,.xlsx,.xls,.dwg,.sldprt,.sldasm,.step,.stp,.iges,.igs,.docx,.doc,.txt"
+              aria-describedby="download-filenames"
+            />
+          </label>
+        </div>
+      </div>
+
+      <!-- ── Botões de ação ────────────────────────────────────────── -->
+      <div class="admin-form-actions">
+        <a href="/admin-panel/trilhas/{{ slug }}" class="btn-outline" id="btn-cancel-lesson">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          Cancelar
+        </a>
+        <button type="submit" class="btn-primary" id="btn-submit-lesson">
+          <i class="fa-solid fa-{{ 'plus' if mode == 'create' else 'floppy-disk' }}" aria-hidden="true"></i>
+          {{ 'Salvar Aula' if mode == 'create' else 'Salvar Alterações' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+  // ── Mapeamento de módulos por trilha (injetado pelo servidor) ────
+  const TRAIL_MODULES = {
+    excel: [
+      {% for m in trail.modulos if slug == 'excel' %}
+      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
+      {% endfor %}
+    ],
+    autocad: [
+      {% if slug == 'autocad' %}{% for m in trail.modulos %}
+      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
+      {% endfor %}{% endif %}
+    ],
+    solidworks: [
+      {% if slug == 'solidworks' %}{% for m in trail.modulos %}
+      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
+      {% endfor %}{% endif %}
+    ],
+  };
+
+  // Dados das trilhas via fetch ao mudar área
+  async function onAreaChange(slug) {
+    try {
+      const resp = await fetch(`/api/trail-modules/${slug}`);
+      if (!resp.ok) return;
+      // Se houver endpoint, atualiza módulos. Caso contrário, redireciona.
+    } catch {}
+    // Redireciona para a nova trilha preservando funcionalidade
+    window.location.href = `/admin-panel/trilhas/${slug}/nova-aula`;
+  }
+
+  function onModuloChange(val) {
+    const novaSecaoField = document.getElementById('nova-secao-field');
+    const hiddenModuloId = document.getElementById('hidden-modulo-id');
+    if (val === '__nova__') {
+      novaSecaoField.style.display = '';
+      hiddenModuloId.value = '__nova__';
+      document.getElementById('nova-secao-titulo').required = true;
+    } else {
+      novaSecaoField.style.display = 'none';
+      hiddenModuloId.value = val;
+      document.getElementById('nova-secao-titulo').required = false;
+    }
+  }
+
+  // Sincroniza hidden field com o select no load
+  (function () {
+    const sel = document.getElementById('select-modulo');
+    if (sel) onModuloChange(sel.value);
+  })();
+
+  // ── Busca YouTube oEmbed ─────────────────────────────────────────
+  async function fetchYouTubeInfo() {
+    const urlInput  = document.getElementById('url-youtube-input');
+    const statusEl  = document.getElementById('yt-status');
+    const previewEl = document.getElementById('yt-preview');
+    const thumbEl   = document.getElementById('yt-thumb');
+    const titleEl   = document.getElementById('yt-video-title');
+    const tituloEl  = document.getElementById('titulo');
+    const btn       = document.getElementById('btn-buscar-yt');
+
+    const url = urlInput.value.trim();
+    if (!url) {
+      showStatus('Cole um link do YouTube antes de buscar.', 'error');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Buscando...';
+    statusEl.style.display = 'none';
+    previewEl.style.display = 'none';
+
+    try {
+      const resp = await fetch(`/admin-panel/api/youtube-info?url=${encodeURIComponent(url)}`);
+      const data = await resp.json();
+
+      if (data.error) {
+        showStatus(`Erro: ${data.error}`, 'error');
+        return;
+      }
+
+      // Preenche a preview
+      thumbEl.src = data.thumbnail_url || '';
+      titleEl.textContent = data.title || '';
+      previewEl.style.display = '';
+
+      // Pré-preenche o título da aula se ainda estiver vazio
+      if (tituloEl && !tituloEl.value.trim()) {
+        tituloEl.value = data.title || '';
+      }
+
+      showStatus('Dados obtidos com sucesso!', 'success');
+    } catch (err) {
+      showStatus('Não foi possível obter os dados. Verifique o link.', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i> Buscar dados';
+    }
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('yt-status');
+    el.textContent = msg;
+    el.className   = `admin-form-hint admin-form-hint--${type}`;
+    el.style.display = '';
+  }
+
+  // Busca automática ao pressionar Enter no campo de URL
+  document.getElementById('url-youtube-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); fetchYouTubeInfo(); }
+  });
+
+  // ── File input — exibe nomes dos arquivos ────────────────────────
+  document.getElementById('download-files').addEventListener('change', function () {
+    const el = document.getElementById('download-filenames');
+    if (this.files.length === 0) {
+      el.textContent = 'Nenhum arquivo selecionado';
+    } else if (this.files.length === 1) {
+      el.textContent = this.files[0].name;
+    } else {
+      el.textContent = `${this.files.length} arquivos selecionados`;
+    }
+  });
+
+  // ── Submit feedback ─────────────────────────────────────────────
+  document.getElementById('lesson-form').addEventListener('submit', () => {
+    const btn = document.getElementById('btn-submit-lesson');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
+  });
+</script>
+{% endblock %}

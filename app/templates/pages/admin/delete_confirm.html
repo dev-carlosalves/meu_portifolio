@@ -14,24 +14,32 @@
 
       <h1 class="admin-delete-title">Confirmar Exclusão</h1>
       <p class="admin-delete-subtitle">
-        Esta ação <strong>não pode ser desfeita</strong>. O projeto e todos os seus arquivos serão permanentemente removidos.
+        Esta ação <strong>não pode ser desfeita</strong>.
+        {% if item_type == 'projeto' %}
+        O projeto e todos os seus arquivos serão permanentemente removidos.
+        {% else %}
+        A aula e todos os arquivos de download associados serão permanentemente removidos.
+        {% endif %}
       </p>
 
-      <!-- Preview do projeto -->
+      <!-- Preview do item -->
       <div class="admin-delete-preview">
         {% if project.cover_image %}
         <img src="{{ project.cover_image }}" alt="Capa: {{ project.title }}" class="admin-delete-preview__img" />
         {% endif %}
         <div class="admin-delete-preview__info">
           <strong class="admin-delete-preview__title">{{ project.title }}</strong>
+          {% if item_type == 'projeto' %}
           <span class="admin-delete-preview__meta">
             {{ project.software }} · {{ project.status }} · {{ project.date }}
           </span>
           <span class="admin-delete-preview__slug">/projetos/cad/{{ project.slug }}</span>
+          {% endif %}
         </div>
       </div>
 
-      <!-- Aviso sobre arquivos -->
+      <!-- Aviso sobre arquivos (somente projetos CAD) -->
+      {% if item_type == 'projeto' %}
       <div class="admin-delete-warning">
         <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
         <div>
@@ -45,14 +53,15 @@
           </ul>
         </div>
       </div>
+      {% endif %}
 
       <!-- Ações -->
       <div class="admin-delete-actions">
-        <a href="/admin-panel" class="btn-outline" id="btn-cancel-delete">
+        <a href="{{ back_url }}" class="btn-outline" id="btn-cancel-delete">
           <i class="fa-solid fa-xmark" aria-hidden="true"></i>
           Cancelar
         </a>
-        <form method="post" action="/admin-panel/excluir/{{ project.id }}">
+        <form method="post" action="{{ delete_url }}">
           <button
             type="submit"
             class="btn-danger"

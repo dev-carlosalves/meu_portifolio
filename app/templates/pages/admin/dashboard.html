@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}Painel Admin | Projetos CAD{% endblock %}
+{% block page_title %}Painel Admin | Portfólio{% endblock %}
 
 {% block content %}
 <section class="admin-section section-padding">
@@ -13,120 +13,268 @@
           <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
           Painel Administrativo
         </div>
-        <h1 class="admin-header__title">Projetos CAD</h1>
-        <p class="admin-header__sub">Gerencie os projetos de modelagem exibidos no portfólio.</p>
+        <h1 class="admin-header__title">Dashboard</h1>
+        <p class="admin-header__sub">Gerencie as trilhas de aprendizado e os projetos do portfólio.</p>
       </div>
-      <a href="/admin-panel/novo" class="btn-primary" id="btn-novo-projeto">
-        <i class="fa-solid fa-plus" aria-hidden="true"></i>
-        Novo Projeto
-      </a>
-    </div>
-
-    <!-- ── Stats rápidas ──────────────────────────────── -->
-    <div class="admin-stats" data-aos="fade-up">
-      <div class="admin-stat-card">
-        <span class="admin-stat-card__num">{{ projects | length }}</span>
-        <span class="admin-stat-card__label">Total de Projetos</span>
-      </div>
-      <div class="admin-stat-card">
-        <span class="admin-stat-card__num">{{ projects | selectattr('status', 'equalto', 'Concluído') | list | length }}</span>
-        <span class="admin-stat-card__label">Concluídos</span>
-      </div>
-      <div class="admin-stat-card">
-        <span class="admin-stat-card__num">{{ projects | selectattr('status', 'equalto', 'Em desenvolvimento') | list | length }}</span>
-        <span class="admin-stat-card__label">Em Desenvolvimento</span>
-      </div>
-    </div>
-
-    <!-- ── Tabela de projetos ─────────────────────────── -->
-    {% if projects %}
-    <div class="admin-table-wrapper" data-aos="fade-up">
-      <table class="admin-table" role="grid" aria-label="Lista de projetos CAD">
-        <thead>
-          <tr>
-            <th scope="col">Capa</th>
-            <th scope="col">Título</th>
-            <th scope="col">Software</th>
-            <th scope="col">Status</th>
-            <th scope="col">Data</th>
-            <th scope="col">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for project in projects %}
-          <tr>
-            <td class="admin-table__thumb">
-              {% if project.cover_image %}
-              <img src="{{ project.cover_image }}" alt="Capa: {{ project.title }}" />
-              {% else %}
-              <div class="admin-table__no-thumb"><i class="fa-solid fa-cube"></i></div>
-              {% endif %}
-            </td>
-            <td class="admin-table__title">
-              <a href="/projetos/cad/{{ project.slug }}" target="_blank" rel="noopener">
-                {{ project.title }}
-              </a>
-              <span class="admin-table__slug">/{{ project.slug }}</span>
-            </td>
-            <td><span class="badge-software">{{ project.software }}</span></td>
-            <td>
-              <span class="badge-status badge-status--{{ project.status | lower | replace(' ', '-') }}">
-                {{ project.status }}
-              </span>
-            </td>
-            <td class="admin-table__date">{{ project.date }}</td>
-            <td class="admin-table__actions">
-              <a
-                href="/projetos/cad/{{ project.slug }}"
-                target="_blank"
-                class="btn-icon"
-                title="Ver projeto"
-                aria-label="Ver projeto {{ project.title }}"
-              >
-                <i class="fa-solid fa-eye"></i>
-              </a>
-              <a
-                href="/admin-panel/editar/{{ project.id }}"
-                class="btn-icon btn-icon--edit"
-                title="Editar"
-                aria-label="Editar {{ project.title }}"
-              >
-                <i class="fa-solid fa-pen-to-square"></i>
-              </a>
-              <a
-                href="/admin-panel/excluir/{{ project.id }}"
-                class="btn-icon btn-icon--delete"
-                title="Excluir"
-                aria-label="Excluir {{ project.title }}"
-              >
-                <i class="fa-solid fa-trash"></i>
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-
-    {% else %}
-    <div class="admin-empty" data-aos="fade-up">
-      <i class="fa-solid fa-folder-open admin-empty__icon" aria-hidden="true"></i>
-      <p class="admin-empty__text">Nenhum projeto cadastrado. Clique em <strong>Novo Projeto</strong> para começar.</p>
-    </div>
-    {% endif %}
-
-    <!-- ── Link de volta ao portfólio ─────────────────── -->
-    <div class="admin-footer-nav" data-aos="fade-up">
-      <a href="/projetos/cad" class="btn-outline" id="btn-ver-catalogo">
-        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-        Ver Catálogo Público
-      </a>
       <a href="/" class="btn-outline">
         <i class="fa-solid fa-house" aria-hidden="true"></i>
-        Início do Portfólio
+        Portfólio
       </a>
     </div>
+
+    <!-- ── Tabs de navegação ──────────────────────────── -->
+    <div class="admin-tabs" data-aos="fade-up" role="tablist" aria-label="Seções do painel">
+      <button
+        class="admin-tab admin-tab--active"
+        id="tab-trilhas"
+        role="tab"
+        aria-selected="true"
+        aria-controls="panel-trilhas"
+        onclick="switchTab('trilhas')"
+      >
+        <i class="fa-solid fa-road" aria-hidden="true"></i>
+        Trilhas de Aprendizado
+      </button>
+      <button
+        class="admin-tab"
+        id="tab-projetos"
+        role="tab"
+        aria-selected="false"
+        aria-controls="panel-projetos"
+        onclick="switchTab('projetos')"
+      >
+        <i class="fa-solid fa-cube" aria-hidden="true"></i>
+        Projetos CAD
+      </button>
+    </div>
+
+    <!-- ══════════════════════════════════════════
+         PAINEL: TRILHAS DE APRENDIZADO
+    ══════════════════════════════════════════ -->
+    <div
+      id="panel-trilhas"
+      role="tabpanel"
+      aria-labelledby="tab-trilhas"
+      class="admin-panel admin-panel--active"
+    >
+
+      <!-- Stats de trilhas -->
+      <div class="admin-stats" data-aos="fade-up">
+        <div class="admin-stat-card">
+          <span class="admin-stat-card__num">{{ trails | length }}</span>
+          <span class="admin-stat-card__label">Trilhas Ativas</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-card__num">{{ trails | sum(attribute='total_modulos') }}</span>
+          <span class="admin-stat-card__label">Total de Módulos</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-card__num">{{ trails | sum(attribute='total_aulas') }}</span>
+          <span class="admin-stat-card__label">Total de Aulas</span>
+        </div>
+      </div>
+
+      <!-- Cards de trilhas -->
+      <div class="admin-trail-cards" data-aos="fade-up">
+        {% for trail in trails %}
+        <div class="admin-trail-card admin-trail-card--{{ trail.cor }}">
+          <div class="admin-trail-card__icon">
+            <i class="fa-solid {{ trail.icone }}" aria-hidden="true"></i>
+          </div>
+          <div class="admin-trail-card__body">
+            <h2 class="admin-trail-card__name">{{ trail.nome }}</h2>
+            <div class="admin-trail-card__stats">
+              <span>
+                <strong>{{ trail.total_modulos }}</strong>
+                módulo{{ 's' if trail.total_modulos != 1 else '' }}
+              </span>
+              <span class="admin-trail-card__sep" aria-hidden="true">·</span>
+              <span>
+                <strong>{{ trail.total_aulas }}</strong>
+                aula{{ 's' if trail.total_aulas != 1 else '' }}
+              </span>
+            </div>
+          </div>
+          <div class="admin-trail-card__actions">
+            <a
+              href="/admin-panel/trilhas/{{ trail.slug }}"
+              class="btn-primary"
+              id="btn-gerenciar-{{ trail.slug }}"
+              aria-label="Gerenciar trilha {{ trail.nome }}"
+            >
+              <i class="fa-solid fa-sliders" aria-hidden="true"></i>
+              Gerenciar
+            </a>
+            <a
+              href="{% if trail.slug == 'excel' %}/projetos/excel{% else %}/projetos/cad/{{ trail.slug }}{% endif %}"
+              class="btn-outline"
+              target="_blank"
+              rel="noopener"
+              aria-label="Ver trilha {{ trail.nome }} no site"
+            >
+              <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+              Ver no Site
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    </div><!-- /#panel-trilhas -->
+
+
+    <!-- ══════════════════════════════════════════
+         PAINEL: PROJETOS CAD (legado)
+    ══════════════════════════════════════════ -->
+    <div
+      id="panel-projetos"
+      role="tabpanel"
+      aria-labelledby="tab-projetos"
+      class="admin-panel"
+      hidden
+    >
+
+      <!-- Header do painel CAD -->
+      <div class="admin-subheader">
+        <p class="admin-subheader__text">Projetos de portfólio CAD (SolidWorks / AutoCAD) cadastrados no site.</p>
+        <a href="/admin-panel/novo" class="btn-primary" id="btn-novo-projeto">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          Novo Projeto
+        </a>
+      </div>
+
+      <!-- Stats de projetos CAD -->
+      <div class="admin-stats">
+        <div class="admin-stat-card">
+          <span class="admin-stat-card__num">{{ projects | length }}</span>
+          <span class="admin-stat-card__label">Total de Projetos</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-card__num">{{ projects | selectattr('status', 'equalto', 'Concluído') | list | length }}</span>
+          <span class="admin-stat-card__label">Concluídos</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-card__num">{{ projects | selectattr('status', 'equalto', 'Em desenvolvimento') | list | length }}</span>
+          <span class="admin-stat-card__label">Em Desenvolvimento</span>
+        </div>
+      </div>
+
+      <!-- Tabela de projetos -->
+      {% if projects %}
+      <div class="admin-table-wrapper">
+        <table class="admin-table" role="grid" aria-label="Lista de projetos CAD">
+          <thead>
+            <tr>
+              <th scope="col">Capa</th>
+              <th scope="col">Título</th>
+              <th scope="col">Software</th>
+              <th scope="col">Status</th>
+              <th scope="col">Data</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for project in projects %}
+            <tr>
+              <td class="admin-table__thumb">
+                {% if project.cover_image %}
+                <img src="{{ project.cover_image }}" alt="Capa: {{ project.title }}" />
+                {% else %}
+                <div class="admin-table__no-thumb"><i class="fa-solid fa-cube"></i></div>
+                {% endif %}
+              </td>
+              <td class="admin-table__title">
+                <a href="/projetos/cad/{{ project.slug }}" target="_blank" rel="noopener">
+                  {{ project.title }}
+                </a>
+                <span class="admin-table__slug">/{{ project.slug }}</span>
+              </td>
+              <td><span class="badge-software">{{ project.software }}</span></td>
+              <td>
+                <span class="badge-status badge-status--{{ project.status | lower | replace(' ', '-') }}">
+                  {{ project.status }}
+                </span>
+              </td>
+              <td class="admin-table__date">{{ project.date }}</td>
+              <td class="admin-table__actions">
+                <a
+                  href="/projetos/cad/{{ project.slug }}"
+                  target="_blank"
+                  class="btn-icon"
+                  title="Ver projeto"
+                  aria-label="Ver projeto {{ project.title }}"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                </a>
+                <a
+                  href="/admin-panel/editar/{{ project.id }}"
+                  class="btn-icon btn-icon--edit"
+                  title="Editar"
+                  aria-label="Editar {{ project.title }}"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a
+                  href="/admin-panel/excluir/{{ project.id }}"
+                  class="btn-icon btn-icon--delete"
+                  title="Excluir"
+                  aria-label="Excluir {{ project.title }}"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% else %}
+      <div class="admin-empty">
+        <i class="fa-solid fa-folder-open admin-empty__icon" aria-hidden="true"></i>
+        <p class="admin-empty__text">Nenhum projeto cadastrado. Clique em <strong>Novo Projeto</strong> para começar.</p>
+      </div>
+      {% endif %}
+
+    </div><!-- /#panel-projetos -->
 
   </div>
 </section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+  function switchTab(tab) {
+    const tabs   = document.querySelectorAll('.admin-tab');
+    const panels = document.querySelectorAll('.admin-panel');
+
+    tabs.forEach(t => {
+      const isActive = t.id === `tab-${tab}`;
+      t.classList.toggle('admin-tab--active', isActive);
+      t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    panels.forEach(p => {
+      const isActive = p.id === `panel-${tab}`;
+      p.classList.toggle('admin-panel--active', isActive);
+      if (isActive) {
+        p.removeAttribute('hidden');
+      } else {
+        p.setAttribute('hidden', '');
+      }
+    });
+
+    // Persiste a tab ativa na URL sem recarregar
+    const url = new URL(window.location);
+    url.searchParams.set('tab', tab);
+    history.replaceState({}, '', url);
+  }
+
+  // Restaura tab da URL ao carregar
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab === 'projetos') switchTab('projetos');
+  })();
+</script>
 {% endblock %}
