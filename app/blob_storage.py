@@ -79,15 +79,21 @@ def blob_put(pathname: str, data: dict) -> str:
             content=content,
             headers={
                 "Authorization": f"Bearer {token}",
-                "x-content-type": "application/json",
+                "Content-Type": "application/json",
                 "x-add-random-suffix": "0",
             },
         )
-        response.raise_for_status()
+        if not response.is_success:
+            raise httpx.HTTPStatusError(
+                f"Blob upload falhou ({response.status_code}): {response.text}",
+                request=response.request,
+                response=response,
+            )
         result = response.json()
         url: str = result["url"]
         _url_cache[pathname] = url
         return url
+
 
 
 def blob_get(pathname: str) -> Optional[dict]:
