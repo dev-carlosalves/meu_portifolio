@@ -37,6 +37,7 @@ import httpx
 from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
+from app.blob_storage import blob_put_file
 from app.config import get_base_context
 from app.database import (
     add_modulo_to_trail,
@@ -113,27 +114,31 @@ async def _save_download_files(
     files: list[UploadFile],
 ) -> list[dict]:
     """
-    Salva arquivos de download de uma aula.
+    Salva arquivos de download de uma aula no Vercel Blob.
     Retorna lista de { nome, url, tipo }.
     """
-    dest_dir = TRAIL_DOC_DIR / trail_slug / aula_id
-    dest_dir.mkdir(parents=True, exist_ok=True)
-
     saved = []
     for f in files:
-        if not f or not f.filename:
+        if not f or not f.filename or not f.filename.strip():
             continue
-        filename = f.filename
-        dest = dest_dir / filename
-        with open(dest, "wb") as out:
-            shutil.copyfileobj(f.file, out)
-        ext = Path(filename).suffix.lower().lstrip(".")
-        saved.append({
-            "nome": filename,
-            "url":  f"/static/documents/trilhas/{trail_slug}/{aula_id}/{filename}",
-            "tipo": ext,
-        })
+        filename = f.filename.strip()
+        try:
+            content = await f.read()
+            if not content:
+                continue
+            content_type = f.content_type or "application/octet-stream"
+            blob_path = f"trilhas/{trail_slug}/{aula_id}/{filename}"
+            url = blob_put_file(blob_path, content, content_type=content_type)
+            ext = Path(filename).suffix.lower().lstrip(".")
+            saved.append({
+                "nome": filename,
+                "url":  url,
+                "tipo": ext,
+            })
+        except Exception:
+            pass
     return saved
+
 
 
 # ──────────────────────────────────────────────────────────────────────────────

@@ -51,6 +51,11 @@ def _get_token() -> str:
 # ──────────────────────────────────────────────────────────────────────────────
 
 
+import time
+
+_data_cache: dict[str, dict] = {}
+
+
 def blob_put(pathname: str, data: dict) -> str:
     """
     Serializa `data` como JSON e faz upload para o Vercel Blob.
@@ -70,8 +75,25 @@ def blob_put(pathname: str, data: dict) -> str:
         RuntimeError: Se BLOB_READ_WRITE_TOKEN não estiver configurado.
         httpx.HTTPStatusError: Em falhas HTTP (4xx/5xx) da API do Blob.
     """
-    token = _get_token()
     content = json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8")
+    url = blob_put_file(pathname, content, content_type="application/json")
+    _data_cache[pathname] = data
+    return url
+
+
+def blob_put_file(pathname: str, content: bytes, content_type: str = "application/octet-stream") -> str:
+    """
+    Faz upload de bytes brutos para o Vercel Blob.
+
+    Args:
+        pathname:     Caminho/nome do blob (ex: 'trilhas/excel/aula-1/exercicio.xlsx').
+        content:      Conteúdo do arquivo em bytes.
+        content_type: Tipo MIME do arquivo.
+
+    Returns:
+        URL pública do blob.
+    """
+    token = _get_token()
 
     with httpx.Client(timeout=30.0) as client:
         response = client.put(
@@ -79,13 +101,14 @@ def blob_put(pathname: str, data: dict) -> str:
             content=content,
             headers={
                 "Authorization": f"Bearer {token}",
-                "Content-Type": "application/json",
+                "Content-Type": content_type,
                 "x-add-random-suffix": "0",
+                "x-cache-control-max-age": "0",
             },
         )
         if not response.is_success:
             raise httpx.HTTPStatusError(
-                f"Blob upload falhou ({response.status_code}): {response.text}",
+                f"Blob file upload falhou ({response.status_code}): {response.text}",
                 request=response.request,
                 response=response,
             )
@@ -93,6 +116,7 @@ def blob_put(pathname: str, data: dict) -> str:
         url: str = result["url"]
         _url_cache[pathname] = url
         return url
+
 
 
 
@@ -116,17 +140,27 @@ def blob_get(pathname: str) -> Optional[dict]:
 
     _url_cache[pathname] = url  # garante presença no cache para próximas leituras
 
+    # Evita cache intermediário usando timestamp na query
+    fresh_url = f"{url}?t={int(time.time() * 1000)}"
+
     try:
         with httpx.Client(timeout=30.0) as client:
-            response = client.get(url)
+            response = client.get(
+                fresh_url,
+                headers={"Cache-Control": "no-cache, no-store, must-revalidate"}
+            )
             if response.status_code == 404:
                 # Blob foi deletado externamente → invalida cache
                 _url_cache.pop(pathname, None)
+                _data_cache.pop(pathname, None)
                 return None
             response.raise_for_status()
-            return response.json()
+            data = response.json()
+            _data_cache[pathname] = data
+            return data
     except (httpx.HTTPError, json.JSONDecodeError, ValueError):
-        return None
+        return _data_cache.get(pathname)
+
 
 
 # ──────────────────────────────────────────────────────────────────────────────

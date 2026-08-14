@@ -403,10 +403,13 @@ def delete_aula_from_trail(trail_slug: str, modulo_id: str, aula_id: str) -> boo
     if not target_aula:
         return False
 
-    # Remove arquivos de download do servidor
-    aula_files_dir = STATIC_DIR / "documents" / "trilhas" / trail_slug / aula_id
-    if aula_files_dir.exists():
-        shutil.rmtree(aula_files_dir, ignore_errors=True)
+    # Remove arquivos de download do servidor se existirem localmente
+    try:
+        aula_files_dir = STATIC_DIR / "documents" / "trilhas" / trail_slug / aula_id
+        if aula_files_dir.exists():
+            shutil.rmtree(aula_files_dir, ignore_errors=True)
+    except Exception:
+        pass
 
     target_modulo["aulas"] = [a for a in aulas if a["id"] != aula_id]
 
