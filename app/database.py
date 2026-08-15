@@ -310,21 +310,52 @@ VALID_TRAILS = ("excel", "autocad", "solidworks")
 
 def _load_trail(slug: str) -> Optional[dict]:
     """
-    Carrega o JSON de uma trilha a partir do Vercel Blob.
-    Retorna None se o slug for inválido ou o blob não existir.
+    Carrega o JSON de uma trilha.
+    Prioriza o Vercel Blob (produção). Em caso de falha ou desenvolvimento offline,
+    utiliza o arquivo JSON local em app/data/trilhas/{slug}.json.
     """
     if slug not in VALID_TRAILS:
         return None
-    return blob_get(f"trilhas/{slug}.json")
+
+    try:
+        data = blob_get(f"trilhas/{slug}.json")
+        if data:
+            return data
+    except Exception as exc:
+        print(f"[AVISO] Não foi possível carregar trilha {slug} do Blob: {exc}")
+
+    # Fallback para arquivo JSON local
+    local_file = TRILHAS_DIR / f"{slug}.json"
+    if local_file.exists():
+        try:
+            return json.loads(local_file.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return None
 
 
 def _persist_trail(slug: str, trail: dict) -> None:
     """
-    Persiste o objeto de trilha no Vercel Blob (trilhas/{slug}.json).
-    Usa addRandomSuffix=0 para URL determinística — mesmo pathname sempre
-    sobrescreve o mesmo blob.
+    Persiste o objeto de trilha no Vercel Blob (trilhas/{slug}.json)
+    e sincroniza com o arquivo JSON local (backup e desenvolvimento local).
     """
-    blob_put(f"trilhas/{slug}.json", trail)
+    # 1. Salva localmente (garante backup imediato)
+    try:
+        TRILHAS_DIR.mkdir(parents=True, exist_ok=True)
+        local_file = TRILHAS_DIR / f"{slug}.json"
+        local_file.write_text(
+            json.dumps(trail, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    except Exception as exc:
+        print(f"[AVISO] Falha ao salvar trilha localmente em {slug}.json: {exc}")
+
+    # 2. Salva no Vercel Blob
+    try:
+        blob_put(f"trilhas/{slug}.json", trail)
+    except Exception as exc:
+        print(f"[AVISO] Falha ao sincronizar trilha {slug} no Blob: {exc}")
+
 
 
 def get_all_trails_summary() -> list[dict]:
@@ -363,16 +394,20 @@ def save_aula_to_trail(trail_slug: str, modulo_id: str, aula: dict) -> Optional[
     if not target_modulo:
         return None
 
-    aulas = target_modulo.setdefault("aulas", [])
-
     if not aula.get("id"):
         # Nova aula
         aula["id"] = str(uuid.uuid4())
-        aulas.append(aula)
+        target_modulo.setdefault("aulas", []).append(aula)
     else:
-        # Atualizar existente
+        # Se estiver em outro módulo, remove do módulo anterior
+        for m in modulos:
+            if m["id"] != modulo_id and "aulas" in m:
+                m["aulas"] = [a for a in m["aulas"] if a.get("id") != aula["id"]]
+
+        aulas = target_modulo.setdefault("aulas", [])
+        # Atualizar no módulo alvo
         for i, a in enumerate(aulas):
-            if a["id"] == aula["id"]:
+            if a.get("id") == aula["id"]:
                 aulas[i] = aula
                 break
         else:

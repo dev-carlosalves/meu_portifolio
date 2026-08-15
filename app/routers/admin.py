@@ -115,10 +115,15 @@ async def _save_download_files(
     files: list[UploadFile],
 ) -> list[dict]:
     """
-    Salva arquivos de download de uma aula no Vercel Blob.
+    Salva arquivos de download de uma aula.
+    Salva cópia local em /static/documents/trilhas/... e faz upload para o Vercel Blob.
+    Se o Blob falhar ou não estiver configurado, utiliza a URL estática local como fallback.
     Retorna lista de { nome, url, tipo }.
     """
     saved = []
+    local_aula_dir = TRAIL_DOC_DIR / trail_slug / aula_id
+    local_aula_dir.mkdir(parents=True, exist_ok=True)
+
     for f in files:
         if not f or not getattr(f, "filename", None) or not f.filename.strip():
             continue
@@ -129,19 +134,33 @@ async def _save_download_files(
             content = await f.read()
             if not content:
                 continue
-            content_type = getattr(f, "content_type", None) or "application/octet-stream"
-            blob_path = f"trilhas/{trail_slug}/{aula_id}/{filename}"
-            url = blob_put_file(blob_path, content, content_type=content_type)
+
+            # 1. Salva cópia local
+            local_dest = local_aula_dir / filename
+            local_dest.write_bytes(content)
+            local_url = f"/static/documents/trilhas/{trail_slug}/{aula_id}/{filename}"
+            final_url = local_url
+
+            # 2. Tenta upload para o Vercel Blob
+            try:
+                content_type = getattr(f, "content_type", None) or "application/octet-stream"
+                blob_path = f"trilhas/{trail_slug}/{aula_id}/{filename}"
+                blob_url = blob_put_file(blob_path, content, content_type=content_type)
+                final_url = blob_url
+                print(f"[OK] Arquivo {filename} salvo no Vercel Blob: {blob_url}")
+            except Exception as exc:
+                print(f"[AVISO] Upload no Blob falhou para {filename}, usando URL local: {exc}")
+
             ext = Path(filename).suffix.lower().lstrip(".")
             saved.append({
                 "nome": filename,
-                "url":  url,
+                "url":  final_url,
                 "tipo": ext,
             })
-            print(f"[OK] Arquivo {filename} salvo no Vercel Blob: {url}")
         except Exception as exc:
-            print(f"[ERRO] Falha ao fazer upload de {filename} no Blob: {exc}")
+            print(f"[ERRO] Falha crítica ao processar arquivo {filename}: {exc}")
     return saved
+
 
 
 
@@ -247,7 +266,7 @@ async def admin_lesson_create(
 
     download_files = [
         item for item in form.getlist("download_files")
-        if isinstance(item, UploadFile) and item.filename and item.filename.strip()
+        if hasattr(item, "filename") and item.filename and str(item.filename).strip()
     ]
 
     # Cria nova seção se solicitado
@@ -264,6 +283,7 @@ async def admin_lesson_create(
     arquivos = []
     if download_files:
         arquivos = await _save_download_files(aula_id, slug, download_files)
+
 
     aula: dict = {
         "id":                  aula_id,
@@ -348,7 +368,7 @@ async def admin_lesson_update(
 
     download_files = [
         item for item in form.getlist("download_files")
-        if isinstance(item, UploadFile) and item.filename and item.filename.strip()
+        if hasattr(item, "filename") and item.filename and str(item.filename).strip()
     ]
 
     # Localiza a aula existente para preservar campos não editados
@@ -365,7 +385,18 @@ async def admin_lesson_update(
 
     arquivos_existentes = existing_aula.get("arquivosParaDownload", []) if existing_aula else []
 
-    # Adiciona novos arquivos de download (sem remover os existentes)
+    # Se o formulário informou o gerenciamento de arquivos existentes
+    tem_arquivos_existentes = "tem_arquivos_existentes" in form
+    if tem_arquivos_existentes:
+        manter_arquivos = set(form.getlist("manter_arquivos"))
+        arquivos_preservados = [
+            arq for arq in arquivos_existentes
+            if arq.get("url") in manter_arquivos or arq.get("nome") in manter_arquivos
+        ]
+    else:
+        arquivos_preservados = arquivos_existentes
+
+    # Adiciona novos arquivos de download
     novos = []
     if download_files:
         novos = await _save_download_files(aula_id, slug, download_files)
@@ -377,7 +408,7 @@ async def admin_lesson_update(
         "tipoConteudo":        tipo_conteudo,
         "duracao":             duracao,
         "urlYoutube":          url_youtube,
-        "arquivosParaDownload": arquivos_existentes + novos,
+        "arquivosParaDownload": arquivos_preservados + novos,
         "concluida":           existing_aula.get("concluida", False) if existing_aula else False,
     }
 

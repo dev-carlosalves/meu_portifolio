@@ -54,6 +54,7 @@ def _get_token() -> str:
 import time
 
 _data_cache: dict[str, dict] = {}
+_data_cache_ts: dict[str, float] = {}
 
 
 def blob_put(pathname: str, data: dict) -> str:
@@ -78,6 +79,7 @@ def blob_put(pathname: str, data: dict) -> str:
     content = json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8")
     url = blob_put_file(pathname, content, content_type="application/json")
     _data_cache[pathname] = data
+    _data_cache_ts[pathname] = time.time()
     return url
 
 
@@ -125,8 +127,8 @@ def blob_get(pathname: str) -> Optional[dict]:
     Busca o blob pelo pathname e retorna o conteúdo deserializado como dict.
 
     Estratégia de localização da URL:
-    1. Cache em memória (preenchido pelo último blob_put ou blob_get bem-sucedido).
-    2. Chamada à list API do Vercel Blob (pesquisa por prefix=pathname).
+    1. Retorna cache em memória se foi atualizado recentemente via blob_put (evita CDN stale).
+    2. Chamada à API / URL pública do Vercel Blob.
 
     Args:
         pathname: Caminho/nome do blob (ex: 'trilhas/autocad.json').
@@ -134,14 +136,19 @@ def blob_get(pathname: str) -> Optional[dict]:
     Returns:
         Conteúdo do blob como dict, ou None se não existir / JSON inválido.
     """
+    # Se foi gravado recentemente (últimos 15s), usa diretamente a memória
+    now = time.time()
+    if pathname in _data_cache and (now - _data_cache_ts.get(pathname, 0)) < 15.0:
+        return _data_cache[pathname]
+
     url = _url_cache.get(pathname) or _find_blob_url(pathname)
     if not url:
-        return None
+        return _data_cache.get(pathname)
 
     _url_cache[pathname] = url  # garante presença no cache para próximas leituras
 
     # Evita cache intermediário usando timestamp na query
-    fresh_url = f"{url}?t={int(time.time() * 1000)}"
+    fresh_url = f"{url}?t={int(now * 1000)}"
 
     try:
         with httpx.Client(timeout=30.0) as client:
@@ -153,11 +160,15 @@ def blob_get(pathname: str) -> Optional[dict]:
                 # Blob foi deletado externamente → invalida cache
                 _url_cache.pop(pathname, None)
                 _data_cache.pop(pathname, None)
+                _data_cache_ts.pop(pathname, None)
                 return None
             response.raise_for_status()
             data = response.json()
-            _data_cache[pathname] = data
-            return data
+            # Só atualiza o cache se não tiver sido gravado localmente mais recentemente
+            if (time.time() - _data_cache_ts.get(pathname, 0)) >= 5.0:
+                _data_cache[pathname] = data
+                _data_cache_ts[pathname] = time.time()
+            return _data_cache[pathname]
     except (httpx.HTTPError, json.JSONDecodeError, ValueError):
         return _data_cache.get(pathname)
 

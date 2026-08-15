@@ -1191,8 +1191,15 @@
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   LESSON FORM — Arquivos existentes
+   LESSON FORM — Arquivos existentes e Staged Uploads
 ───────────────────────────────────────────────────────────────── */
+
+.admin-file-dropzone--dragover {
+  border-color: var(--color-accent) !important;
+  background: var(--color-accent-dim) !important;
+  box-shadow: 0 0 20px rgba(var(--color-accent-rgb, 99, 102, 241), 0.25);
+  transform: scale(1.01);
+}
 
 .admin-existing-files {
   background: rgba(255, 255, 255, 0.03);
@@ -1202,13 +1209,19 @@
   margin-bottom: var(--space-4);
 }
 
+.admin-existing-files__header {
+  margin-bottom: var(--space-3);
+}
+
 .admin-existing-files__label {
   font-size: var(--text-xs);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .admin-existing-files__list {
@@ -1223,29 +1236,227 @@
 .admin-existing-files__item {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.6rem 0.85rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: all 0.2s ease;
 }
 
-.admin-existing-files__item a {
-  color: var(--color-accent);
-  text-decoration: none;
+.admin-existing-files__item--removed {
+  opacity: 0.45;
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.3);
+  text-decoration: line-through;
 }
-.admin-existing-files__item a:hover { text-decoration: underline; }
+
+.admin-existing-files__info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-existing-files__info i {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.admin-existing-files__link {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-existing-files__link:hover {
+  color: var(--color-accent);
+}
 
 .admin-existing-files__tipo {
   font-size: 0.65rem;
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
   padding: 2px 6px;
   border-radius: 4px;
   letter-spacing: 0.05em;
+  color: var(--color-text-subtle);
+  flex-shrink: 0;
+}
+
+.btn-remove-existing,
+.btn-restore-existing {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-remove-existing {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #f87171;
+}
+
+.btn-remove-existing:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #ef4444;
+}
+
+.btn-restore-existing {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.25);
+  color: #86efac;
+}
+
+.btn-restore-existing:hover {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.5);
+  color: #22c55e;
+}
+
+/* Lista de novos arquivos selecionados (Staged) */
+.admin-staged-files {
+  margin-top: var(--space-4);
+  background: rgba(24, 24, 27, 0.7);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4);
+  animation: fadeIn 0.2s ease;
+}
+
+.admin-staged-files__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-xs);
+  gap: var(--space-2);
+}
+
+.admin-staged-files__title {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-clear-staged {
+  background: transparent;
+  border: none;
+  color: var(--color-text-subtle);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s;
+}
+
+.btn-clear-staged:hover {
+  color: #f87171;
+}
+
+.admin-staged-files__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.admin-staged-file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.55rem 0.85rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  transition: border-color 0.2s;
+}
+
+.admin-staged-file-item:hover {
+  border-color: var(--color-border);
+}
+
+.admin-staged-file-item__info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+  flex: 1;
+}
+
+.admin-staged-file-item__info i {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.admin-staged-file-item__name {
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-staged-file-item__size {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+  font-family: monospace;
+  flex-shrink: 0;
+}
+
+.btn-remove-staged {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--color-text-muted);
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.btn-remove-staged:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #f87171;
 }
 
 /* ─────────────────────────────────────────────────────────────────
    MODAL DE EXCLUSÃO (trail manager)
 ───────────────────────────────────────────────────────────────── */
+
 
 .admin-delete-modal {
   position: fixed;

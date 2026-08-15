@@ -264,49 +264,91 @@
 
         <!-- Arquivos existentes (modo edição) -->
         {% if aula and aula.arquivosParaDownload %}
-        <div class="admin-existing-files">
-          <p class="admin-existing-files__label">Arquivos já cadastrados:</p>
-          <ul class="admin-existing-files__list">
+        <div class="admin-existing-files" id="existing-files-box">
+          <input type="hidden" name="tem_arquivos_existentes" value="1" />
+          <div class="admin-existing-files__header">
+            <p class="admin-existing-files__label">
+              <i class="fa-solid fa-paperclip" style="color:var(--color-accent)"></i>
+              Arquivos atualmente cadastrados nesta aula:
+            </p>
+          </div>
+          <ul class="admin-existing-files__list" id="existing-files-list">
             {% for arquivo in aula.arquivosParaDownload %}
-            <li class="admin-existing-files__item">
-              <i class="fa-solid fa-file" aria-hidden="true"></i>
-              <a href="{{ arquivo.url }}" target="_blank" rel="noopener">{{ arquivo.nome }}</a>
-              <span class="admin-existing-files__tipo">{{ arquivo.tipo | upper }}</span>
+            <li class="admin-existing-files__item" id="existing-file-row-{{ loop.index }}">
+              <input type="hidden" name="manter_arquivos" value="{{ arquivo.url }}" id="hidden-manter-{{ loop.index }}" />
+              <div class="admin-existing-files__info">
+                {% if arquivo.tipo in ['xlsx', 'xls', 'xlsm'] %}
+                <i class="fa-solid fa-file-excel" style="color:#34d399"></i>
+                {% elif arquivo.tipo == 'pdf' %}
+                <i class="fa-solid fa-file-pdf" style="color:#f87171"></i>
+                {% elif arquivo.tipo in ['dwg', 'dxf', 'sldprt', 'sldasm', 'step', 'stp'] %}
+                <i class="fa-solid fa-drafting-compass" style="color:var(--color-accent)"></i>
+                {% else %}
+                <i class="fa-solid fa-file" style="color:var(--color-text-muted)"></i>
+                {% endif %}
+                <a href="{{ arquivo.url }}" target="_blank" rel="noopener" class="admin-existing-files__link" title="Visualizar arquivo">{{ arquivo.nome }}</a>
+                <span class="admin-existing-files__tipo">{{ arquivo.tipo | upper if arquivo.tipo else 'ARQUIVO' }}</span>
+              </div>
+              <button
+                type="button"
+                class="btn-remove-existing"
+                onclick="toggleRemoveExisting({{ loop.index }}, '{{ arquivo.nome }}')"
+                id="btn-remove-existing-{{ loop.index }}"
+                title="Remover este arquivo ao salvar"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+                <span>Remover</span>
+              </button>
             </li>
             {% endfor %}
           </ul>
-          <p class="admin-form-hint">
-            <i class="fa-solid fa-circle-info" style="color:var(--color-accent)"></i>
-            Novos arquivos serão adicionados aos existentes. Para remover um arquivo, edite o JSON diretamente.
-          </p>
         </div>
         {% endif %}
 
-        <!-- Upload de novos arquivos -->
+        <!-- Upload de novos arquivos com Drag & Drop nativo -->
         <div class="admin-form-field">
-          <label for="download-files" class="admin-form-label">
-            Adicionar Arquivos
-            <span class="admin-form-label__hint">(PDF, XLSX, DWG, SLDPRT, etc.)</span>
+          <label class="admin-form-label">
+            Adicionar Novos Arquivos
+            <span class="admin-form-label__hint">(PDF, XLSX, XLS, DWG, SLDPRT, STEP, ZIP...)</span>
           </label>
-          <label for="download-files" class="admin-file-dropzone" id="download-dropzone">
+
+          <div
+            class="admin-file-dropzone"
+            id="download-dropzone"
+            tabindex="0"
+            role="button"
+            aria-label="Área para selecionar ou arrastar arquivos"
+          >
             <i class="fa-solid fa-cloud-arrow-up admin-file-dropzone__icon" aria-hidden="true"></i>
             <span class="admin-file-dropzone__text">
-              <strong>Clique para selecionar</strong> ou arraste aqui
+              <strong>Clique para selecionar</strong> ou arraste seus arquivos aqui
             </span>
             <span class="admin-file-dropzone__sub">
-              PDF, XLSX, XLS, DWG, SLDPRT, STEP, IGES e outros — múltiplos arquivos permitidos
+              Suporta PDF, XLSX, DWG, SLDPRT, STEP, ZIP e múltiplos arquivos simultâneos
             </span>
-            <span class="admin-file-dropzone__name" id="download-filenames">Nenhum arquivo selecionado</span>
             <input
               type="file"
               id="download-files"
               name="download_files"
               class="admin-file-input"
               multiple
-              accept=".pdf,.xlsx,.xls,.dwg,.sldprt,.sldasm,.step,.stp,.iges,.igs,.docx,.doc,.txt"
-              aria-describedby="download-filenames"
+              accept=".pdf,.xlsx,.xls,.xlsm,.dwg,.dxf,.sldprt,.sldasm,.step,.stp,.iges,.igs,.docx,.doc,.txt,.zip,.rar,.7z"
             />
-          </label>
+          </div>
+
+          <!-- Lista dinâmica de arquivos selecionados prontos para upload -->
+          <div class="admin-staged-files" id="staged-files-container" style="display:none;">
+            <div class="admin-staged-files__header">
+              <span class="admin-staged-files__title">
+                <i class="fa-solid fa-circle-check" style="color:#22c55e"></i>
+                Arquivos selecionados para upload (<span id="staged-count">0</span>):
+              </span>
+              <button type="button" class="btn-clear-staged" onclick="clearAllStagedFiles()">
+                <i class="fa-solid fa-xmark"></i> Limpar todos
+              </button>
+            </div>
+            <ul class="admin-staged-files__list" id="staged-files-list"></ul>
+          </div>
         </div>
       </div>
 
@@ -348,14 +390,7 @@
     ],
   };
 
-  // Dados das trilhas via fetch ao mudar área
   async function onAreaChange(slug) {
-    try {
-      const resp = await fetch(`/api/trail-modules/${slug}`);
-      if (!resp.ok) return;
-      // Se houver endpoint, atualiza módulos. Caso contrário, redireciona.
-    } catch {}
-    // Redireciona para a nova trilha preservando funcionalidade
     window.location.href = `/admin-panel/trilhas/${slug}/nova-aula`;
   }
 
@@ -440,23 +475,185 @@
     if (e.key === 'Enter') { e.preventDefault(); fetchYouTubeInfo(); }
   });
 
-  // ── File input — exibe nomes dos arquivos ────────────────────────
-  document.getElementById('download-files').addEventListener('change', function () {
-    const el = document.getElementById('download-filenames');
-    if (this.files.length === 0) {
-      el.textContent = 'Nenhum arquivo selecionado';
-    } else if (this.files.length === 1) {
-      el.textContent = this.files[0].name;
-    } else {
-      el.textContent = `${this.files.length} arquivos selecionados`;
+  // ══════════════════════════════════════════════════════════════════
+  // GERENCIAMENTO ROBUSTO DE ARQUIVOS (DRAG & DROP + MULTI-SELEÇÃO)
+  // ══════════════════════════════════════════════════════════════════
+
+  const dropzone = document.getElementById('download-dropzone');
+  const fileInput = document.getElementById('download-files');
+  const stagedContainer = document.getElementById('staged-files-container');
+  const stagedList = document.getElementById('staged-files-list');
+  const stagedCount = document.getElementById('staged-count');
+
+  // Gerenciador central de arquivos usando DataTransfer
+  const dataTransfer = new DataTransfer();
+
+  function formatBytes(bytes, decimals = 1) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  }
+
+  function getFileIconClass(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    if (['xlsx', 'xls', 'xlsm'].includes(ext)) return { icon: 'fa-file-excel', color: '#34d399' };
+    if (['pdf'].includes(ext)) return { icon: 'fa-file-pdf', color: '#f87171' };
+    if (['dwg', 'dxf', 'sldprt', 'sldasm', 'step', 'stp'].includes(ext)) return { icon: 'fa-drafting-compass', color: 'var(--color-accent)' };
+    if (['zip', 'rar', '7z'].includes(ext)) return { icon: 'fa-file-zipper', color: '#fbbf24' };
+    if (['docx', 'doc', 'txt'].includes(ext)) return { icon: 'fa-file-lines', color: '#818cf8' };
+    return { icon: 'fa-file', color: 'var(--color-text-muted)' };
+  }
+
+  function renderStagedFiles() {
+    stagedList.innerHTML = '';
+    const files = dataTransfer.files;
+    stagedCount.textContent = files.length;
+
+    if (files.length === 0) {
+      stagedContainer.style.display = 'none';
+      return;
+    }
+
+    stagedContainer.style.display = 'block';
+
+    Array.from(files).forEach((file, index) => {
+      const { icon, color } = getFileIconClass(file.name);
+      const li = document.createElement('li');
+      li.className = 'admin-staged-file-item';
+      li.innerHTML = `
+        <div class="admin-staged-file-item__info">
+          <i class="fa-solid ${icon}" style="color:${color}" aria-hidden="true"></i>
+          <span class="admin-staged-file-item__name" title="${file.name}">${file.name}</span>
+          <span class="admin-staged-file-item__size">${formatBytes(file.size)}</span>
+        </div>
+        <button
+          type="button"
+          class="btn-remove-staged"
+          onclick="removeStagedFile(${index})"
+          aria-label="Remover ${file.name}"
+          title="Remover arquivo"
+        >
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      `;
+      stagedList.appendChild(li);
+    });
+  }
+
+  function appendFiles(newFiles) {
+    if (!newFiles || newFiles.length === 0) return;
+    Array.from(newFiles).forEach(file => {
+      // Evita duplicatas com mesmo nome e tamanho
+      let exists = false;
+      for (let i = 0; i < dataTransfer.items.length; i++) {
+        const item = dataTransfer.files[i];
+        if (item.name === file.name && item.size === file.size) {
+          exists = true;
+          break;
+        }
+      }
+      if (!exists) {
+        dataTransfer.items.add(file);
+      }
+    });
+
+    fileInput.files = dataTransfer.files;
+    renderStagedFiles();
+  }
+
+  function removeStagedFile(index) {
+    const nextDt = new DataTransfer();
+    for (let i = 0; i < dataTransfer.items.length; i++) {
+      if (i !== index) {
+        nextDt.items.add(dataTransfer.files[i]);
+      }
+    }
+    dataTransfer.items.clear();
+    for (let i = 0; i < nextDt.items.length; i++) {
+      dataTransfer.items.add(nextDt.files[i]);
+    }
+    fileInput.files = dataTransfer.files;
+    renderStagedFiles();
+  }
+
+  function clearAllStagedFiles() {
+    dataTransfer.items.clear();
+    fileInput.files = dataTransfer.files;
+    renderStagedFiles();
+  }
+
+  // Eventos de Drag & Drop na Dropzone
+  ['dragenter', 'dragover'].forEach(eventName => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add('admin-file-dropzone--dragover');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(eventName => {
+    dropzone.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove('admin-file-dropzone--dragover');
+    });
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    if (e.dataTransfer && e.dataTransfer.files.length > 0) {
+      appendFiles(e.dataTransfer.files);
     }
   });
+
+  fileInput.addEventListener('change', function () {
+    if (this.files.length > 0) {
+      appendFiles(this.files);
+    }
+  });
+
+  // ── Gerenciamento de Arquivos Existentes no Modo Edição ──────────
+  function toggleRemoveExisting(index, filename) {
+    const hidden = document.getElementById(`hidden-manter-${index}`);
+    const row = document.getElementById(`existing-file-row-${index}`);
+    const btn = document.getElementById(`btn-remove-existing-${index}`);
+
+    if (hidden) {
+      hidden.remove();
+      row.classList.add('admin-existing-files__item--removed');
+      btn.className = 'btn-restore-existing';
+      btn.innerHTML = '<i class="fa-solid fa-rotate-left"></i> <span>Restaurar</span>';
+      btn.onclick = () => restoreExisting(index, filename);
+    }
+  }
+
+  function restoreExisting(index, filename) {
+    const row = document.getElementById(`existing-file-row-${index}`);
+    const btn = document.getElementById(`btn-remove-existing-${index}`);
+    const link = row.querySelector('.admin-existing-files__link');
+    const url = link ? link.getAttribute('href') : '';
+
+    const newHidden = document.createElement('input');
+    newHidden.type = 'hidden';
+    newHidden.name = 'manter_arquivos';
+    newHidden.value = url;
+    newHidden.id = `hidden-manter-${index}`;
+    row.prepend(newHidden);
+
+    row.classList.remove('admin-existing-files__item--removed');
+    btn.className = 'btn-remove-existing';
+    btn.innerHTML = '<i class="fa-solid fa-trash-can"></i> <span>Remover</span>';
+    btn.onclick = () => toggleRemoveExisting(index, filename);
+  }
 
   // ── Submit feedback ─────────────────────────────────────────────
   document.getElementById('lesson-form').addEventListener('submit', () => {
     const btn = document.getElementById('btn-submit-lesson');
     btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...';
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando aula e anexos...';
   });
 </script>
 {% endblock %}
+

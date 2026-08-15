@@ -13,13 +13,14 @@
       "titulo": "Introdução",
       "aulas": [
         {
-          "titulo": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)",
+          "id": "1f466d81-1232-426b-afcf-ff2c06ea03c8",
+          "titulo": "Introdução AutoCad",
+          "descricao": "Neste primeiro vídeo...",
           "tipoConteudo": "video",
-          "duracao": "5 min",
-          "urlYoutube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "duracao": "6:47 min",
+          "urlYoutube": "https://youtu.be/TxZi1hW3Fco",
           "arquivosParaDownload": [],
-          "concluida": false,
-          "id": "9453beb1-176a-49e1-beaf-4143b0d52cd1"
+          "concluida": false
         }
       ]
     },
