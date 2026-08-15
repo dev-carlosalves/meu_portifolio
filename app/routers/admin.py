@@ -79,34 +79,79 @@ def _ctx(**kwargs) -> dict:
 
 
 async def _save_cover(cover_image: UploadFile, slug: str) -> str:
-    """Salva a imagem de capa e retorna a URL estática."""
-    COVERS_DIR.mkdir(parents=True, exist_ok=True)
+    """Salva a imagem de capa e retorna a URL estática ou Blob URL."""
     ext = Path(cover_image.filename).suffix.lower() or ".png"
-    dest = COVERS_DIR / f"{slug}{ext}"
-    with open(dest, "wb") as f:
-        shutil.copyfileobj(cover_image.file, f)
-    return f"/static/images/cad/covers/{slug}{ext}"
+    filename = f"{slug}{ext}"
+    local_url = f"/static/images/cad/covers/{filename}"
+    final_url = local_url
+
+    try:
+        content = await cover_image.read()
+        if content:
+            # 1. Tenta upload no Vercel Blob
+            try:
+                content_type = getattr(cover_image, "content_type", None) or "image/png"
+                blob_path = f"cad/covers/{filename}"
+                blob_url = blob_put_file(blob_path, content, content_type=content_type)
+                if blob_url:
+                    final_url = blob_url
+            except Exception as exc:
+                print(f"[AVISO] Falha ao salvar capa no Blob: {exc}")
+
+            # 2. Tenta salvar localmente (desenvolvimento local)
+            try:
+                COVERS_DIR.mkdir(parents=True, exist_ok=True)
+                dest = COVERS_DIR / filename
+                dest.write_bytes(content)
+            except Exception as exc:
+                print(f"[INFO] Gravação local da capa ignorada (read-only): {exc}")
+    except Exception as exc:
+        print(f"[ERRO] Falha ao processar imagem de capa: {exc}")
+
+    return final_url
 
 
 async def _save_pdf_and_extract(pdf_file: UploadFile, slug: str) -> tuple[str, list[dict]]:
     """Salva o PDF, extrai as folhas como PNG e retorna (pdf_url, sheet_images)."""
-    CAD_DOC_DIR.mkdir(parents=True, exist_ok=True)
-    dest = CAD_DOC_DIR / f"{slug}.pdf"
-    with open(dest, "wb") as f:
-        shutil.copyfileobj(pdf_file.file, f)
-    pdf_url = f"/static/documents/cad/{slug}.pdf"
+    filename = f"{slug}.pdf"
+    local_url = f"/static/documents/cad/{filename}"
+    final_url = local_url
+    sheet_images = []
 
-    # Limpa folhas anteriores (re-extração)
-    sheets_dir = STATIC_DIR / "images" / "cad" / slug
-    if sheets_dir.exists():
-        shutil.rmtree(sheets_dir, ignore_errors=True)
+    try:
+        content = await pdf_file.read()
+        if content:
+            # 1. Tenta upload no Vercel Blob
+            try:
+                content_type = getattr(pdf_file, "content_type", None) or "application/pdf"
+                blob_path = f"cad/documents/{filename}"
+                blob_url = blob_put_file(blob_path, content, content_type=content_type)
+                if blob_url:
+                    final_url = blob_url
+            except Exception as exc:
+                print(f"[AVISO] Falha ao salvar PDF no Blob: {exc}")
 
-    paths = extract_pdf_sheets(dest, sheets_dir)
-    sheet_images = [
-        {"path": p, "caption": f"Folha {i + 1}", "description": ""}
-        for i, p in enumerate(paths)
-    ]
-    return pdf_url, sheet_images
+            # 2. Tenta salvar localmente e extrair folhas (se filesystem permitir)
+            try:
+                CAD_DOC_DIR.mkdir(parents=True, exist_ok=True)
+                dest = CAD_DOC_DIR / filename
+                dest.write_bytes(content)
+
+                sheets_dir = STATIC_DIR / "images" / "cad" / slug
+                if sheets_dir.exists():
+                    shutil.rmtree(sheets_dir, ignore_errors=True)
+
+                paths = extract_pdf_sheets(dest, sheets_dir)
+                sheet_images = [
+                    {"path": p, "caption": f"Folha {i + 1}", "description": ""}
+                    for i, p in enumerate(paths)
+                ]
+            except Exception as exc:
+                print(f"[INFO] Extração local de PDF ignorada no Vercel: {exc}")
+    except Exception as exc:
+        print(f"[ERRO] Falha ao processar PDF: {exc}")
+
+    return final_url, sheet_images
 
 
 async def _save_download_files(
@@ -116,16 +161,20 @@ async def _save_download_files(
 ) -> list[dict]:
     """
     Salva arquivos de download de uma aula.
-    Salva cópia local em /static/documents/trilhas/... e faz upload para o Vercel Blob.
+    Prioriza o upload para o Vercel Blob (produção).
+    Tenta salvar cópia local em /static/documents/trilhas/... (desenvolvimento local).
     Se o Blob falhar ou não estiver configurado, utiliza a URL estática local como fallback.
     Retorna lista de { nome, url, tipo }.
     """
     saved = []
     local_aula_dir = TRAIL_DOC_DIR / trail_slug / aula_id
-    local_aula_dir.mkdir(parents=True, exist_ok=True)
+    try:
+        local_aula_dir.mkdir(parents=True, exist_ok=True)
+    except Exception as exc:
+        print(f"[INFO] Filesystem local read-only (ambiente Serverless Vercel): {exc}")
 
     for f in files:
-        if not f or not getattr(f, "filename", None) or not f.filename.strip():
+        if not f or not getattr(f, "filename", None) or not str(f.filename).strip():
             continue
         filename = Path(f.filename.strip()).name
         if not filename:
@@ -135,21 +184,26 @@ async def _save_download_files(
             if not content:
                 continue
 
-            # 1. Salva cópia local
-            local_dest = local_aula_dir / filename
-            local_dest.write_bytes(content)
+            content_type = getattr(f, "content_type", None) or "application/octet-stream"
             local_url = f"/static/documents/trilhas/{trail_slug}/{aula_id}/{filename}"
             final_url = local_url
 
-            # 2. Tenta upload para o Vercel Blob
+            # 1. Upload para o Vercel Blob (produção)
             try:
-                content_type = getattr(f, "content_type", None) or "application/octet-stream"
                 blob_path = f"trilhas/{trail_slug}/{aula_id}/{filename}"
                 blob_url = blob_put_file(blob_path, content, content_type=content_type)
-                final_url = blob_url
-                print(f"[OK] Arquivo {filename} salvo no Vercel Blob: {blob_url}")
+                if blob_url:
+                    final_url = blob_url
+                    print(f"[OK] Arquivo {filename} salvo no Vercel Blob: {blob_url}")
             except Exception as exc:
-                print(f"[AVISO] Upload no Blob falhou para {filename}, usando URL local: {exc}")
+                print(f"[AVISO] Upload no Blob falhou para {filename}, usando URL local como fallback: {exc}")
+
+            # 2. Cópia local para desenvolvimento (tolerante a read-only filesystem)
+            try:
+                local_dest = local_aula_dir / filename
+                local_dest.write_bytes(content)
+            except Exception as exc:
+                print(f"[INFO] Cópia local não gravada (read-only no Vercel): {exc}")
 
             ext = Path(filename).suffix.lower().lstrip(".")
             saved.append({
@@ -158,7 +212,7 @@ async def _save_download_files(
                 "tipo": ext,
             })
         except Exception as exc:
-            print(f"[ERRO] Falha crítica ao processar arquivo {filename}: {exc}")
+            print(f"[ERRO] Falha ao processar arquivo {filename}: {exc}")
     return saved
 
 
@@ -255,50 +309,50 @@ async def admin_lesson_create(
     request: Request,
     slug: str,
 ) -> RedirectResponse:
-    form = await request.form()
-    modulo_id = str(form.get("modulo_id", "")).strip()
-    titulo = str(form.get("titulo", "")).strip()
-    descricao = str(form.get("descricao", "")).strip()
-    tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
-    duracao = str(form.get("duracao", "")).strip()
-    url_youtube = str(form.get("url_youtube", "")).strip()
-    nova_secao_titulo = str(form.get("nova_secao_titulo", "")).strip()
+    try:
+        form = await request.form()
+        modulo_id = str(form.get("modulo_id", "")).strip()
+        titulo = str(form.get("titulo", "")).strip()
+        descricao = str(form.get("descricao", "")).strip()
+        tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
+        duracao = str(form.get("duracao", "")).strip()
+        url_youtube = str(form.get("url_youtube", "")).strip()
+        nova_secao_titulo = str(form.get("nova_secao_titulo", "")).strip()
 
-    download_files = [
-        item for item in form.getlist("download_files")
-        if hasattr(item, "filename") and item.filename and str(item.filename).strip()
-    ]
+        download_files = [
+            item for item in form.getlist("download_files")
+            if hasattr(item, "filename") and item.filename and str(item.filename).strip()
+        ]
 
-    # Cria nova seção se solicitado
-    if modulo_id == "__nova__" and nova_secao_titulo:
-        novo_mod = add_modulo_to_trail(slug, nova_secao_titulo)
-        if novo_mod:
-            modulo_id = novo_mod["id"]
-        else:
-            return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
+        # Cria nova seção se solicitado
+        if modulo_id == "__nova__" and nova_secao_titulo:
+            novo_mod = add_modulo_to_trail(slug, nova_secao_titulo)
+            if novo_mod:
+                modulo_id = novo_mod["id"]
+            else:
+                return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
-    aula_id = str(uuid.uuid4())
+        aula_id = str(uuid.uuid4())
 
-    # Salva arquivos de download primeiro com o ID da aula
-    arquivos = []
-    if download_files:
-        arquivos = await _save_download_files(aula_id, slug, download_files)
+        # Salva arquivos de download primeiro com o ID da aula
+        arquivos = []
+        if download_files:
+            arquivos = await _save_download_files(aula_id, slug, download_files)
 
+        aula: dict = {
+            "id":                  aula_id,
+            "titulo":              titulo,
+            "descricao":           descricao,
+            "tipoConteudo":        tipo_conteudo,
+            "duracao":             duracao,
+            "urlYoutube":          url_youtube,
+            "arquivosParaDownload": arquivos,
+            "concluida":           False,
+        }
 
-    aula: dict = {
-        "id":                  aula_id,
-        "titulo":              titulo,
-        "descricao":           descricao,
-        "tipoConteudo":        tipo_conteudo,
-        "duracao":             duracao,
-        "urlYoutube":          url_youtube,
-        "arquivosParaDownload": arquivos,
-        "concluida":           False,
-    }
-
-    saved = save_aula_to_trail(slug, modulo_id, aula)
-    if not saved:
-        return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
+        save_aula_to_trail(slug, modulo_id, aula)
+    except Exception as exc:
+        print(f"[ERRO] Falha ao criar aula na trilha {slug}: {exc}")
 
     return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
@@ -358,61 +412,75 @@ async def admin_lesson_update(
     slug: str,
     aula_id: str,
 ) -> RedirectResponse:
-    form = await request.form()
-    modulo_id = str(form.get("modulo_id", "")).strip()
-    titulo = str(form.get("titulo", "")).strip()
-    descricao = str(form.get("descricao", "")).strip()
-    tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
-    duracao = str(form.get("duracao", "")).strip()
-    url_youtube = str(form.get("url_youtube", "")).strip()
+    try:
+        form = await request.form()
+        modulo_id = str(form.get("modulo_id", "")).strip()
+        titulo = str(form.get("titulo", "")).strip()
+        descricao = str(form.get("descricao", "")).strip()
+        tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
+        duracao = str(form.get("duracao", "")).strip()
+        url_youtube = str(form.get("url_youtube", "")).strip()
+        nova_secao_titulo = str(form.get("nova_secao_titulo", "")).strip()
 
-    download_files = [
-        item for item in form.getlist("download_files")
-        if hasattr(item, "filename") and item.filename and str(item.filename).strip()
-    ]
+        if modulo_id == "__nova__" and nova_secao_titulo:
+            novo_mod = add_modulo_to_trail(slug, nova_secao_titulo)
+            if novo_mod:
+                modulo_id = novo_mod["id"]
 
-    # Localiza a aula existente para preservar campos não editados
-    trail = get_trail_data(slug)
-    if not trail:
-        return RedirectResponse(url="/admin-panel", status_code=303)
+        download_files = [
+            item for item in form.getlist("download_files")
+            if hasattr(item, "filename") and item.filename and str(item.filename).strip()
+        ]
 
-    existing_aula = None
-    for mod in trail.get("modulos", []):
-        for a in mod.get("aulas", []):
-            if a.get("id") == aula_id:
-                existing_aula = a
+        # Localiza a aula existente para preservar campos não editados
+        trail = get_trail_data(slug)
+        if not trail:
+            return RedirectResponse(url="/admin-panel", status_code=303)
+
+        existing_aula = None
+        for mod in trail.get("modulos", []):
+            for a in mod.get("aulas", []):
+                if a.get("id") == aula_id:
+                    existing_aula = a
+                    if not modulo_id:
+                        modulo_id = mod["id"]
+                    break
+            if existing_aula:
                 break
 
-    arquivos_existentes = existing_aula.get("arquivosParaDownload", []) if existing_aula else []
+        arquivos_existentes = existing_aula.get("arquivosParaDownload", []) if existing_aula else []
 
-    # Se o formulário informou o gerenciamento de arquivos existentes
-    tem_arquivos_existentes = "tem_arquivos_existentes" in form
-    if tem_arquivos_existentes:
-        manter_arquivos = set(form.getlist("manter_arquivos"))
-        arquivos_preservados = [
-            arq for arq in arquivos_existentes
-            if arq.get("url") in manter_arquivos or arq.get("nome") in manter_arquivos
-        ]
-    else:
-        arquivos_preservados = arquivos_existentes
+        # Se o formulário informou o gerenciamento de arquivos existentes
+        tem_arquivos_existentes = "tem_arquivos_existentes" in form
+        if tem_arquivos_existentes:
+            manter_arquivos = set(form.getlist("manter_arquivos"))
+            arquivos_preservados = [
+                arq for arq in arquivos_existentes
+                if arq.get("url") in manter_arquivos or arq.get("nome") in manter_arquivos
+            ]
+        else:
+            arquivos_preservados = arquivos_existentes
 
-    # Adiciona novos arquivos de download
-    novos = []
-    if download_files:
-        novos = await _save_download_files(aula_id, slug, download_files)
+        # Adiciona novos arquivos de download
+        novos = []
+        if download_files:
+            novos = await _save_download_files(aula_id, slug, download_files)
 
-    aula = {
-        "id":                  aula_id,
-        "titulo":              titulo,
-        "descricao":           descricao,
-        "tipoConteudo":        tipo_conteudo,
-        "duracao":             duracao,
-        "urlYoutube":          url_youtube,
-        "arquivosParaDownload": arquivos_preservados + novos,
-        "concluida":           existing_aula.get("concluida", False) if existing_aula else False,
-    }
+        aula = {
+            "id":                  aula_id,
+            "titulo":              titulo,
+            "descricao":           descricao,
+            "tipoConteudo":        tipo_conteudo,
+            "duracao":             duracao,
+            "urlYoutube":          url_youtube,
+            "arquivosParaDownload": arquivos_preservados + novos,
+            "concluida":           existing_aula.get("concluida", False) if existing_aula else False,
+        }
 
-    save_aula_to_trail(slug, modulo_id, aula)
+        save_aula_to_trail(slug, modulo_id, aula)
+    except Exception as exc:
+        print(f"[ERRO] Falha ao atualizar aula {aula_id} na trilha {slug}: {exc}")
+
     return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
 

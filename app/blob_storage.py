@@ -97,9 +97,12 @@ def blob_put_file(pathname: str, content: bytes, content_type: str = "applicatio
     """
     token = _get_token()
 
+    from urllib.parse import quote
+    safe_pathname = "/".join(quote(part, safe="") for part in pathname.split("/"))
+
     with httpx.Client(timeout=30.0) as client:
         response = client.put(
-            f"{_BLOB_API_BASE}/{pathname}",
+            f"{_BLOB_API_BASE}/{safe_pathname}",
             content=content,
             headers={
                 "Authorization": f"Bearer {token}",
@@ -141,7 +144,11 @@ def blob_get(pathname: str) -> Optional[dict]:
     if pathname in _data_cache and (now - _data_cache_ts.get(pathname, 0)) < 15.0:
         return _data_cache[pathname]
 
-    url = _url_cache.get(pathname) or _find_blob_url(pathname)
+    try:
+        url = _url_cache.get(pathname) or _find_blob_url(pathname)
+    except Exception:
+        url = None
+
     if not url:
         return _data_cache.get(pathname)
 
@@ -184,8 +191,13 @@ def _find_blob_url(pathname: str) -> Optional[str]:
     Consulta a list API para encontrar a URL pública de um blob pelo pathname.
     Retorna None se o blob não existir ou a chamada falhar.
     """
-    token = _get_token()
     try:
+        token = _get_token()
+    except Exception:
+        return None
+
+    try:
+        from urllib.parse import quote
         with httpx.Client(timeout=30.0) as client:
             response = client.get(
                 _BLOB_API_BASE,
@@ -197,6 +209,6 @@ def _find_blob_url(pathname: str) -> Optional[str]:
             for blob in blobs:
                 if blob.get("pathname") == pathname:
                     return blob.get("url")
-    except httpx.HTTPError:
+    except Exception:
         pass
     return None
