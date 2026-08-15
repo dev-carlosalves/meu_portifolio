@@ -58,57 +58,12 @@
           {% endif %}
         </div>
 
-        <!-- 2. Cabeçalho Integrado da Aula (Título, Autor, Badges e Ações) -->
+        <!-- 2. Cabeçalho Integrado da Aula (Título e Ações) -->
         <div class="lesson-header-panel">
           <div class="lesson-header-panel__top">
             <div class="lesson-header-panel__title-wrap">
               <!-- Título da Aula -->
               <h1 class="lesson-title">{{ aula.titulo }}</h1>
-
-              <!-- Perfil do Autor com Foto Profissional -->
-              <div class="lesson-author-bar">
-                <div class="lesson-author-avatar-wrap">
-                  <img
-                    src="{{ student.photo }}"
-                    alt="{{ student.name }}"
-                    class="lesson-author-avatar"
-                    width="42"
-                    height="42"
-                    loading="lazy"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                  />
-                  <div class="lesson-author-avatar-fallback" style="display:none;" aria-hidden="true">
-                    <i class="fa-solid fa-user"></i>
-                  </div>
-                </div>
-                <div class="lesson-author-info">
-                  <span class="lesson-author-name">{{ student.name }}</span>
-                  <span class="lesson-author-role">Estudante de Engenharia Mecânica (IFCE)</span>
-                </div>
-              </div>
-
-              <!-- Metadados / Badges -->
-              <div class="lesson-badges">
-                <span class="lesson-badge lesson-badge--section">
-                  <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-                  Seção {{ modulo.numero }}: {{ modulo.titulo }}
-                </span>
-                {% if aula.duracao %}
-                <span class="lesson-badge lesson-badge--duration">
-                  <i class="fa-regular fa-clock" aria-hidden="true"></i>
-                  {{ aula.duracao }}
-                </span>
-                {% endif %}
-                <span class="lesson-badge lesson-badge--type">
-                  {% if aula.tipoConteudo == 'video' %}
-                  <i class="fa-brands fa-youtube" aria-hidden="true"></i> Vídeo
-                  {% elif aula.tipoConteudo == 'pdf' %}
-                  <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF
-                  {% else %}
-                  <i class="fa-solid fa-file-lines" aria-hidden="true"></i> Texto
-                  {% endif %}
-                </span>
-              </div>
             </div>
 
             <!-- Botões de Ação Rápidos -->
@@ -163,6 +118,7 @@
             </div>
           </div>
         </div>
+
 
         <!-- 3. Painel de Conteúdo Unificado (Material Didático PRIMEIRO, depois Descrição) -->
         <article class="lesson-content-card">

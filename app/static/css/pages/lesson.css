@@ -136,7 +136,7 @@
 
 .lesson-header-panel__top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1.25rem;
 }
@@ -147,13 +147,14 @@
 }
 
 .lesson-title {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--color-text);
   line-height: 1.35;
-  margin: 0 0 0.75rem;
+  margin: 0;
   word-break: break-word;
 }
+
 
 /* ──────────────────────────────────────────────────────────────
    Barra do Autor / Foto Profissional
