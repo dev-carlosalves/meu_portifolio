@@ -10,36 +10,36 @@
 <div class="lesson-page">
   <div class="container">
 
-    <!-- ── Breadcrumb ─────────────────────────────────────────── -->
-    <nav class="lesson-breadcrumb" aria-label="Navegação estrutural" data-aos="fade-right">
+    <!-- ── Breadcrumb Superior ──────────────────────────────────────── -->
+    <nav class="lesson-breadcrumb" aria-label="Navegação estrutural">
       <a href="/projetos" class="lesson-breadcrumb__link">
         <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
-        Trilhas
+        <span>Trilhas</span>
       </a>
       {% if breadcrumb_parent %}
       <i class="fa-solid fa-chevron-right lesson-breadcrumb__sep" aria-hidden="true"></i>
       <a href="{{ breadcrumb_parent.href }}" class="lesson-breadcrumb__link">
-        {{ breadcrumb_parent.label }}
+        <span>{{ breadcrumb_parent.label }}</span>
       </a>
       {% endif %}
       <i class="fa-solid fa-chevron-right lesson-breadcrumb__sep" aria-hidden="true"></i>
       <a href="{{ trail_url }}" class="lesson-breadcrumb__link">
-        {{ trail.nome }}
+        <span>{{ trail.nome }}</span>
       </a>
       <i class="fa-solid fa-chevron-right lesson-breadcrumb__sep" aria-hidden="true"></i>
-      <span class="lesson-breadcrumb__current">{{ aula.titulo }}</span>
+      <span class="lesson-breadcrumb__current" title="{{ aula.titulo }}">{{ aula.titulo }}</span>
     </nav>
 
-    <!-- ── Layout Principal ────────────────────────────────────── -->
+    <!-- ── Layout Principal: Vídeo + Conteúdo + Playlist Lateral ─────── -->
     <div class="lesson-layout">
 
       <!-- ═══════════════════════════════════════════════════════
-           COLUNA ESQUERDA — Player de Vídeo e Detalhes da Aula
+           COLUNA PRINCIPAL (Vídeo, Controles, Descrição e Materiais)
       ═══════════════════════════════════════════════════════ -->
-      <main class="lesson-main-content" data-aos="fade-up">
+      <main class="lesson-main">
 
-        <!-- Player de Vídeo 16:9 -->
-        <div class="lesson-player-container">
+        <!-- 1. Player de Vídeo 16:9 -->
+        <div class="lesson-player-frame">
           {% if aula.embedUrl %}
           <iframe
             class="lesson-player-iframe"
@@ -52,195 +52,203 @@
           {% else %}
           <div class="lesson-player-fallback">
             <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
-            <h3>Material Textual / Didático</h3>
-            <p>Esta aula contém materiais e instruções de apoio para consulta.</p>
+            <h3>Material Didático & Apoio</h3>
+            <p>Consulte as notas da aula e os arquivos para download abaixo.</p>
           </div>
           {% endif %}
         </div>
 
-        <!-- Barra de Ações: Conclusão & Navegação -->
-        <div class="lesson-actions-bar">
-          <div class="lesson-actions-left">
-            <button
-              type="button"
-              class="btn-toggle-complete"
-              id="btn-complete-lesson"
-              aria-label="Alternar conclusão da aula"
-            >
-              <i class="fa-regular fa-circle-check" id="btn-complete-icon" aria-hidden="true"></i>
-              <span id="btn-complete-text">Marcar como Concluída</span>
-            </button>
-          </div>
+        <!-- 2. Cabeçalho Integrado da Aula (Título, Badges e Ações) -->
+        <div class="lesson-header-panel">
+          <div class="lesson-header-panel__top">
+            <div class="lesson-header-panel__title-wrap">
+              <h1 class="lesson-title">{{ aula.titulo }}</h1>
+              <div class="lesson-badges">
+                <span class="lesson-badge lesson-badge--section">
+                  <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+                  Seção {{ modulo.numero }}: {{ modulo.titulo }}
+                </span>
+                {% if aula.duracao %}
+                <span class="lesson-badge lesson-badge--duration">
+                  <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                  {{ aula.duracao }}
+                </span>
+                {% endif %}
+                <span class="lesson-badge lesson-badge--type">
+                  {% if aula.tipoConteudo == 'video' %}
+                  <i class="fa-brands fa-youtube" aria-hidden="true"></i> Vídeo
+                  {% elif aula.tipoConteudo == 'pdf' %}
+                  <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF
+                  {% else %}
+                  <i class="fa-solid fa-file-lines" aria-hidden="true"></i> Texto
+                  {% endif %}
+                </span>
+              </div>
+            </div>
 
-          <div class="lesson-nav-buttons">
-            {% if prev_aula %}
-            <a
-              href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ prev_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ prev_aula.id }}{% endif %}"
-              class="btn-lesson-nav"
-              title="{{ prev_aula.titulo }}"
-            >
-              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-              <span>Aula Anterior</span>
-            </a>
-            {% else %}
-            <span class="btn-lesson-nav btn-lesson-nav--disabled">
-              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-              <span>Aula Anterior</span>
-            </span>
-            {% endif %}
+            <!-- Botões de Ação Rápidos -->
+            <div class="lesson-header-actions">
+              <button
+                type="button"
+                class="btn-complete-toggle"
+                id="btn-complete-lesson"
+                aria-label="Alternar conclusão da aula"
+              >
+                <i class="fa-regular fa-circle-check" id="btn-complete-icon" aria-hidden="true"></i>
+                <span id="btn-complete-text">Concluir Aula</span>
+              </button>
 
-            {% if next_aula %}
-            <a
-              href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ next_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ next_aula.id }}{% endif %}"
-              class="btn-lesson-nav btn-lesson-nav--next"
-              title="{{ next_aula.titulo }}"
-            >
-              <span>Próxima Aula</span>
-              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-            </a>
-            {% else %}
-            <a
-              href="{{ trail_url }}"
-              class="btn-lesson-nav btn-lesson-nav--next"
-            >
-              <span>Concluir Trilha</span>
-              <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
-            </a>
-            {% endif %}
+              <div class="lesson-nav-group">
+                {% if prev_aula %}
+                <a
+                  href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ prev_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ prev_aula.id }}{% endif %}"
+                  class="btn-nav-step"
+                  title="Aula Anterior: {{ prev_aula.titulo }}"
+                >
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                  <span class="btn-nav-step__text">Anterior</span>
+                </a>
+                {% else %}
+                <span class="btn-nav-step btn-nav-step--disabled">
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                  <span class="btn-nav-step__text">Anterior</span>
+                </span>
+                {% endif %}
+
+                {% if next_aula %}
+                <a
+                  href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ next_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ next_aula.id }}{% endif %}"
+                  class="btn-nav-step btn-nav-step--primary"
+                  title="Próxima Aula: {{ next_aula.titulo }}"
+                >
+                  <span class="btn-nav-step__text">Próxima</span>
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </a>
+                {% else %}
+                <a
+                  href="{{ trail_url }}"
+                  class="btn-nav-step btn-nav-step--primary"
+                  title="Concluir Trilha"
+                >
+                  <span class="btn-nav-step__text">Concluir</span>
+                  <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
+                </a>
+                {% endif %}
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Card de Informações e Descrição -->
-        <article class="lesson-details-card">
-          <!-- Metadados da Aula -->
-          <div class="lesson-meta-badges">
-            <span class="lesson-badge lesson-badge--section">
-              <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
-              Seção {{ modulo.numero }}: {{ modulo.titulo }}
-            </span>
-            {% if aula.duracao %}
-            <span class="lesson-badge lesson-badge--duration">
-              <i class="fa-regular fa-clock" aria-hidden="true"></i>
-              {{ aula.duracao }}
-            </span>
-            {% endif %}
-            <span class="lesson-badge lesson-badge--type">
-              {% if aula.tipoConteudo == 'video' %}
-              <i class="fa-brands fa-youtube" aria-hidden="true"></i> Vídeo
-              {% elif aula.tipoConteudo == 'pdf' %}
-              <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF
-              {% else %}
-              <i class="fa-solid fa-file-lines" aria-hidden="true"></i> Texto
-              {% endif %}
-            </span>
-          </div>
-
-          <!-- Título Principal -->
-          <h1 class="lesson-title-main">{{ aula.titulo }}</h1>
-
+        <!-- 3. Painel de Detalhes (Descrição & Material Didático) -->
+        <article class="lesson-content-card">
           <!-- Descrição -->
-          <div class="lesson-description-text">
-            {% if aula.descricao and aula.descricao.strip() %}
-            {{ aula.descricao }}
-            {% else %}
-            Nesta aula prática da trilha de <strong>{{ trail.nome }}</strong>, você acompanha o passo a passo demonstrado no vídeo para fixação dos conceitos técnicos e aplicação prática de engenharia.
-            {% endif %}
+          <div class="lesson-content-section">
+            <h2 class="lesson-section-subtitle">
+              <i class="fa-solid fa-align-left" aria-hidden="true"></i>
+              Sobre esta aula
+            </h2>
+            <div class="lesson-description">
+              {% if aula.descricao and aula.descricao.strip() %}
+              {{ aula.descricao }}
+              {% else %}
+              Nesta aula prática da trilha de <strong>{{ trail.nome }}</strong>, você acompanha o passo a passo demonstrado no vídeo para fixação dos conceitos técnicos e aplicação prática de engenharia.
+              {% endif %}
+            </div>
           </div>
 
-          <!-- Material Didático / Arquivos para Download -->
+          <!-- Material Didático & Arquivos de Apoio -->
           {% if aula.arquivosParaDownload and aula.arquivosParaDownload | length > 0 %}
-          <section class="lesson-materials-section" aria-label="Materiais didáticos para download">
-            <h2 class="lesson-materials-title">
-              <i class="fa-solid fa-download" style="color:var(--color-accent)" aria-hidden="true"></i>
+          <div class="lesson-content-section lesson-content-section--materials">
+            <h2 class="lesson-section-subtitle">
+              <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
               Material Didático & Arquivos de Apoio
             </h2>
-            <div class="lesson-materials-grid">
+            <div class="materials-grid">
               {% for arq in aula.arquivosParaDownload %}
               <a
                 href="{{ arq.url }}"
                 target="_blank"
                 rel="noopener noreferrer"
                 download
-                class="material-card"
+                class="material-item"
+                title="Baixar {{ arq.nome }}"
               >
-                <div class="material-card-left">
-                  <div class="material-card-icon" aria-hidden="true">
-                    {% if arq.tipo in ['xlsx', 'xls', 'xlsm'] %}
-                    <i class="fa-solid fa-file-excel"></i>
-                    {% elif arq.tipo == 'pdf' %}
-                    <i class="fa-solid fa-file-pdf"></i>
-                    {% elif arq.tipo in ['dwg', 'dxf'] %}
-                    <i class="fa-solid fa-drafting-compass"></i>
-                    {% elif arq.tipo in ['sldprt', 'sldasm', 'step', 'stp'] %}
-                    <i class="fa-solid fa-gears"></i>
-                    {% elif arq.tipo in ['zip', 'rar', '7z'] %}
-                    <i class="fa-solid fa-file-zipper"></i>
-                    {% else %}
-                    <i class="fa-solid fa-file"></i>
-                    {% endif %}
-                  </div>
-                  <div class="material-card-info">
-                    <span class="material-card-name" title="{{ arq.nome }}">{{ arq.nome }}</span>
-                    <span class="material-card-type">{{ arq.tipo | upper if arq.tipo else 'ARQUIVO' }}</span>
-                  </div>
+                <div class="material-item__icon-box" aria-hidden="true">
+                  {% if arq.tipo in ['xlsx', 'xls', 'xlsm'] %}
+                  <i class="fa-solid fa-file-excel material-item__icon--excel"></i>
+                  {% elif arq.tipo == 'pdf' %}
+                  <i class="fa-solid fa-file-pdf material-item__icon--pdf"></i>
+                  {% elif arq.tipo in ['dwg', 'dxf'] %}
+                  <i class="fa-solid fa-drafting-compass material-item__icon--cad"></i>
+                  {% elif arq.tipo in ['sldprt', 'sldasm', 'step', 'stp'] %}
+                  <i class="fa-solid fa-gears material-item__icon--cad"></i>
+                  {% elif arq.tipo in ['zip', 'rar', '7z'] %}
+                  <i class="fa-solid fa-file-zipper material-item__icon--zip"></i>
+                  {% else %}
+                  <i class="fa-solid fa-file material-item__icon--generic"></i>
+                  {% endif %}
                 </div>
-                <div class="material-card-action" aria-label="Baixar arquivo">
-                  <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+                <div class="material-item__details">
+                  <span class="material-item__name">{{ arq.nome }}</span>
+                  <span class="material-item__type">{{ arq.tipo | upper if arq.tipo else 'ARQUIVO' }}</span>
+                </div>
+                <div class="material-item__btn" aria-label="Baixar">
+                  <i class="fa-solid fa-download" aria-hidden="true"></i>
                 </div>
               </a>
               {% endfor %}
             </div>
-          </section>
+          </div>
           {% endif %}
         </article>
 
       </main>
 
       <!-- ═══════════════════════════════════════════════════════
-           COLUNA DIREITA — Playlist da Trilha
+           COLUNA LATERAL (Playlist do Curso)
       ═══════════════════════════════════════════════════════ -->
-      <aside class="lesson-playlist-sidebar" data-aos="fade-left">
-        <div class="lesson-playlist-card">
+      <aside class="lesson-sidebar">
+        <div class="playlist-card">
           <!-- Cabeçalho da Playlist -->
-          <div class="lesson-playlist-header">
-            <div class="lesson-playlist-tag">
-              <i class="fa-solid fa-list-ul" aria-hidden="true"></i>
-              CONTEÚDO DO CURSO
+          <div class="playlist-card__header">
+            <div class="playlist-card__top">
+              <span class="playlist-card__tag">
+                <i class="fa-solid fa-list-check" aria-hidden="true"></i>
+                Conteúdo do Curso
+              </span>
+              <span class="playlist-card__pct" id="playlist-pct-label">0%</span>
             </div>
-            <h2 class="lesson-playlist-title">{{ trail.nome }}</h2>
-            <div class="lesson-playlist-progress">
-              <div class="lesson-playlist-progress-bar">
-                <div class="lesson-playlist-progress-fill" id="playlist-progress-fill" style="width: 0%"></div>
-              </div>
-              <span class="lesson-playlist-pct" id="playlist-pct-label">0%</span>
+            <h2 class="playlist-card__title">{{ trail.nome }}</h2>
+            <div class="playlist-card__bar">
+              <div class="playlist-card__fill" id="playlist-progress-fill" style="width: 0%"></div>
             </div>
           </div>
 
           <!-- Lista de Módulos e Aulas -->
-          <div class="lesson-playlist-scroll">
+          <div class="playlist-card__body">
             {% for mod in trail.modulos %}
-            <div class="playlist-section-block">
-              <div class="playlist-section-header">
-                Seção {{ mod.numero }}: {{ mod.titulo }}
+            <div class="playlist-group">
+              <div class="playlist-group__header">
+                <span>Seção {{ mod.numero }}: {{ mod.titulo }}</span>
               </div>
               {% if mod.aulas %}
-              <ul class="playlist-items" role="list">
+              <ul class="playlist-list" role="list">
                 {% for a in mod.aulas %}
-                <li role="listitem">
+                <li class="playlist-list__item" role="listitem">
                   <a
                     href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ a.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ a.id }}{% endif %}"
-                    class="playlist-item-link {% if a.id == aula.id %}playlist-item-link--active{% endif %}"
+                    class="playlist-row {% if a.id == aula.id %}playlist-row--active{% endif %}"
                   >
-                    <div class="playlist-item-status-icon" data-aula-id="{{ a.id }}" aria-hidden="true">
+                    <div class="playlist-row__status" data-aula-id="{{ a.id }}" aria-hidden="true">
                       {% if a.id == aula.id %}
                       <i class="fa-solid fa-play"></i>
                       {% else %}
                       <i class="fa-regular fa-circle"></i>
                       {% endif %}
                     </div>
-                    <div class="playlist-item-content">
-                      <span class="playlist-item-title" title="{{ a.titulo }}">{{ a.titulo }}</span>
-                      <span class="playlist-item-meta">
+                    <div class="playlist-row__info">
+                      <span class="playlist-row__title" title="{{ a.titulo }}">{{ a.titulo }}</span>
+                      <span class="playlist-row__meta">
                         {% if a.tipoConteudo == 'video' %}Vídeo{% elif a.tipoConteudo == 'pdf' %}PDF{% else %}Texto{% endif %}
                         {% if a.duracao %} · {{ a.duracao }}{% endif %}
                       </span>
@@ -250,17 +258,15 @@
                 {% endfor %}
               </ul>
               {% else %}
-              <p style="font-size:0.75rem; color:var(--color-text-subtle); padding:0.25rem 0.75rem; margin:0">
-                Em breve
-              </p>
+              <div class="playlist-group__empty">Em breve</div>
               {% endif %}
             </div>
             {% endfor %}
           </div>
 
           <!-- Rodapé com Link Voltar -->
-          <div class="lesson-playlist-footer">
-            <a href="{{ trail_url }}" class="btn-back-trail-link">
+          <div class="playlist-card__footer">
+            <a href="{{ trail_url }}" class="btn-playlist-back">
               <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
               <span>Voltar para a Visão Geral</span>
             </a>

@@ -1,33 +1,32 @@
 /* ============================================================
-   lesson.css — Página Dedicada de Reprodução da Aula / Player
-   Design System Tokens (base.css):
-   --color-bg-primary, --color-bg-card, --color-accent, --radius-2xl, etc.
+   lesson.css — Layout Proporcional da Página de Reprodução de Aulas
+   Aparência: Cinema / Minimalista / Alinhamento Refinado
    ============================================================ */
 
 .lesson-page {
   min-height: 100vh;
-  padding: 2.5rem 0 5rem;
+  padding: 1.5rem 0 4rem;
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Breadcrumb
+   1. Breadcrumb Compacto e Alinhado
 ────────────────────────────────────────────────────────────────*/
 .lesson-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
-  font-size: var(--text-sm);
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
 }
 
 .lesson-breadcrumb__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: 0.35rem;
   color: var(--color-text-muted);
   text-decoration: none;
-  transition: color var(--transition-base);
+  transition: color var(--transition-fast);
 }
 
 .lesson-breadcrumb__link:hover {
@@ -36,66 +35,54 @@
 
 .lesson-breadcrumb__sep {
   color: var(--color-text-subtle);
-  font-size: 0.625rem;
+  font-size: 0.5625rem;
 }
 
 .lesson-breadcrumb__current {
-  color: var(--color-accent);
-  font-weight: 600;
+  color: var(--color-text);
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 320px;
+  max-width: 340px;
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Layout Principal: Player/Conteúdo + Playlist Lateral
+   2. Layout em Grid Proporcional (Player + Playlist)
 ────────────────────────────────────────────────────────────────*/
 .lesson-layout {
   display: grid;
-  grid-template-columns: 1fr 380px;
-  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1fr) 350px;
+  gap: 1.5rem;
   align-items: start;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1080px) {
   .lesson-layout {
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .lesson-layout {
+    grid-template-columns: 1fr;
     gap: 1.75rem;
   }
 }
 
-@media (max-width: 960px) {
-  .lesson-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* ──────────────────────────────────────────────────────────────
-   ÁREA DO VÍDEO / CINEMA PLAYER
+   3. Player de Vídeo 16:9 Cinema
 ────────────────────────────────────────────────────────────────*/
-.lesson-player-container {
+.lesson-player-frame {
   position: relative;
   width: 100%;
-  border-radius: var(--radius-2xl);
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-xl);
   overflow: hidden;
   background: #000;
   border: 1px solid var(--color-border);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(6, 182, 212, 0.08);
-  aspect-ratio: 16 / 9;
-}
-
-.lesson-player-container::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: var(--radius-2xl);
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), transparent 60%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
 }
 
 .lesson-player-iframe {
@@ -112,143 +99,78 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 2rem;
   text-align: center;
-  background: var(--color-bg-card);
+  background: var(--color-bg-secondary);
   color: var(--color-text-muted);
 }
 
 .lesson-player-fallback i {
-  font-size: 3rem;
+  font-size: 2.25rem;
   color: var(--color-accent);
 }
 
+.lesson-player-fallback h3 {
+  font-size: 1.125rem;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.lesson-player-fallback p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
 /* ──────────────────────────────────────────────────────────────
-   BARRA DE AÇÕES DO PLAYER (Conclusão & Navegação Anterior/Próxima)
+   4. Cabeçalho Integrado (Título, Badges e Botões de Ação)
 ────────────────────────────────────────────────────────────────*/
-.lesson-actions-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding: 1rem 1.25rem;
-  background: var(--color-bg-card);
+.lesson-header-panel {
+  margin-top: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(24, 24, 27, 0.7);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  flex-wrap: wrap;
 }
 
-.lesson-actions-left {
+.lesson-header-panel__top {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
 }
 
-/* Botão Marcar como Concluída */
-.btn-toggle-complete {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.625rem 1.25rem;
-  border-radius: var(--radius-lg);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.04);
+.lesson-header-panel__title-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.lesson-title {
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--color-text);
-  transition: all var(--transition-base);
+  line-height: 1.35;
+  margin: 0 0 0.625rem;
+  word-break: break-word;
 }
 
-.btn-toggle-complete:hover {
-  background: var(--color-accent-dim);
-  border-color: var(--color-accent-border);
-  color: var(--color-accent);
-}
-
-.btn-toggle-complete--completed {
-  background: rgba(16, 185, 129, 0.15) !important;
-  border-color: rgba(16, 185, 129, 0.4) !important;
-  color: #34d399 !important;
-  box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
-}
-
-.btn-toggle-complete--completed i {
-  color: #34d399;
-}
-
-.lesson-nav-buttons {
+.lesson-badges {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.btn-lesson-nav {
-  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.625rem 1.125rem;
-  border-radius: var(--radius-lg);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  text-decoration: none;
-  color: var(--color-text);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--color-border);
-  transition: all var(--transition-base);
-}
-
-.btn-lesson-nav:hover {
-  background: var(--color-accent);
-  color: var(--color-bg-primary);
-  border-color: var(--color-accent);
-  box-shadow: var(--shadow-glow);
-  transform: translateY(-1px);
-}
-
-.btn-lesson-nav--next {
-  background: var(--color-accent-dim);
-  border-color: var(--color-accent-border);
-  color: var(--color-accent);
-}
-
-.btn-lesson-nav--disabled {
-  opacity: 0.35;
-  pointer-events: none;
-  cursor: not-allowed;
-}
-
-/* ──────────────────────────────────────────────────────────────
-   DETALHES DA AULA (Título, Metas, Descrição)
-────────────────────────────────────────────────────────────────*/
-.lesson-details-card {
-  margin-top: 1.75rem;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2xl);
-  padding: 2rem;
-}
-
-.lesson-meta-badges {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
   flex-wrap: wrap;
-  margin-bottom: 1rem;
 }
 
 .lesson-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-full);
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .lesson-badge--section {
@@ -260,283 +182,203 @@
 .lesson-badge--duration {
   background: rgba(255, 255, 255, 0.05);
   color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .lesson-badge--type {
-  background: rgba(239, 68, 68, 0.12);
+  background: rgba(239, 68, 68, 0.1);
   color: #f87171;
-  border: 1px solid rgba(239, 68, 68, 0.25);
+  border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-.lesson-title-main {
-  font-size: 1.875rem;
-  font-weight: 800;
+/* ──────────────────────────────────────────────────────────────
+   Botões de Ação Rápidos (Alinhamento Horizontal)
+────────────────────────────────────────────────────────────────*/
+.lesson-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+}
+
+.btn-complete-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 38px;
+  padding: 0 0.875rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--color-text);
-  line-height: 1.25;
-  margin: 0 0 1.25rem;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
 }
 
-.lesson-description-text {
-  font-size: 1rem;
+.btn-complete-toggle:hover {
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent-border);
+  color: var(--color-accent);
+}
+
+.btn-complete-toggle--completed {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #34d399 !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.lesson-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.btn-nav-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  height: 38px;
+  padding: 0 0.75rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
   color: var(--color-text-muted);
-  line-height: 1.8;
-  margin: 0 0 1.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-nav-step:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+  border-color: var(--color-border-hover);
+}
+
+.btn-nav-step--primary {
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent-border);
+  color: var(--color-accent);
+}
+
+.btn-nav-step--primary:hover {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+  border-color: var(--color-accent);
+}
+
+.btn-nav-step--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* ──────────────────────────────────────────────────────────────
+   5. Painel de Conteúdo Unificado (Descrição & Materiais)
+────────────────────────────────────────────────────────────────*/
+.lesson-content-card {
+  margin-top: 1rem;
+  background: rgba(24, 24, 27, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem;
+}
+
+.lesson-content-section + .lesson-content-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lesson-section-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.75rem;
+}
+
+.lesson-section-subtitle i {
+  color: var(--color-accent);
+  font-size: 0.875rem;
+}
+
+.lesson-description {
+  font-size: 0.9rem;
+  color: #a1a1aa;
+  line-height: 1.7;
   white-space: pre-line;
 }
 
 /* ──────────────────────────────────────────────────────────────
-   MATERIAIS DIDÁTICOS / DOWNLOADS
+   Materiais Didáticos / Cards de Download
 ────────────────────────────────────────────────────────────────*/
-.lesson-materials-section {
-  margin-top: 2rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.lesson-materials-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--color-text);
-  margin-bottom: 1.25rem;
-}
-
-.lesson-materials-grid {
+.materials-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
 }
 
-.material-card {
+.material-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  text-decoration: none;
-  transition: all var(--transition-base);
-}
-
-.material-card:hover {
-  background: var(--color-accent-dim);
-  border-color: var(--color-accent-border);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
-}
-
-.material-card-left {
-  display: flex;
-  align-items: center;
-  gap: 0.875rem;
-  min-width: 0;
-}
-
-.material-card-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-lg);
-  background: rgba(6, 182, 212, 0.12);
-  color: var(--color-accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.125rem;
-  flex-shrink: 0;
-}
-
-.material-card-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.material-card-name {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.material-card-type {
-  font-size: 0.75rem;
-  color: var(--color-text-subtle);
-  text-transform: uppercase;
-}
-
-.material-card-action {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--color-text-muted);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.875rem;
-  transition: all var(--transition-base);
-  flex-shrink: 0;
-}
-
-.material-card:hover .material-card-action {
-  background: var(--color-accent);
-  color: var(--color-bg-primary);
-}
-
-/* ──────────────────────────────────────────────────────────────
-   PLAYLIST LATERAL (MÓDULOS E AULAS DA TRILHA)
-────────────────────────────────────────────────────────────────*/
-.lesson-playlist-card {
-  position: sticky;
-  top: 90px;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2xl);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 120px);
-}
-
-.lesson-playlist-header {
-  padding: 1.5rem 1.5rem 1.25rem;
-  border-bottom: 1px solid var(--color-border);
-  background: rgba(255, 255, 255, 0.01);
-}
-
-.lesson-playlist-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  letter-spacing: 0.08em;
-  margin-bottom: 0.5rem;
-}
-
-.lesson-playlist-title {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: var(--color-text);
-  margin: 0 0 0.875rem;
-}
-
-/* Barra de progresso da playlist */
-.lesson-playlist-progress {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.lesson-playlist-progress-bar {
-  flex: 1;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.lesson-playlist-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  border-radius: var(--radius-full);
-  transition: width 0.4s ease;
-}
-
-.lesson-playlist-pct {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  color: var(--color-accent);
-}
-
-/* Lista de Aulas / Módulos com scroll suave */
-.lesson-playlist-scroll {
-  overflow-y: auto;
-  padding: 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border) transparent;
-}
-
-.playlist-section-header {
-  padding: 0.625rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-subtle);
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: var(--radius-md);
-  margin-bottom: 0.375rem;
-}
-
-.playlist-items {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.375rem;
-}
-
-.playlist-item-link {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 0.875rem;
   border-radius: var(--radius-lg);
   text-decoration: none;
-  color: var(--color-text-muted);
-  border: 1px solid transparent;
   transition: all var(--transition-fast);
 }
 
-.playlist-item-link:hover {
+.material-item:hover {
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent-border);
+  transform: translateY(-1px);
+}
+
+.material-item__icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
-  color: var(--color-text);
-}
-
-.playlist-item-link--active {
-  background: var(--color-accent-dim) !important;
-  border-color: var(--color-accent-border) !important;
-  color: var(--color-accent) !important;
-}
-
-.playlist-item-link--active .playlist-item-title {
-  color: var(--color-accent) !important;
-  font-weight: 700 !important;
-}
-
-.playlist-item-status-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.6875rem;
-  color: var(--color-text-subtle);
+  font-size: 1rem;
   flex-shrink: 0;
 }
 
-.playlist-item-link--active .playlist-item-status-icon {
-  background: var(--color-accent);
-  color: var(--color-bg-primary);
+.material-item__icon--excel {
+  color: #34d399;
 }
 
-.playlist-item-content {
+.material-item__icon--pdf {
+  color: #f87171;
+}
+
+.material-item__icon--cad {
+  color: var(--color-accent);
+}
+
+.material-item__icon--zip {
+  color: #fbbf24;
+}
+
+.material-item__icon--generic {
+  color: var(--color-text-muted);
+}
+
+.material-item__details {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -544,8 +386,195 @@
   gap: 0.15rem;
 }
 
-.playlist-item-title {
-  font-size: 0.84rem;
+.material-item__name {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.material-item__type {
+  font-size: 0.6875rem;
+  color: var(--color-text-subtle);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.material-item__btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.material-item:hover .material-item__btn {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+}
+
+/* ──────────────────────────────────────────────────────────────
+   6. Sidebar da Playlist (Conteúdo do Curso)
+────────────────────────────────────────────────────────────────*/
+.playlist-card {
+  position: sticky;
+  top: 85px;
+  background: rgba(24, 24, 27, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 105px);
+}
+
+.playlist-card__header {
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.playlist-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.playlist-card__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  letter-spacing: 0.06em;
+}
+
+.playlist-card__pct {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.playlist-card__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.625rem;
+}
+
+.playlist-card__bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.playlist-card__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+/* Lista com Scroll Suave */
+.playlist-card__body {
+  overflow-y: auto;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.playlist-group__header {
+  padding: 0.45rem 0.625rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-subtle);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.25rem;
+}
+
+.playlist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.playlist-row {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.55rem 0.625rem;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.playlist-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--color-text);
+}
+
+.playlist-row--active {
+  background: var(--color-accent-dim) !important;
+  border-color: var(--color-accent-border) !important;
+}
+
+.playlist-row--active .playlist-row__title {
+  color: var(--color-accent) !important;
+  font-weight: 600;
+}
+
+.playlist-row__status {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  color: var(--color-text-subtle);
+  flex-shrink: 0;
+}
+
+.playlist-row--active .playlist-row__status {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+}
+
+.playlist-row__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.playlist-row__title {
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--color-text);
   white-space: nowrap;
@@ -553,66 +582,80 @@
   text-overflow: ellipsis;
 }
 
-.playlist-item-meta {
-  font-size: 0.72rem;
+.playlist-row__meta {
+  font-size: 0.7rem;
   color: var(--color-text-subtle);
 }
 
-.lesson-playlist-footer {
-  padding: 1rem 1.5rem;
+.playlist-group__empty {
+  font-size: 0.72rem;
+  color: var(--color-text-subtle);
+  padding: 0.25rem 0.625rem;
+}
+
+.playlist-card__footer {
+  padding: 0.875rem 1.25rem;
   border-top: 1px solid var(--color-border);
   background: rgba(255, 255, 255, 0.01);
 }
 
-.btn-back-trail-link {
+.btn-playlist-back {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
   width: 100%;
-  padding: 0.625rem;
-  font-size: var(--text-sm);
+  padding: 0.55rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   text-decoration: none;
   color: var(--color-text-muted);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  transition: all var(--transition-base);
+  transition: all var(--transition-fast);
 }
 
-.btn-back-trail-link:hover {
+.btn-playlist-back:hover {
   background: rgba(255, 255, 255, 0.04);
   color: var(--color-accent);
   border-color: var(--color-accent-border);
 }
 
 /* ──────────────────────────────────────────────────────────────
-   Responsividade
+   7. Responsividade
 ────────────────────────────────────────────────────────────────*/
 @media (max-width: 768px) {
   .lesson-page {
-    padding: 1.5rem 0 3.5rem;
+    padding: 1rem 0 3rem;
   }
-  .lesson-title-main {
-    font-size: 1.5rem;
+  .lesson-header-panel {
+    padding: 1rem;
   }
-  .lesson-details-card {
-    padding: 1.375rem;
-  }
-  .lesson-actions-bar {
+  .lesson-header-panel__top {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
   }
-  .lesson-actions-left, .lesson-nav-buttons {
+  .lesson-header-actions {
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
-  .btn-toggle-complete {
-    width: 100%;
-    justify-content: center;
-  }
-  .btn-lesson-nav {
+  .btn-complete-toggle {
     flex: 1;
     justify-content: center;
+  }
+  .lesson-nav-group {
+    flex: 1;
+    justify-content: flex-end;
+  }
+  .lesson-title {
+    font-size: 1.15rem;
+  }
+  .lesson-content-card {
+    padding: 1.125rem;
+  }
+  .materials-grid {
+    grid-template-columns: 1fr;
   }
 }

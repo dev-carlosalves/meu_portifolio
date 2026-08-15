@@ -50,7 +50,7 @@
     if (playlistFill) playlistFill.style.width = pct + '%';
 
     // Atualiza ícones da playlist
-    document.querySelectorAll('.playlist-item-status-icon').forEach(icon => {
+    document.querySelectorAll('.playlist-row__status, .playlist-item-status-icon').forEach(icon => {
       const id = icon.dataset.aulaId;
       if (completed.has(id)) {
         icon.innerHTML = '<i class="fa-solid fa-check" style="color:#34d399"></i>';
@@ -65,15 +65,16 @@
   function updateButtonState(isCompleted) {
     if (!btnComplete) return;
     if (isCompleted) {
-      btnComplete.classList.add('btn-toggle-complete--completed');
+      btnComplete.classList.add('btn-complete-toggle--completed', 'btn-toggle-complete--completed');
       if (btnCompleteText) btnCompleteText.textContent = 'Aula Concluída';
       if (btnCompleteIcon) btnCompleteIcon.className = 'fa-solid fa-circle-check';
     } else {
-      btnComplete.classList.remove('btn-toggle-complete--completed');
-      if (btnCompleteText) btnCompleteText.textContent = 'Marcar como Concluída';
+      btnComplete.classList.remove('btn-complete-toggle--completed', 'btn-toggle-complete--completed');
+      if (btnCompleteText) btnCompleteText.textContent = 'Concluir Aula';
       if (btnCompleteIcon) btnCompleteIcon.className = 'fa-regular fa-circle-check';
     }
   }
+
 
   function handleToggleComplete() {
     const completed = loadCompleted();
