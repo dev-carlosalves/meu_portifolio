@@ -526,7 +526,7 @@
 
 .hero__profile-video-icon {
   font-size: var(--text-base);
-  color: #ff0000;
+  color: var(--color-accent);
 }
 
 .hero__profile-video-title {
@@ -543,24 +543,81 @@
   line-height: 1.5;
 }
 
-.hero__profile-video-wrapper {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #000;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  position: relative;
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+/* Aviso de Vídeo em Breve */
+.hero__profile-video-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(6, 182, 212, 0.04) 100%
+  );
+  border: 1px dashed var(--color-border-hover);
+  border-radius: var(--radius-xl);
+  transition: border-color var(--transition-base), background var(--transition-base);
 }
 
-.hero__profile-video-iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+.hero__profile-card:hover .hero__profile-video-notice {
+  border-color: var(--color-accent-border);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(6, 182, 212, 0.08) 100%
+  );
+}
+
+.hero__profile-video-notice-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-accent-dim);
+  border: 1px solid var(--color-accent-border);
+  color: var(--color-accent);
+  font-size: 1.1rem;
+}
+
+.hero__profile-video-notice-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hero__profile-video-notice-header {
+  display: flex;
+  align-items: center;
+}
+
+.hero__profile-video-notice-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+}
+
+.hero__profile-video-notice-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent);
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+.hero__profile-video-notice-text {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0;
 }
 
 /* Override do scroll indicator para o hero split */
