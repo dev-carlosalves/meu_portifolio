@@ -140,29 +140,27 @@
       }
     }
 
-    if (!target) {
-      // Todas concluídas — rola para o início
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
+    if (target) {
+      const link = target.querySelector('.trail-lesson__link');
+      if (link && link.href) {
+        window.location.href = link.href;
+        return;
+      }
     }
 
-    // Abre a seção que contém a aula alvo
-    const section = target.closest('.trail-section');
-    if (section && !section.classList.contains('trail-section--open')) {
-      const btn = section.querySelector('.trail-section__header');
-      if (btn) toggleSection(btn);
+    if (!target && allAulas.length > 0) {
+      // Todas concluídas — vai para a primeira aula
+      const firstLink = allAulas[0].querySelector('.trail-lesson__link');
+      if (firstLink && firstLink.href) {
+        window.location.href = firstLink.href;
+        return;
+      }
     }
 
-    // Rola até a aula com destaque temporário
-    setTimeout(() => {
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      target.style.transition = 'background 0.2s';
-      target.style.background = 'rgba(14, 165, 233, 0.06)';
-      setTimeout(() => {
-        target.style.background = '';
-      }, 1500);
-    }, 350);
+    // Fallback — rola para o início
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
 
   // ── Inicialização ────────────────────────────────────────────────
   function init() {

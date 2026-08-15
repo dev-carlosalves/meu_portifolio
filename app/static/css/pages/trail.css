@@ -433,13 +433,26 @@
 }
 
 .trail-lesson:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.trail-lesson__link {
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.trail-lesson:hover .trail-lesson__title {
+  color: var(--color-accent);
 }
 
 .trail-lesson--done .trail-lesson__title {
   text-decoration: line-through;
-  color: var(--color-text-subtle);
+  color: var(--color-text-subtle) !important;
 }
+
 
 /* Checkbox customizado */
 .trail-lesson__check {

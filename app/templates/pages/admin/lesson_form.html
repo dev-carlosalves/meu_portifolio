@@ -234,7 +234,23 @@
             />
           </div>
         </div>
+
+        <!-- Descrição / Notas da Aula -->
+        <div class="admin-form-field">
+          <label for="descricao" class="admin-form-label">
+            Descrição / Notas da Aula
+            <span class="admin-form-label__hint">(detalhes, resumo, orientações para os alunos)</span>
+          </label>
+          <textarea
+            id="descricao"
+            name="descricao"
+            class="admin-form-textarea"
+            rows="4"
+            placeholder="Descreva os tópicos abordados nesta aula ou adicione instruções sobre o material de apoio..."
+          >{{ aula.descricao if aula and aula.descricao else '' }}</textarea>
+        </div>
       </div>
+
 
       <!-- ══════════════════════════════════════
            SEÇÃO 4 — ARQUIVOS PARA DOWNLOAD

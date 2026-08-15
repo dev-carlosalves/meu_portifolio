@@ -234,6 +234,7 @@ async def admin_lesson_create(
     form = await request.form()
     modulo_id = str(form.get("modulo_id", "")).strip()
     titulo = str(form.get("titulo", "")).strip()
+    descricao = str(form.get("descricao", "")).strip()
     tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
     duracao = str(form.get("duracao", "")).strip()
     url_youtube = str(form.get("url_youtube", "")).strip()
@@ -254,6 +255,7 @@ async def admin_lesson_create(
 
     aula: dict = {
         "titulo":              titulo,
+        "descricao":           descricao,
         "tipoConteudo":        tipo_conteudo,
         "duracao":             duracao,
         "urlYoutube":          url_youtube,
@@ -334,6 +336,7 @@ async def admin_lesson_update(
     form = await request.form()
     modulo_id = str(form.get("modulo_id", "")).strip()
     titulo = str(form.get("titulo", "")).strip()
+    descricao = str(form.get("descricao", "")).strip()
     tipo_conteudo = str(form.get("tipo_conteudo", "video")).strip()
     duracao = str(form.get("duracao", "")).strip()
     url_youtube = str(form.get("url_youtube", "")).strip()
@@ -360,12 +363,14 @@ async def admin_lesson_update(
     aula = {
         "id":                  aula_id,
         "titulo":              titulo,
+        "descricao":           descricao,
         "tipoConteudo":        tipo_conteudo,
         "duracao":             duracao,
         "urlYoutube":          url_youtube,
         "arquivosParaDownload": arquivos_existentes,
         "concluida":           existing_aula.get("concluida", False) if existing_aula else False,
     }
+
 
     # Adiciona novos arquivos de download (sem remover os existentes)
     if download_files:

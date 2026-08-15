@@ -466,3 +466,53 @@ def add_modulo_to_trail(trail_slug: str, titulo: str) -> Optional[dict]:
     _persist_trail(trail_slug, trail)
     return novo_modulo
 
+
+def get_lesson_context(trail_slug: str, aula_id: str) -> Optional[dict]:
+    """
+    Retorna todo o contexto necessário para renderizar a página de reprodução da aula:
+    - trail: dados completos da trilha
+    - modulo: módulo ao qual a aula pertence
+    - aula: dados da aula (com embedUrl e campos enriquecidos)
+    - prev_aula: aula anterior na trilha sequencial (ou None)
+    - next_aula: próxima aula na trilha sequencial (ou None)
+    - progress: progresso da trilha
+    """
+    trail = _load_trail(trail_slug)
+    if not trail:
+        return None
+
+    all_lessons = []
+    target_modulo = None
+    target_aula = None
+
+    for mod in trail.get("modulos", []):
+        for a in mod.get("aulas", []):
+            item = {"modulo": mod, "aula": a}
+            all_lessons.append(item)
+            if a.get("id") == aula_id:
+                target_modulo = mod
+                target_aula = a
+
+    if not target_aula:
+        return None
+
+    # Prepara URL de embed do YouTube (formato nocookie)
+    target_aula["embedUrl"] = youtube_to_embed(target_aula.get("urlYoutube", ""))
+
+    # Localiza aula anterior e próxima
+    idx = next(i for i, item in enumerate(all_lessons) if item["aula"]["id"] == aula_id)
+    prev_item = all_lessons[idx - 1] if idx > 0 else None
+    next_item = all_lessons[idx + 1] if idx < len(all_lessons) - 1 else None
+
+    return {
+        "trail": trail,
+        "modulo": target_modulo,
+        "aula": target_aula,
+        "prev_aula": prev_item["aula"] if prev_item else None,
+        "prev_modulo": prev_item["modulo"] if prev_item else None,
+        "next_aula": next_item["aula"] if next_item else None,
+        "next_modulo": next_item["modulo"] if next_item else None,
+        "progress": calculate_trail_progress(trail),
+    }
+
+

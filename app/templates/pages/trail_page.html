@@ -176,50 +176,53 @@
                     </span>
                   </label>
 
-                  <!-- Conteúdo da aula -->
-                  <div class="trail-lesson__content">
-                    <div class="trail-lesson__top">
-                      <!-- Ícone de tipo -->
-                      <span class="trail-lesson__type-icon" aria-hidden="true">
-                        {% if aula.tipoConteudo == 'video' %}
-                        <i class="fa-solid fa-circle-play"></i>
-                        {% elif aula.tipoConteudo == 'pdf' %}
-                        <i class="fa-solid fa-file-pdf"></i>
-                        {% else %}
-                        <i class="fa-solid fa-file-lines"></i>
+                  <!-- Conteúdo da aula (link para a página de reprodução) -->
+                  <a
+                    href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ aula.id }}{% endif %}"
+                    class="trail-lesson__link"
+                    title="Assistir {{ aula.titulo }}"
+                  >
+                    <div class="trail-lesson__content">
+                      <div class="trail-lesson__top">
+                        <!-- Ícone de tipo -->
+                        <span class="trail-lesson__type-icon" aria-hidden="true">
+                          {% if aula.tipoConteudo == 'video' %}
+                          <i class="fa-solid fa-circle-play"></i>
+                          {% elif aula.tipoConteudo == 'pdf' %}
+                          <i class="fa-solid fa-file-pdf"></i>
+                          {% else %}
+                          <i class="fa-solid fa-file-lines"></i>
+                          {% endif %}
+                        </span>
+                        <!-- Título da aula -->
+                        <span class="trail-lesson__title">{{ aula.titulo }}</span>
+                      </div>
+
+                      <!-- Meta: tipo + duração -->
+                      <div class="trail-lesson__meta">
+                        <span class="trail-lesson__tag trail-lesson__tag--{{ aula.tipoConteudo }}">
+                          {% if aula.tipoConteudo == 'video' %}Vídeo
+                          {% elif aula.tipoConteudo == 'pdf' %}PDF
+                          {% else %}Texto{% endif %}
+                        </span>
+                        {% if aula.duracao %}
+                        <span class="trail-lesson__meta-sep" aria-hidden="true">·</span>
+                        <span class="trail-lesson__duracao">{{ aula.duracao }}</span>
                         {% endif %}
-                      </span>
-                      <!-- Título da aula -->
-                      <span class="trail-lesson__title">{{ aula.titulo }}</span>
+                      </div>
                     </div>
+                  </a>
 
-                    <!-- Meta: tipo + duração -->
-                    <div class="trail-lesson__meta">
-                      <span class="trail-lesson__tag trail-lesson__tag--{{ aula.tipoConteudo }}">
-                        {% if aula.tipoConteudo == 'video' %}Vídeo
-                        {% elif aula.tipoConteudo == 'pdf' %}PDF
-                        {% else %}Texto{% endif %}
-                      </span>
-                      {% if aula.duracao %}
-                      <span class="trail-lesson__meta-sep" aria-hidden="true">·</span>
-                      <span class="trail-lesson__duracao">{{ aula.duracao }}</span>
-                      {% endif %}
-                    </div>
-                  </div>
-
-                  <!-- Ações (vídeo / downloads) -->
+                  <!-- Ações (play / downloads) -->
                   <div class="trail-lesson__actions">
-                    {% if aula.urlYoutube %}
                     <a
-                      href="{{ aula.urlYoutube }}"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ aula.id }}{% endif %}"
                       class="trail-lesson__btn trail-lesson__btn--watch"
-                      aria-label="Assistir {{ aula.titulo }} no YouTube"
+                      aria-label="Assistir {{ aula.titulo }}"
+                      title="Assistir aula"
                     >
-                      <i class="fa-brands fa-youtube" aria-hidden="true"></i>
+                      <i class="fa-solid fa-play" aria-hidden="true"></i>
                     </a>
-                    {% endif %}
                     {% if aula.arquivosParaDownload %}
                     {% for arquivo in aula.arquivosParaDownload %}
                     <a
@@ -227,6 +230,7 @@
                       download
                       class="trail-lesson__btn trail-lesson__btn--download"
                       aria-label="Baixar {{ arquivo.nome }}"
+                      title="Baixar material: {{ arquivo.nome }}"
                     >
                       <i class="fa-solid fa-download" aria-hidden="true"></i>
                     </a>
@@ -234,6 +238,7 @@
                     {% endif %}
                   </div>
                 </li>
+
                 {% endfor %}
               </ul>
               {% else %}

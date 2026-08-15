@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+
+{% block page_title %}{{ aula.titulo }} — {{ trail.nome }} | Carlos Daniel{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/static/css/pages/lesson.css" />
+{% endblock %}
+
+{% block content %}
+<div class="lesson-page">
+  <div class="container">
+
+    <!-- ── Breadcrumb ─────────────────────────────────────────── -->
+    <nav class="lesson-breadcrumb" aria-label="Navegação estrutural" data-aos="fade-right">
+      <a href="/projetos" class="lesson-breadcrumb__link">
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+        Trilhas
+      </a>
+      {% if breadcrumb_parent %}
+      <i class="fa-solid fa-chevron-right lesson-breadcrumb__sep" aria-hidden="true"></i>
+      <a href="{{ breadcrumb_parent.href }}" class="lesson-breadcrumb__link">
+        {{ breadcrumb_parent.label }}
+      </a>
+      {% endif %}
+      <i class="fa-solid fa-chevron-right lesson-breadcrumb__sep" aria-hidden="true"></i>
+      <a href="{{ trail_url }}" class="lesson-breadcrumb__link">
+        {{ trail.nome }}
+      </a>
+      <i class="fa-solid fa-chevron-right lesson-breadcrumb__sep" aria-hidden="true"></i>
+      <span class="lesson-breadcrumb__current">{{ aula.titulo }}</span>
+    </nav>
+
+    <!-- ── Layout Principal ────────────────────────────────────── -->
+    <div class="lesson-layout">
+
+      <!-- ═══════════════════════════════════════════════════════
+           COLUNA ESQUERDA — Player de Vídeo e Detalhes da Aula
+      ═══════════════════════════════════════════════════════ -->
+      <main class="lesson-main-content" data-aos="fade-up">
+
+        <!-- Player de Vídeo 16:9 -->
+        <div class="lesson-player-container">
+          {% if aula.embedUrl %}
+          <iframe
+            class="lesson-player-iframe"
+            src="{{ aula.embedUrl }}?rel=0&modestbranding=1"
+            title="{{ aula.titulo }}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+          {% else %}
+          <div class="lesson-player-fallback">
+            <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
+            <h3>Material Textual / Didático</h3>
+            <p>Esta aula contém materiais e instruções de apoio para consulta.</p>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Barra de Ações: Conclusão & Navegação -->
+        <div class="lesson-actions-bar">
+          <div class="lesson-actions-left">
+            <button
+              type="button"
+              class="btn-toggle-complete"
+              id="btn-complete-lesson"
+              aria-label="Alternar conclusão da aula"
+            >
+              <i class="fa-regular fa-circle-check" id="btn-complete-icon" aria-hidden="true"></i>
+              <span id="btn-complete-text">Marcar como Concluída</span>
+            </button>
+          </div>
+
+          <div class="lesson-nav-buttons">
+            {% if prev_aula %}
+            <a
+              href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ prev_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ prev_aula.id }}{% endif %}"
+              class="btn-lesson-nav"
+              title="{{ prev_aula.titulo }}"
+            >
+              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+              <span>Aula Anterior</span>
+            </a>
+            {% else %}
+            <span class="btn-lesson-nav btn-lesson-nav--disabled">
+              <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+              <span>Aula Anterior</span>
+            </span>
+            {% endif %}
+
+            {% if next_aula %}
+            <a
+              href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ next_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ next_aula.id }}{% endif %}"
+              class="btn-lesson-nav btn-lesson-nav--next"
+              title="{{ next_aula.titulo }}"
+            >
+              <span>Próxima Aula</span>
+              <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+            </a>
+            {% else %}
+            <a
+              href="{{ trail_url }}"
+              class="btn-lesson-nav btn-lesson-nav--next"
+            >
+              <span>Concluir Trilha</span>
+              <i class="fa-solid fa-flag-checkered" aria-hidden="true"></i>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Card de Informações e Descrição -->
+        <article class="lesson-details-card">
+          <!-- Metadados da Aula -->
+          <div class="lesson-meta-badges">
+            <span class="lesson-badge lesson-badge--section">
+              <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
+              Seção {{ modulo.numero }}: {{ modulo.titulo }}
+            </span>
+            {% if aula.duracao %}
+            <span class="lesson-badge lesson-badge--duration">
+              <i class="fa-regular fa-clock" aria-hidden="true"></i>
+              {{ aula.duracao }}
+            </span>
+            {% endif %}
+            <span class="lesson-badge lesson-badge--type">
+              {% if aula.tipoConteudo == 'video' %}
+              <i class="fa-brands fa-youtube" aria-hidden="true"></i> Vídeo
+              {% elif aula.tipoConteudo == 'pdf' %}
+              <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> PDF
+              {% else %}
+              <i class="fa-solid fa-file-lines" aria-hidden="true"></i> Texto
+              {% endif %}
+            </span>
+          </div>
+
+          <!-- Título Principal -->
+          <h1 class="lesson-title-main">{{ aula.titulo }}</h1>
+
+          <!-- Descrição -->
+          <div class="lesson-description-text">
+            {% if aula.descricao and aula.descricao.strip() %}
+            {{ aula.descricao }}
+            {% else %}
+            Nesta aula prática da trilha de <strong>{{ trail.nome }}</strong>, você acompanha o passo a passo demonstrado no vídeo para fixação dos conceitos técnicos e aplicação prática de engenharia.
+            {% endif %}
+          </div>
+
+          <!-- Material Didático / Arquivos para Download -->
+          {% if aula.arquivosParaDownload and aula.arquivosParaDownload | length > 0 %}
+          <section class="lesson-materials-section" aria-label="Materiais didáticos para download">
+            <h2 class="lesson-materials-title">
+              <i class="fa-solid fa-download" style="color:var(--color-accent)" aria-hidden="true"></i>
+              Material Didático & Arquivos de Apoio
+            </h2>
+            <div class="lesson-materials-grid">
+              {% for arq in aula.arquivosParaDownload %}
+              <a
+                href="{{ arq.url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                class="material-card"
+              >
+                <div class="material-card-left">
+                  <div class="material-card-icon" aria-hidden="true">
+                    {% if arq.tipo in ['xlsx', 'xls', 'xlsm'] %}
+                    <i class="fa-solid fa-file-excel"></i>
+                    {% elif arq.tipo == 'pdf' %}
+                    <i class="fa-solid fa-file-pdf"></i>
+                    {% elif arq.tipo in ['dwg', 'dxf'] %}
+                    <i class="fa-solid fa-drafting-compass"></i>
+                    {% elif arq.tipo in ['sldprt', 'sldasm', 'step', 'stp'] %}
+                    <i class="fa-solid fa-gears"></i>
+                    {% elif arq.tipo in ['zip', 'rar', '7z'] %}
+                    <i class="fa-solid fa-file-zipper"></i>
+                    {% else %}
+                    <i class="fa-solid fa-file"></i>
+                    {% endif %}
+                  </div>
+                  <div class="material-card-info">
+                    <span class="material-card-name" title="{{ arq.nome }}">{{ arq.nome }}</span>
+                    <span class="material-card-type">{{ arq.tipo | upper if arq.tipo else 'ARQUIVO' }}</span>
+                  </div>
+                </div>
+                <div class="material-card-action" aria-label="Baixar arquivo">
+                  <i class="fa-solid fa-arrow-down" aria-hidden="true"></i>
+                </div>
+              </a>
+              {% endfor %}
+            </div>
+          </section>
+          {% endif %}
+        </article>
+
+      </main>
+
+      <!-- ═══════════════════════════════════════════════════════
+           COLUNA DIREITA — Playlist da Trilha
+      ═══════════════════════════════════════════════════════ -->
+      <aside class="lesson-playlist-sidebar" data-aos="fade-left">
+        <div class="lesson-playlist-card">
+          <!-- Cabeçalho da Playlist -->
+          <div class="lesson-playlist-header">
+            <div class="lesson-playlist-tag">
+              <i class="fa-solid fa-list-ul" aria-hidden="true"></i>
+              CONTEÚDO DO CURSO
+            </div>
+            <h2 class="lesson-playlist-title">{{ trail.nome }}</h2>
+            <div class="lesson-playlist-progress">
+              <div class="lesson-playlist-progress-bar">
+                <div class="lesson-playlist-progress-fill" id="playlist-progress-fill" style="width: 0%"></div>
+              </div>
+              <span class="lesson-playlist-pct" id="playlist-pct-label">0%</span>
+            </div>
+          </div>
+
+          <!-- Lista de Módulos e Aulas -->
+          <div class="lesson-playlist-scroll">
+            {% for mod in trail.modulos %}
+            <div class="playlist-section-block">
+              <div class="playlist-section-header">
+                Seção {{ mod.numero }}: {{ mod.titulo }}
+              </div>
+              {% if mod.aulas %}
+              <ul class="playlist-items" role="list">
+                {% for a in mod.aulas %}
+                <li role="listitem">
+                  <a
+                    href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ a.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ a.id }}{% endif %}"
+                    class="playlist-item-link {% if a.id == aula.id %}playlist-item-link--active{% endif %}"
+                  >
+                    <div class="playlist-item-status-icon" data-aula-id="{{ a.id }}" aria-hidden="true">
+                      {% if a.id == aula.id %}
+                      <i class="fa-solid fa-play"></i>
+                      {% else %}
+                      <i class="fa-regular fa-circle"></i>
+                      {% endif %}
+                    </div>
+                    <div class="playlist-item-content">
+                      <span class="playlist-item-title" title="{{ a.titulo }}">{{ a.titulo }}</span>
+                      <span class="playlist-item-meta">
+                        {% if a.tipoConteudo == 'video' %}Vídeo{% elif a.tipoConteudo == 'pdf' %}PDF{% else %}Texto{% endif %}
+                        {% if a.duracao %} · {{ a.duracao }}{% endif %}
+                      </span>
+                    </div>
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p style="font-size:0.75rem; color:var(--color-text-subtle); padding:0.25rem 0.75rem; margin:0">
+                Em breve
+              </p>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Rodapé com Link Voltar -->
+          <div class="lesson-playlist-footer">
+            <a href="{{ trail_url }}" class="btn-back-trail-link">
+              <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+              <span>Voltar para a Visão Geral</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+    </div><!-- /.lesson-layout -->
+  </div><!-- /.container -->
+</div><!-- /.lesson-page -->
+
+<!-- Metadados para sincronização via JavaScript -->
+<script id="lesson-meta-data" type="application/json">
+{
+  "trailId": "{{ trail.id }}",
+  "aulaId": "{{ aula.id }}",
+  "totalAulas": {{ progress.total_aulas }}
+}
+</script>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="/static/js/lesson.js"></script>
+{% endblock %}
