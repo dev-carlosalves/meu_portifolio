@@ -34,7 +34,7 @@
     <div class="lesson-layout">
 
       <!-- ═══════════════════════════════════════════════════════
-           COLUNA PRINCIPAL (Vídeo, Controles, Descrição e Materiais)
+           COLUNA PRINCIPAL (Vídeo, Controles, Autor, Materiais e Descrição)
       ═══════════════════════════════════════════════════════ -->
       <main class="lesson-main">
 
@@ -53,16 +53,41 @@
           <div class="lesson-player-fallback">
             <i class="fa-solid fa-file-lines" aria-hidden="true"></i>
             <h3>Material Didático & Apoio</h3>
-            <p>Consulte as notas da aula e os arquivos para download abaixo.</p>
+            <p>Consulte os arquivos para download e as notas da aula abaixo.</p>
           </div>
           {% endif %}
         </div>
 
-        <!-- 2. Cabeçalho Integrado da Aula (Título, Badges e Ações) -->
+        <!-- 2. Cabeçalho Integrado da Aula (Título, Autor, Badges e Ações) -->
         <div class="lesson-header-panel">
           <div class="lesson-header-panel__top">
             <div class="lesson-header-panel__title-wrap">
+              <!-- Título da Aula -->
               <h1 class="lesson-title">{{ aula.titulo }}</h1>
+
+              <!-- Perfil do Autor com Foto Profissional -->
+              <div class="lesson-author-bar">
+                <div class="lesson-author-avatar-wrap">
+                  <img
+                    src="{{ student.photo }}"
+                    alt="{{ student.name }}"
+                    class="lesson-author-avatar"
+                    width="42"
+                    height="42"
+                    loading="lazy"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                  />
+                  <div class="lesson-author-avatar-fallback" style="display:none;" aria-hidden="true">
+                    <i class="fa-solid fa-user"></i>
+                  </div>
+                </div>
+                <div class="lesson-author-info">
+                  <span class="lesson-author-name">{{ student.name }}</span>
+                  <span class="lesson-author-role">Estudante de Engenharia Mecânica (IFCE)</span>
+                </div>
+              </div>
+
+              <!-- Metadados / Badges -->
               <div class="lesson-badges">
                 <span class="lesson-badge lesson-badge--section">
                   <i class="fa-solid fa-layer-group" aria-hidden="true"></i>
@@ -139,24 +164,9 @@
           </div>
         </div>
 
-        <!-- 3. Painel de Detalhes (Descrição & Material Didático) -->
+        <!-- 3. Painel de Conteúdo Unificado (Material Didático PRIMEIRO, depois Descrição) -->
         <article class="lesson-content-card">
-          <!-- Descrição -->
-          <div class="lesson-content-section">
-            <h2 class="lesson-section-subtitle">
-              <i class="fa-solid fa-align-left" aria-hidden="true"></i>
-              Sobre esta aula
-            </h2>
-            <div class="lesson-description">
-              {% if aula.descricao and aula.descricao.strip() %}
-              {{ aula.descricao }}
-              {% else %}
-              Nesta aula prática da trilha de <strong>{{ trail.nome }}</strong>, você acompanha o passo a passo demonstrado no vídeo para fixação dos conceitos técnicos e aplicação prática de engenharia.
-              {% endif %}
-            </div>
-          </div>
-
-          <!-- Material Didático & Arquivos de Apoio -->
+          <!-- Material Didático & Arquivos de Apoio (PRIMEIRO) -->
           {% if aula.arquivosParaDownload and aula.arquivosParaDownload | length > 0 %}
           <div class="lesson-content-section lesson-content-section--materials">
             <h2 class="lesson-section-subtitle">
@@ -200,6 +210,21 @@
             </div>
           </div>
           {% endif %}
+
+          <!-- Descrição / Sobre esta aula (DEPOIS) -->
+          <div class="lesson-content-section">
+            <h2 class="lesson-section-subtitle">
+              <i class="fa-solid fa-align-left" aria-hidden="true"></i>
+              Sobre esta aula
+            </h2>
+            <div class="lesson-description">
+              {% if aula.descricao and aula.descricao.strip() %}
+              {{ aula.descricao }}
+              {% else %}
+              Nesta aula prática da trilha de <strong>{{ trail.nome }}</strong>, você acompanha o passo a passo demonstrado no vídeo para fixação dos conceitos técnicos e aplicação prática de engenharia.
+              {% endif %}
+            </div>
+          </div>
         </article>
 
       </main>
