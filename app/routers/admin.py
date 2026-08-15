@@ -30,6 +30,7 @@ futuramente sem alterar os handlers abaixo.
 from __future__ import annotations
 
 import shutil
+import uuid
 from pathlib import Path
 from typing import List, Optional
 
@@ -119,14 +120,16 @@ async def _save_download_files(
     """
     saved = []
     for f in files:
-        if not f or not f.filename or not f.filename.strip():
+        if not f or not getattr(f, "filename", None) or not f.filename.strip():
             continue
-        filename = f.filename.strip()
+        filename = Path(f.filename.strip()).name
+        if not filename:
+            continue
         try:
             content = await f.read()
             if not content:
                 continue
-            content_type = f.content_type or "application/octet-stream"
+            content_type = getattr(f, "content_type", None) or "application/octet-stream"
             blob_path = f"trilhas/{trail_slug}/{aula_id}/{filename}"
             url = blob_put_file(blob_path, content, content_type=content_type)
             ext = Path(filename).suffix.lower().lstrip(".")
@@ -135,9 +138,11 @@ async def _save_download_files(
                 "url":  url,
                 "tipo": ext,
             })
-        except Exception:
-            pass
+            print(f"[OK] Arquivo {filename} salvo no Vercel Blob: {url}")
+        except Exception as exc:
+            print(f"[ERRO] Falha ao fazer upload de {filename} no Blob: {exc}")
     return saved
+
 
 
 
@@ -253,27 +258,27 @@ async def admin_lesson_create(
         else:
             return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
+    aula_id = str(uuid.uuid4())
+
+    # Salva arquivos de download primeiro com o ID da aula
+    arquivos = []
+    if download_files:
+        arquivos = await _save_download_files(aula_id, slug, download_files)
+
     aula: dict = {
+        "id":                  aula_id,
         "titulo":              titulo,
         "descricao":           descricao,
         "tipoConteudo":        tipo_conteudo,
         "duracao":             duracao,
         "urlYoutube":          url_youtube,
-        "arquivosParaDownload": [],
+        "arquivosParaDownload": arquivos,
         "concluida":           False,
     }
 
-    # Salva primeiro (gera o ID)
     saved = save_aula_to_trail(slug, modulo_id, aula)
     if not saved:
         return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
-
-    # Salva arquivos de download e atualiza a aula
-    if download_files:
-        arquivos = await _save_download_files(saved["id"], slug, download_files)
-        if arquivos:
-            saved["arquivosParaDownload"] = arquivos
-            save_aula_to_trail(slug, modulo_id, saved)
 
     return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
@@ -360,6 +365,11 @@ async def admin_lesson_update(
 
     arquivos_existentes = existing_aula.get("arquivosParaDownload", []) if existing_aula else []
 
+    # Adiciona novos arquivos de download (sem remover os existentes)
+    novos = []
+    if download_files:
+        novos = await _save_download_files(aula_id, slug, download_files)
+
     aula = {
         "id":                  aula_id,
         "titulo":              titulo,
@@ -367,19 +377,13 @@ async def admin_lesson_update(
         "tipoConteudo":        tipo_conteudo,
         "duracao":             duracao,
         "urlYoutube":          url_youtube,
-        "arquivosParaDownload": arquivos_existentes,
+        "arquivosParaDownload": arquivos_existentes + novos,
         "concluida":           existing_aula.get("concluida", False) if existing_aula else False,
     }
 
-
-    # Adiciona novos arquivos de download (sem remover os existentes)
-    if download_files:
-        novos = await _save_download_files(aula_id, slug, download_files)
-        if novos:
-            aula["arquivosParaDownload"] = arquivos_existentes + novos
-
     save_aula_to_trail(slug, modulo_id, aula)
     return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
+
 
 
 
