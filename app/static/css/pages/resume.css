@@ -34,7 +34,7 @@
 .resume-main {
   display: flex;
   flex-direction: column;
-  gap: var(--space-10);
+  gap: var(--space-14);
 }
 
 /* Card de Dados Pessoais */
@@ -94,7 +94,14 @@ a.personal-data-item__value:hover {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.skill-bar-wrapper:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .skill-bar-container {

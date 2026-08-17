@@ -48,7 +48,7 @@
 <!-- ═══════════════════════════════════════════════════════════════
      CORPO DO CURRÍCULO (Layout Dashboard / Sidebar + Main)
 ═══════════════════════════════════════════════════════════════ -->
-<section class="pb-24" aria-label="Detalhes do Currículo">
+<section class="pb-20" aria-label="Detalhes do Currículo">
   <div class="container">
     
     <div class="resume-layout">
@@ -309,7 +309,7 @@
             Competências Técnicas
           </h3>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             
             <!-- Linguagens & Frameworks -->
             <div class="card p-6">
@@ -317,7 +317,7 @@
                 Desenvolvimento Web & Software
               </h4>
               
-              <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-6">
                 
                 <!-- Python -->
                 <div class="skill-bar-wrapper">
@@ -408,7 +408,7 @@
                 Engenharia CAD & Ferramentas
               </h4>
               
-              <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-6">
                 
                 <!-- AutoCAD -->
                 <div class="skill-bar-wrapper">
@@ -503,7 +503,7 @@
             Projetos em Destaque
           </h3>
           
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             <!-- Projeto 1 -->
             <article class="card p-5 flex flex-col justify-between" aria-label="Pesquisar+">
@@ -548,7 +548,7 @@
             Cursos e Certificações Complementares
           </h3>
           
-          <div class="flex flex-col gap-3">
+          <div class="flex flex-col gap-4">
             
             <!-- Certificado 1 -->
             <div class="certificate-card">
@@ -699,59 +699,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SEÇÃO DE DOWNLOAD FINAL
-═══════════════════════════════════════════════════════════════ -->
-<section class="section section--alt" aria-label="Ação de Download do Currículo">
-  <div class="container">
-    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
-      <i class="fa-regular fa-file-pdf text-accent text-3xl mb-4 block" aria-hidden="true"></i>
-      <h2 class="text-xl font-bold font-heading text-text-base mb-3">Deseja guardar uma cópia?</h2>
-      <p class="text-sm text-text-muted leading-relaxed mb-8 max-w-md mx-auto">
-        Você pode efetuar o download da versão resumida tradicional em formato PDF para seu controle, impressão ou envio direto.
-      </p>
-      
-      <div class="flex justify-center">
-        <a 
-          href="{{ student.cv }}" 
-          class="btn-primary" 
-          download 
-          id="resume-download-footer"
-          aria-label="Baixar cópia oficial do currículo em PDF"
-        >
-          <i class="fa-solid fa-download" aria-hidden="true"></i>
-          Download do Currículo em PDF
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     CHAMADA FINAL
-═══════════════════════════════════════════════════════════════ -->
-<section class="py-24" aria-label="Seguir para a próxima seção">
-  <div class="container">
-    <div class="card p-12 text-center max-w-3xl mx-auto" data-aos="fade-up">
-      <span class="text-accent text-xs font-semibold uppercase tracking-wider mb-3 block">Contato</span>
-      <h2 class="text-2xl font-bold font-heading text-text-base mb-4">Vamos conversar?</h2>
-      <p class="text-sm text-text-muted leading-relaxed mb-8 max-w-md mx-auto">
-        Se você se interessou pela minha evolução técnica e gostaria de bater um papo sobre projetos ou oportunidades, 
-        sinta-se à vontade para me contatar.
-      </p>
-      
-      <div class="flex justify-center gap-4 flex-wrap">
-        <a href="/projetos" class="btn-outline">
-          <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
-          Conhecer Projetos
-        </a>
-        <a href="/contato" class="btn-primary">
-          <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-          Entrar em Contato
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
 {% endblock %}
