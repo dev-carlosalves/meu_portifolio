@@ -27,13 +27,13 @@
     {
       "id": "modulo-02",
       "numero": 2,
-      "titulo": "Desenhos com Principais Comandos e Vistas",
+      "titulo": "Desenhos com Principais Comandos",
       "aulas": []
     },
     {
       "id": "modulo-03",
       "numero": 3,
-      "titulo": "Vistas Isométricas",
+      "titulo": "Vistas e Vistas Isométricas",
       "aulas": []
     }
   ]

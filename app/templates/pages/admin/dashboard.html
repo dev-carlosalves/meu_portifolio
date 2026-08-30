@@ -106,7 +106,7 @@
               Gerenciar
             </a>
             <a
-              href="{% if trail.slug == 'excel' %}/projetos/excel{% else %}/projetos/cad/{{ trail.slug }}{% endif %}"
+              href="{% if trail.slug in ['excel', 'overleaf'] %}/projetos/{{ trail.slug }}{% else %}/projetos/cad/{{ trail.slug }}{% endif %}"
               class="btn-outline"
               target="_blank"
               rel="noopener"

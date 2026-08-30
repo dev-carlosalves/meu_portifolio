@@ -81,7 +81,7 @@
               <div class="lesson-nav-group">
                 {% if prev_aula %}
                 <a
-                  href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ prev_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ prev_aula.id }}{% endif %}"
+                  href="{% if trail.slug in ['excel', 'overleaf'] %}/projetos/{{ trail.slug }}/aula/{{ prev_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ prev_aula.id }}{% endif %}"
                   class="btn-nav-step"
                   title="Aula Anterior: {{ prev_aula.titulo }}"
                 >
@@ -97,7 +97,7 @@
 
                 {% if next_aula %}
                 <a
-                  href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ next_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ next_aula.id }}{% endif %}"
+                  href="{% if trail.slug in ['excel', 'overleaf'] %}/projetos/{{ trail.slug }}/aula/{{ next_aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ next_aula.id }}{% endif %}"
                   class="btn-nav-step btn-nav-step--primary"
                   title="Próxima Aula: {{ next_aula.titulo }}"
                 >
@@ -150,6 +150,8 @@
                   <i class="fa-solid fa-gears material-item__icon--cad"></i>
                   {% elif arq.tipo in ['zip', 'rar', '7z'] %}
                   <i class="fa-solid fa-file-zipper material-item__icon--zip"></i>
+                  {% elif arq.tipo in ['tex', 'bib', 'cls', 'sty'] %}
+                  <i class="fa-solid fa-file-code material-item__icon--excel"></i>
                   {% else %}
                   <i class="fa-solid fa-file material-item__icon--generic"></i>
                   {% endif %}
@@ -217,7 +219,7 @@
                 {% for a in mod.aulas %}
                 <li class="playlist-list__item" role="listitem">
                   <a
-                    href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ a.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ a.id }}{% endif %}"
+                    href="{% if trail.slug in ['excel', 'overleaf'] %}/projetos/{{ trail.slug }}/aula/{{ a.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ a.id }}{% endif %}"
                     class="playlist-row {% if a.id == aula.id %}playlist-row--active{% endif %}"
                   >
                     <div class="playlist-row__status" data-aula-id="{{ a.id }}" aria-hidden="true">

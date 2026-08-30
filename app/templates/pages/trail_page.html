@@ -178,7 +178,7 @@
 
                   <!-- Conteúdo da aula (link para a página de reprodução) -->
                   <a
-                    href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ aula.id }}{% endif %}"
+                    href="{% if trail.slug in ['excel', 'overleaf'] %}/projetos/{{ trail.slug }}/aula/{{ aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ aula.id }}{% endif %}"
                     class="trail-lesson__link"
                     title="Assistir {{ aula.titulo }}"
                   >
@@ -216,7 +216,7 @@
                   <!-- Ações (play / downloads) -->
                   <div class="trail-lesson__actions">
                     <a
-                      href="{% if trail.slug == 'excel' %}/projetos/excel/aula/{{ aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ aula.id }}{% endif %}"
+                      href="{% if trail.slug in ['excel', 'overleaf'] %}/projetos/{{ trail.slug }}/aula/{{ aula.id }}{% else %}/projetos/cad/{{ trail.slug }}/aula/{{ aula.id }}{% endif %}"
                       class="trail-lesson__btn trail-lesson__btn--watch"
                       aria-label="Assistir {{ aula.titulo }}"
                       title="Assistir aula"

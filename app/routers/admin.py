@@ -67,6 +67,7 @@ TRAIL_LABELS = {
     "excel":      "Excel",
     "autocad":    "AutoCAD",
     "solidworks": "SolidWorks",
+    "overleaf":   "Overleaf (LaTeX)",
 }
 
 

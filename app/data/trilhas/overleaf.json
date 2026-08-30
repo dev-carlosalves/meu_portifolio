@@ -1,0 +1,17 @@
+{
+  "id": "overleaf",
+  "slug": "overleaf",
+  "nome": "Overleaf (LaTeX)",
+  "descricao": "Estudos e práticas em Overleaf e LaTeX para redação de artigos acadêmicos, relatórios técnicos de engenharia e formatação de documentos científicos com alta precisão e padronização ABNT.",
+  "categoria": "Documentação Técnica",
+  "icone": "fa-file-code",
+  "cor": "verde",
+  "modulos": [
+    {
+      "id": "modulo-01",
+      "numero": 1,
+      "titulo": "Introdução",
+      "aulas": []
+    }
+  ]
+}

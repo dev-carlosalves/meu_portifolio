@@ -32,7 +32,7 @@ from app.blob_storage import blob_put  # noqa: E402
 
 # ------------------------------------------------------------------------------
 TRILHAS_DIR = Path(__file__).resolve().parent / "app" / "data" / "trilhas"
-SLUGS = ("autocad", "solidworks", "excel")
+SLUGS = ("autocad", "solidworks", "excel", "overleaf")
 # ------------------------------------------------------------------------------
 
 

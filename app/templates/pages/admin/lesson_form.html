@@ -121,6 +121,7 @@
               <option value="excel"      {{ 'selected' if slug == 'excel' }}>Excel</option>
               <option value="autocad"    {{ 'selected' if slug == 'autocad' }}>AutoCAD</option>
               <option value="solidworks" {{ 'selected' if slug == 'solidworks' }}>SolidWorks</option>
+              <option value="overleaf"   {{ 'selected' if slug == 'overleaf' }}>Overleaf (LaTeX)</option>
             </select>
             <div class="admin-form-hint">
               <i class="fa-solid fa-circle-info" style="color:var(--color-accent)"></i>
@@ -374,9 +375,9 @@
   // ── Mapeamento de módulos por trilha (injetado pelo servidor) ────
   const TRAIL_MODULES = {
     excel: [
-      {% for m in trail.modulos if slug == 'excel' %}
+      {% if slug == 'excel' %}{% for m in trail.modulos %}
       { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
-      {% endfor %}
+      {% endfor %}{% endif %}
     ],
     autocad: [
       {% if slug == 'autocad' %}{% for m in trail.modulos %}
@@ -385,6 +386,11 @@
     ],
     solidworks: [
       {% if slug == 'solidworks' %}{% for m in trail.modulos %}
+      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
+      {% endfor %}{% endif %}
+    ],
+    overleaf: [
+      {% if slug == 'overleaf' %}{% for m in trail.modulos %}
       { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
       {% endfor %}{% endif %}
     ],
@@ -502,6 +508,7 @@
     if (['xlsx', 'xls', 'xlsm'].includes(ext)) return { icon: 'fa-file-excel', color: '#34d399' };
     if (['pdf'].includes(ext)) return { icon: 'fa-file-pdf', color: '#f87171' };
     if (['dwg', 'dxf', 'sldprt', 'sldasm', 'step', 'stp'].includes(ext)) return { icon: 'fa-drafting-compass', color: 'var(--color-accent)' };
+    if (['tex', 'bib', 'cls', 'sty'].includes(ext)) return { icon: 'fa-file-code', color: '#10b981' };
     if (['zip', 'rar', '7z'].includes(ext)) return { icon: 'fa-file-zipper', color: '#fbbf24' };
     if (['docx', 'doc', 'txt'].includes(ext)) return { icon: 'fa-file-lines', color: '#818cf8' };
     return { icon: 'fa-file', color: 'var(--color-text-muted)' };

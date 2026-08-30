@@ -208,7 +208,7 @@
 
     <!-- Link de volta -->
     <div class="admin-footer-nav" data-aos="fade-up">
-      <a href="{% if slug == 'excel' %}/projetos/excel{% else %}/projetos/cad/{{ slug }}{% endif %}" class="btn-outline" target="_blank" rel="noopener">
+      <a href="{% if slug in ['excel', 'overleaf'] %}/projetos/{{ slug }}{% else %}/projetos/cad/{{ slug }}{% endif %}" class="btn-outline" target="_blank" rel="noopener">
         <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
         Ver Trilha no Site
       </a>
