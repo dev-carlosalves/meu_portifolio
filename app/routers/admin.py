@@ -65,6 +65,7 @@ TRAIL_DOC_DIR = STATIC_DIR / "documents" / "trilhas"
 
 TRAIL_LABELS = {
     "excel":      "Excel",
+    "powerbi":    "Power BI",
     "autocad":    "AutoCAD",
     "solidworks": "SolidWorks",
     "overleaf":   "Overleaf (LaTeX)",

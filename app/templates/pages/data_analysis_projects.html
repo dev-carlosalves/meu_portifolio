@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block page_title %}Projetos de Análise de Dados | Carlos Daniel{% endblock %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="/static/css/pages/projects_hub.css" />
+{% endblock %}
+
+{% block content %}
+<section class="hub-section section-padding" aria-label="Seleção de Ferramentas de Análise de Dados">
+
+  <div class="hub-bg" aria-hidden="true"></div>
+  <div class="hub-orb hub-orb--1" aria-hidden="true"></div>
+  <div class="hub-orb hub-orb--2" aria-hidden="true"></div>
+
+  <div class="container">
+
+    <!-- ── Breadcrumb ────────────────────────────────────────── -->
+    <nav class="cad-breadcrumb" aria-label="Navegação estrutural" data-aos="fade-right" style="margin-bottom: 2.5rem;">
+      <a href="/projetos" class="cad-breadcrumb__link">
+        <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
+        Projetos
+      </a>
+      <i class="fa-solid fa-chevron-right cad-breadcrumb__sep" aria-hidden="true"></i>
+      <span class="cad-breadcrumb__current">Projetos de Análise de Dados</span>
+    </nav>
+
+    <!-- ── Cabeçalho ─────────────────────────────────────────── -->
+    <div class="hub-header" data-aos="fade-down">
+      <div class="hub-pill">
+        <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+        <span>ANÁLISE DE DADOS</span>
+      </div>
+      <h1 class="hub-title">
+        Escolha a ferramenta de <span class="gradient-text">Análise de Dados</span>
+      </h1>
+      <p class="hub-subtitle">
+        Selecione a trilha do software que deseja explorar.
+        Cada trilha possui módulos organizados para apoiar meu processo de estudo, modelagem de dados e criação de dashboards.
+      </p>
+    </div>
+
+    <!-- ── Cards de ferramentas ───────────────────────────────── -->
+    <div class="hub-cards" role="list">
+
+      <!-- Card: Excel -->
+      <article
+        class="hub-card hub-card--excel"
+        role="listitem"
+        data-aos="fade-up"
+        data-aos-delay="0"
+        aria-label="Trilha: Excel"
+      >
+        <div class="hub-card__glow" aria-hidden="true"></div>
+
+        <div class="hub-card__icon-wrapper" aria-hidden="true">
+          <div class="hub-card__icon">
+            <i class="fa-solid fa-table"></i>
+          </div>
+        </div>
+
+        <div class="hub-card__content">
+          <div class="hub-card__badges">
+            <span class="hub-badge hub-badge--excel">Excel</span>
+            <span class="hub-badge hub-badge--excel">Power Query</span>
+          </div>
+          <h2 class="hub-card__title">Excel</h2>
+          <p class="hub-card__desc">
+            Dashboards interativos, relatórios e análises de dados
+            desenvolvidos em <strong>Microsoft Excel</strong> para praticar fórmulas avançadas,
+            tabelas dinâmicas e automações.
+          </p>
+          <ul class="hub-card__features" aria-label="Módulos">
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              4 módulos de conteúdo
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Fórmulas e Automações
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Tabelas Dinâmicas e Gráficos
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Planilhas e Dashboards para Download
+            </li>
+          </ul>
+        </div>
+
+        <div class="hub-card__footer">
+          <a
+            href="/projetos/excel"
+            class="hub-card__cta"
+            id="btn-acessar-excel"
+            aria-label="Acessar trilha de Excel"
+          >
+            <span>Acessar</span>
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+
+      <!-- Card: Power BI -->
+      <article
+        class="hub-card hub-card--powerbi"
+        role="listitem"
+        data-aos="fade-up"
+        data-aos-delay="120"
+        aria-label="Trilha: Power BI"
+      >
+        <div class="hub-card__glow" aria-hidden="true"></div>
+
+        <div class="hub-card__icon-wrapper" aria-hidden="true">
+          <div class="hub-card__icon">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+        </div>
+
+        <div class="hub-card__content">
+          <div class="hub-card__badges">
+            <span class="hub-badge hub-badge--powerbi">Power BI</span>
+            <span class="hub-badge hub-badge--powerbi">DAX</span>
+            <span class="hub-badge hub-badge--powerbi">Power Query</span>
+          </div>
+          <h2 class="hub-card__title">Power BI</h2>
+          <p class="hub-card__desc">
+            Relatórios analíticos, modelagem de dados dimensional e dashboards interativos no
+            <strong>Microsoft Power BI</strong> com medidas DAX, Power Query (ETL) e visualização de indicadores.
+          </p>
+          <ul class="hub-card__features" aria-label="Módulos">
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              4 módulos de conteúdo
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Modelagem de Dados e Power Query (ETL)
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Métricas e Fórmulas DAX
+            </li>
+            <li>
+              <i class="fa-solid fa-check" aria-hidden="true"></i>
+              Relatórios e Dashboards Interativos
+            </li>
+          </ul>
+        </div>
+
+        <div class="hub-card__footer">
+          <a
+            href="/projetos/powerbi"
+            class="hub-card__cta"
+            id="btn-acessar-powerbi"
+            aria-label="Acessar trilha de Power BI"
+          >
+            <span>Acessar</span>
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+          </a>
+        </div>
+      </article>
+
+    </div><!-- /.hub-cards -->
+
+  </div>
+</section>
+{% endblock %}

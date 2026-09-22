@@ -374,6 +374,40 @@
   box-shadow: var(--shadow-glow);
 }
 
+/* Power BI */
+.hub-card--powerbi .hub-card__icon {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(245, 158, 11, 0.03) 100%);
+  color: #fbbf24;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.18);
+}
+
+.hub-card--powerbi:hover {
+  border-color: rgba(245, 158, 11, 0.38);
+  box-shadow: var(--shadow-card-hover), 0 0 25px rgba(245, 158, 11, 0.18);
+}
+
+.hub-card--powerbi .hub-card__glow {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, transparent 65%);
+}
+
+/* Projetos de Análise de Dados (Card principal do Hub) */
+.hub-card--data .hub-card__icon {
+  border-color: rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(245, 158, 11, 0.15) 100%);
+  color: #fbbf24;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.18);
+}
+
+.hub-card--data:hover {
+  border-color: rgba(245, 158, 11, 0.38);
+  box-shadow: var(--shadow-card-hover), 0 0 25px rgba(245, 158, 11, 0.18);
+}
+
+.hub-card--data .hub-card__glow {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14) 0%, transparent 65%);
+}
+
 /* ── Conteúdo do Card ─────────────────────────────────────────── */
 .hub-card__content {
   position: relative;
@@ -419,6 +453,12 @@
   background: rgba(249, 115, 22, 0.1);
   color: #fb923c;
   border-color: rgba(249, 115, 22, 0.25);
+}
+
+.hub-badge--powerbi {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.3);
 }
 
 .hub-card__title {
@@ -471,6 +511,11 @@
 
 .hub-card--autocad .hub-card__features li i {
   color: #fb923c;
+}
+
+.hub-card--powerbi .hub-card__features li i,
+.hub-card--data .hub-card__features li i {
+  color: #fbbf24;
 }
 
 /* ── Footer / CTA (Botão Acessar >) ───────────────────────────── */
@@ -543,4 +588,20 @@
   color: #09090b;
   border-color: #f97316;
   box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+}
+
+/* Botão Acessar temático para Power BI e Análise de Dados */
+.hub-card--powerbi .hub-card__cta,
+.hub-card--data .hub-card__cta {
+  background: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.hub-card--powerbi .hub-card__cta:hover,
+.hub-card--data .hub-card__cta:hover {
+  background: #f59e0b;
+  color: #09090b;
+  border-color: #f59e0b;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
 }

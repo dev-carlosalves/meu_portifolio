@@ -34,7 +34,7 @@ async def trail_excel(request: Request) -> HTMLResponse:
             "request": request,
             "trail": trail,
             "progress": progress,
-            "breadcrumb_parent": {"label": "Projetos", "href": "/projetos"},
+            "breadcrumb_parent": {"label": "Análise de Dados", "href": "/projetos/analise-dados"},
             **context,
         },
     )
@@ -71,7 +71,7 @@ async def excel_lesson_watch(request: Request, aula_id: str) -> HTMLResponse:
             "next_modulo": data["next_modulo"],
             "progress": data["progress"],
             "trail_url": "/projetos/excel",
-            "breadcrumb_parent": {"label": "Projetos", "href": "/projetos"},
+            "breadcrumb_parent": {"label": "Análise de Dados", "href": "/projetos/analise-dados"},
             **context,
         },
     )

@@ -819,6 +819,7 @@
 .admin-trail-card--verde   .admin-trail-card__icon { background: rgba(34, 197, 94, 0.12);  color: #22c55e; }
 .admin-trail-card--laranja .admin-trail-card__icon { background: rgba(249, 115, 22, 0.12); color: #f97316; }
 .admin-trail-card--azul    .admin-trail-card__icon { background: rgba(99, 102, 241, 0.12); color: #6366f1; }
+.admin-trail-card--amarelo .admin-trail-card__icon { background: rgba(234, 179, 8, 0.12);   color: #eab308; }
 
 .admin-trail-card__body {
   flex: 1;
@@ -1060,6 +1061,7 @@
 .admin-trail-icon--verde   { color: #22c55e; }
 .admin-trail-icon--laranja { color: #f97316; }
 .admin-trail-icon--azul    { color: #6366f1; }
+.admin-trail-icon--amarelo { color: #eab308; }
 
 /* ─────────────────────────────────────────────────────────────────
    NOVA SEÇÃO (trail manager)

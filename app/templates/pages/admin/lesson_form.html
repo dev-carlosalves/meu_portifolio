@@ -119,6 +119,7 @@
               required
             >
               <option value="excel"      {{ 'selected' if slug == 'excel' }}>Excel</option>
+              <option value="powerbi"    {{ 'selected' if slug == 'powerbi' }}>Power BI</option>
               <option value="autocad"    {{ 'selected' if slug == 'autocad' }}>AutoCAD</option>
               <option value="solidworks" {{ 'selected' if slug == 'solidworks' }}>SolidWorks</option>
               <option value="overleaf"   {{ 'selected' if slug == 'overleaf' }}>Overleaf (LaTeX)</option>
@@ -376,6 +377,11 @@
   const TRAIL_MODULES = {
     excel: [
       {% if slug == 'excel' %}{% for m in trail.modulos %}
+      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
+      {% endfor %}{% endif %}
+    ],
+    powerbi: [
+      {% if slug == 'powerbi' %}{% for m in trail.modulos %}
       { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
       {% endfor %}{% endif %}
     ],

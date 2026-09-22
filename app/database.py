@@ -305,7 +305,7 @@ def calculate_trail_progress(trail: dict) -> dict:
 # API pública — CRUD de Aulas nas Trilhas de Aprendizado
 # ──────────────────────────────────────────────────────────────────────────────
 
-VALID_TRAILS = ("excel", "autocad", "solidworks", "overleaf")
+VALID_TRAILS = ("excel", "powerbi", "autocad", "solidworks", "overleaf")
 
 
 def _load_trail(slug: str) -> Optional[dict]:

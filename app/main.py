@@ -23,6 +23,7 @@ from app.routers import (
     admin,
     cad_projects,
     contact,
+    data_analysis_projects,
     excel_projects,
     home,
     journey,
@@ -68,6 +69,7 @@ app.include_router(home.router)
 app.include_router(journey.router)
 app.include_router(projects_hub.router)
 app.include_router(cad_projects.router)
+app.include_router(data_analysis_projects.router)
 app.include_router(excel_projects.router)
 app.include_router(overleaf_projects.router)
 app.include_router(technologies.router)
