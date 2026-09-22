@@ -373,35 +373,7 @@
 
 {% block scripts_extra %}
 <script>
-  // ── Mapeamento de módulos por trilha (injetado pelo servidor) ────
-  const TRAIL_MODULES = {
-    excel: [
-      {% if slug == 'excel' %}{% for m in trail.modulos %}
-      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
-      {% endfor %}{% endif %}
-    ],
-    powerbi: [
-      {% if slug == 'powerbi' %}{% for m in trail.modulos %}
-      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
-      {% endfor %}{% endif %}
-    ],
-    autocad: [
-      {% if slug == 'autocad' %}{% for m in trail.modulos %}
-      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
-      {% endfor %}{% endif %}
-    ],
-    solidworks: [
-      {% if slug == 'solidworks' %}{% for m in trail.modulos %}
-      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
-      {% endfor %}{% endif %}
-    ],
-    overleaf: [
-      {% if slug == 'overleaf' %}{% for m in trail.modulos %}
-      { id: "{{ m.id }}", label: "{{ m.numero }}. {{ m.titulo }}" },
-      {% endfor %}{% endif %}
-    ],
-  };
-
+  // ── Ao trocar área: navega para a nova rota (módulos carregados pelo servidor) ──
   async function onAreaChange(slug) {
     window.location.href = `/admin-panel/trilhas/${slug}/nova-aula`;
   }

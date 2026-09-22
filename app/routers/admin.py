@@ -241,6 +241,27 @@ async def admin_dashboard(request: Request) -> HTMLResponse:
 # API — YouTube oEmbed proxy
 # ──────────────────────────────────────────────────────────────────────────────
 
+# ──────────────────────────────────────────────────────────────────────────────
+# API — Módulos de uma trilha (leve, sem aulas)
+# ──────────────────────────────────────────────────────────────────────────────
+
+@router.get("/api/trail-modules/{slug}", include_in_schema=False)
+async def api_trail_modules(slug: str) -> JSONResponse:
+    """
+    Retorna apenas os módulos (id, numero, titulo) de uma trilha, sem aulas.
+    Usado pelo JS do lesson_form para popular o select de módulo ao trocar de área.
+    Resposta leve — não inclui dados das aulas para evitar payloads grandes.
+    """
+    trail = get_trail_data(slug)
+    if not trail:
+        return JSONResponse({"modulos": []}, status_code=404)
+    modulos_leves = [
+        {"id": m["id"], "numero": m.get("numero", ""), "titulo": m.get("titulo", "")}
+        for m in trail.get("modulos", [])
+    ]
+    return JSONResponse({"modulos": modulos_leves})
+
+
 @router.get("/api/youtube-info", include_in_schema=False)
 async def youtube_info(url: str) -> JSONResponse:
     """
@@ -291,12 +312,23 @@ async def admin_lesson_new_form(request: Request, slug: str) -> HTMLResponse:
     trail = get_trail_data(slug)
     if not trail:
         return RedirectResponse(url="/admin-panel", status_code=303)
+
+    # Cria versão leve da trilha (sem aulas) para evitar resposta HTML > 4.5 MB
+    # que causa erro 413 FUNCTION_PAYLOAD_TOO_LARGE no Vercel.
+    trail_leve = {
+        **trail,
+        "modulos": [
+            {"id": m["id"], "numero": m.get("numero", ""), "titulo": m.get("titulo", ""), "aulas": []}
+            for m in trail.get("modulos", [])
+        ],
+    }
+
     context = _ctx(page_title=f"Nova Aula — {trail['nome']} | Admin")
     return templates.TemplateResponse(
         "pages/admin/lesson_form.html",
         {
             "request":    request,
-            "trail":      trail,
+            "trail":      trail_leve,
             "slug":       slug,
             "aula":       None,
             "modulo_id":  request.query_params.get("modulo", ""),
@@ -389,12 +421,22 @@ async def admin_lesson_edit_form(
     if not aula:
         return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
+    # Cria versão leve da trilha (sem aulas) para evitar resposta HTML > 4.5 MB
+    # que causa erro 413 FUNCTION_PAYLOAD_TOO_LARGE no Vercel.
+    trail_leve = {
+        **trail,
+        "modulos": [
+            {"id": m["id"], "numero": m.get("numero", ""), "titulo": m.get("titulo", ""), "aulas": []}
+            for m in trail.get("modulos", [])
+        ],
+    }
+
     context = _ctx(page_title=f"Editar Aula — {aula['titulo']} | Admin")
     return templates.TemplateResponse(
         "pages/admin/lesson_form.html",
         {
             "request":   request,
-            "trail":     trail,
+            "trail":     trail_leve,
             "slug":      slug,
             "aula":      aula,
             "modulo_id": modulo_id,
