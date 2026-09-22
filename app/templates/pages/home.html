@@ -284,7 +284,6 @@
 >
   <div class="container">
 
-    <!-- Header da seção -->
     <div class="pi__header" data-aos="fade-up">
       {% set section_badge = "Sobre este portfólio" %}
       {% set section_title = "O que você vai <span class='text-accent'>encontrar aqui</span>" %}
@@ -293,15 +292,14 @@
       {% include "partials/section_header.html" %}
 
       <p class="pi__lead" data-aos="fade-up" data-aos-delay="100">
-        Este portfólio documenta minha evolução e aprendizado prático em modelagem CAD e análise de dados durante a graduação em Engenharia Mecânica.
-        Aqui você encontra projetos e exercícios desenvolvidos em <strong>SolidWorks</strong> e <strong>AutoCAD</strong> —
-        focando na modelagem paramétrica e no aprendizado de desenho técnico. Além de estudos em <strong>Excel</strong>:
-        dashboards interativos, tabelas dinâmicas e análise de dados.
-        <strong>Cada projeto registra meu processo de estudo nas ferramentas: modelo, montagem e análise.</strong>
+        Este portfólio documenta minha evolução e aprendizado prático em modelagem CAD, análise de dados e documentação técnica durante a graduação em Engenharia Mecânica.
+        Aqui você encontra projetos desenvolvidos em <strong>SolidWorks</strong>, <strong>AutoCAD</strong>, <strong>Excel</strong>, <strong>Power BI</strong> e <strong>Overleaf (LaTeX)</strong> —
+        organizados em trilhas de estudo com exercícios, materiais de apoio e conteúdo progressivo.
+        <strong>Cada projeto registra meu processo de aprendizado: modelo, análise e resultado.</strong>
       </p>
     </div>
 
-    <!-- 2 Cards principais: CAD + Excel -->
+    <!-- Cards de áreas do portfólio -->
     <div class="pi__cards-grid">
 
       <!-- Card 1: SolidWorks + AutoCAD -->
@@ -336,7 +334,7 @@
         <div class="pi__card-icon pi__card-icon--software">
           <i class="fa-solid fa-table" aria-hidden="true"></i>
         </div>
-        <h3 class="pi__card-title">Projetos Excel</h3>
+        <h3 class="pi__card-title">Excel</h3>
         <p class="pi__card-desc">
           Dashboards interativos, estudos de dados e planilhas dinâmicas em
           <strong>Microsoft Excel</strong>.
@@ -348,11 +346,75 @@
         </a>
       </article>
 
+      <!-- Card 3: Power BI -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="200"
+        aria-label="Trilha de Power BI"
+      >
+        <div class="pi__card-icon pi__card-icon--software">
+          <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">Power BI</h3>
+        <p class="pi__card-desc">
+          Relatórios analíticos e dashboards interativos em <strong>Microsoft Power BI</strong>
+          com Power Query (ETL) e modelagem de dados para visualização de indicadores.
+        </p>
+        <a href="/projetos/powerbi" class="pi__card-link" aria-label="Ver trilha de Power BI">
+          Explorar trilha
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 4: Trilhas de Aprendizado -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="300"
+        aria-label="Trilhas de Aprendizado"
+      >
+        <div class="pi__card-icon pi__card-icon--eng">
+          <i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">Trilhas de Aprendizado</h3>
+        <p class="pi__card-desc">
+          Conteúdo organizado em módulos com exercícios práticos, projetos e materiais de apoio
+          para download nas áreas de <strong>CAD</strong>, <strong>Excel</strong>, <strong>Power BI</strong> e <strong>LaTeX</strong>.
+        </p>
+        <a href="/projetos" class="pi__card-link" aria-label="Ver todas as trilhas">
+          Ver trilhas
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
+      <!-- Card 5: Overleaf (LaTeX) -->
+      <article
+        class="pi__card"
+        data-aos="fade-up"
+        data-aos-delay="400"
+        aria-label="Overleaf LaTeX"
+      >
+        <div class="pi__card-icon pi__card-icon--software">
+          <i class="fa-solid fa-file-code" aria-hidden="true"></i>
+        </div>
+        <h3 class="pi__card-title">Overleaf (LaTeX)</h3>
+        <p class="pi__card-desc">
+          Documentação técnica, relatórios de engenharia e artigos acadêmicos elaborados em
+          <strong>Overleaf (LaTeX)</strong> com alta precisão tipográfica e normas científicas.
+        </p>
+        <a href="/projetos/overleaf" class="pi__card-link" aria-label="Ver trilha de Overleaf">
+          Explorar trilha
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </article>
+
     </div><!-- /.pi__cards-grid -->
 
 
   </div>
 </section><!-- /#portfolio-intro -->
+
 
 
 <!-- ═══════════════════════════════════════════════════════════════

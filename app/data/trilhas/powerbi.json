@@ -2,7 +2,7 @@
   "id": "powerbi",
   "slug": "powerbi",
   "nome": "Power BI",
-  "descricao": "Estudos e projetos práticos em Microsoft Power BI: modelagem dimensional, processos de ETL com Power Query, fórmulas e medidas DAX e construção de relatórios e dashboards interativos de alta performance.",
+  "descricao": "Estudos e projetos práticos em Microsoft Power BI: importação e tratamento de dados com Power Query (ETL), modelagem dimensional e construção de relatórios e dashboards interativos de alta performance.",
   "categoria": "Análise de Dados",
   "icone": "fa-chart-pie",
   "cor": "amarelo",
@@ -10,25 +10,7 @@
     {
       "id": "modulo-01",
       "numero": 1,
-      "titulo": "Introdução e Importação de Dados",
-      "aulas": []
-    },
-    {
-      "id": "modulo-02",
-      "numero": 2,
-      "titulo": "Tratamento de Dados com Power Query (ETL)",
-      "aulas": []
-    },
-    {
-      "id": "modulo-03",
-      "numero": 3,
-      "titulo": "Modelagem Dimensional e Fórmulas DAX",
-      "aulas": []
-    },
-    {
-      "id": "modulo-04",
-      "numero": 4,
-      "titulo": "Criação de Dashboards e Visualização de Dados",
+      "titulo": "Tudo sobre Power BI",
       "aulas": []
     }
   ]
