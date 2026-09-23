@@ -1,7 +1,7 @@
 """admin.py — Painel administrativo do Portfólio.
 
 Rotas — Dashboard:
-  GET  /admin-panel                              → Dashboard principal (tabs)
+  GET  /admin-panel                              → Dashboard principal
 
 Rotas — Trilhas de Aprendizado:
   GET  /admin-panel/trilhas/{slug}               → Gestão de aulas de uma trilha
@@ -13,18 +13,9 @@ Rotas — Trilhas de Aprendizado:
   POST /admin-panel/trilhas/{slug}/reordenar     → Reordenar aulas (JSON)
   POST /admin-panel/trilhas/{slug}/nova-secao    → Criar nova seção/módulo
   GET  /admin-panel/api/youtube-info             → Proxy oEmbed do YouTube
-
-Rotas — Projetos CAD (legado, mantido):
-  GET  /admin-panel/novo                         → Formulário de novo projeto
-  POST /admin-panel/novo                         → Criar projeto
-  GET  /admin-panel/editar/{id}                  → Formulário de edição
-  POST /admin-panel/editar/{id}                  → Atualizar projeto
-  GET  /admin-panel/excluir/{id}                 → Confirmação de exclusão
-  POST /admin-panel/excluir/{id}                 → Executar exclusão
-
-Nota: autenticação não implementada por decisão do desenvolvedor.
-A estrutura está preparada para adicionar um middleware de autenticação
-futuramente sem alterar os handlers abaixo.
+  GET  /admin-panel/api/trail-modules/{slug}     → Módulos leves para select
+  POST /admin-panel/api/upload-url               → URL para upload direto
+  POST /admin-panel/api/record-blob-file         → Registro de anexo
 """
 
 from __future__ import annotations
@@ -45,24 +36,17 @@ from app.config import get_base_context
 from app.database import (
     add_modulo_to_trail,
     delete_aula_from_trail,
-    delete_project,
-    extract_pdf_sheets,
-    get_all_projects,
     get_all_trails_summary,
-    get_project_by_id,
     get_trail_data,
     reorder_aulas_in_modulo,
     save_aula_to_trail,
-    save_project,
     slugify,
     youtube_to_embed,
 )
 
 router = APIRouter(prefix="/admin-panel")
 
-STATIC_DIR   = Path(__file__).resolve().parent.parent / "static"
-COVERS_DIR   = STATIC_DIR / "images" / "cad" / "covers"
-CAD_DOC_DIR  = STATIC_DIR / "documents" / "cad"
+STATIC_DIR    = Path(__file__).resolve().parent.parent / "static"
 TRAIL_DOC_DIR = STATIC_DIR / "documents" / "trilhas"
 
 TRAIL_LABELS = {
@@ -80,82 +64,6 @@ TRAIL_LABELS = {
 
 def _ctx(**kwargs) -> dict:
     return get_base_context(page_id="admin", **kwargs)
-
-
-async def _save_cover(cover_image: UploadFile, slug: str) -> str:
-    """Salva a imagem de capa e retorna a URL estática ou Blob URL."""
-    ext = Path(cover_image.filename).suffix.lower() or ".png"
-    filename = f"{slug}{ext}"
-    local_url = f"/static/images/cad/covers/{filename}"
-    final_url = local_url
-
-    try:
-        content = await cover_image.read()
-        if content:
-            # 1. Tenta upload no Vercel Blob
-            try:
-                content_type = getattr(cover_image, "content_type", None) or "image/png"
-                blob_path = f"cad/covers/{filename}"
-                blob_url = blob_put_file(blob_path, content, content_type=content_type)
-                if blob_url:
-                    final_url = blob_url
-            except Exception as exc:
-                print(f"[AVISO] Falha ao salvar capa no Blob: {exc}")
-
-            # 2. Tenta salvar localmente (desenvolvimento local)
-            try:
-                COVERS_DIR.mkdir(parents=True, exist_ok=True)
-                dest = COVERS_DIR / filename
-                dest.write_bytes(content)
-            except Exception as exc:
-                print(f"[INFO] Gravação local da capa ignorada (read-only): {exc}")
-    except Exception as exc:
-        print(f"[ERRO] Falha ao processar imagem de capa: {exc}")
-
-    return final_url
-
-
-async def _save_pdf_and_extract(pdf_file: UploadFile, slug: str) -> tuple[str, list[dict]]:
-    """Salva o PDF, extrai as folhas como PNG e retorna (pdf_url, sheet_images)."""
-    filename = f"{slug}.pdf"
-    local_url = f"/static/documents/cad/{filename}"
-    final_url = local_url
-    sheet_images = []
-
-    try:
-        content = await pdf_file.read()
-        if content:
-            # 1. Tenta upload no Vercel Blob
-            try:
-                content_type = getattr(pdf_file, "content_type", None) or "application/pdf"
-                blob_path = f"cad/documents/{filename}"
-                blob_url = blob_put_file(blob_path, content, content_type=content_type)
-                if blob_url:
-                    final_url = blob_url
-            except Exception as exc:
-                print(f"[AVISO] Falha ao salvar PDF no Blob: {exc}")
-
-            # 2. Tenta salvar localmente e extrair folhas (se filesystem permitir)
-            try:
-                CAD_DOC_DIR.mkdir(parents=True, exist_ok=True)
-                dest = CAD_DOC_DIR / filename
-                dest.write_bytes(content)
-
-                sheets_dir = STATIC_DIR / "images" / "cad" / slug
-                if sheets_dir.exists():
-                    shutil.rmtree(sheets_dir, ignore_errors=True)
-
-                paths = extract_pdf_sheets(dest, sheets_dir)
-                sheet_images = [
-                    {"path": p, "caption": f"Folha {i + 1}", "description": ""}
-                    for i, p in enumerate(paths)
-                ]
-            except Exception as exc:
-                print(f"[INFO] Extração local de PDF ignorada no Vercel: {exc}")
-    except Exception as exc:
-        print(f"[ERRO] Falha ao processar PDF: {exc}")
-
-    return final_url, sheet_images
 
 
 async def _save_download_files(
@@ -220,9 +128,6 @@ async def _save_download_files(
     return saved
 
 
-
-
-
 # ──────────────────────────────────────────────────────────────────────────────
 # Dashboard
 # ──────────────────────────────────────────────────────────────────────────────
@@ -230,12 +135,11 @@ async def _save_download_files(
 @router.get("", response_class=HTMLResponse, include_in_schema=False)
 async def admin_dashboard(request: Request) -> HTMLResponse:
     templates = request.app.state.templates
-    projects  = get_all_projects()
     trails    = get_all_trails_summary()
     context   = _ctx(page_title="Painel Admin | Portfólio")
     return templates.TemplateResponse(
         "pages/admin/dashboard.html",
-        {"request": request, "projects": projects, "trails": trails, **context},
+        {"request": request, "trails": trails, **context},
     )
 
 
@@ -626,165 +530,3 @@ async def admin_trail_new_section(
     add_modulo_to_trail(slug, titulo)
     return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Projetos CAD — CRUD (legado, mantido integralmente)
-# ──────────────────────────────────────────────────────────────────────────────
-
-@router.get("/novo", response_class=HTMLResponse, include_in_schema=False)
-async def admin_new_form(request: Request) -> HTMLResponse:
-    templates = request.app.state.templates
-    context = _ctx(page_title="Novo Projeto | Admin")
-    return templates.TemplateResponse(
-        "pages/admin/project_form.html",
-        {"request": request, "project": None, "mode": "create", **context},
-    )
-
-
-@router.post("/novo", response_class=HTMLResponse, include_in_schema=False)
-async def admin_create_project(
-    request: Request,
-    title: str             = Form(...),
-    short_desc: str        = Form(...),
-    desc_objective: str    = Form(default=""),
-    desc_modeling: str     = Form(default=""),
-    software: str          = Form(...),
-    category: str          = Form(default="Modelagem 3D"),
-    status: str            = Form(...),
-    date: str              = Form(...),
-    youtube_url: str       = Form(default=""),
-    evolution_text: str    = Form(default=""),
-    skills: List[str]      = Form(default=[]),
-    cover_image: Optional[UploadFile] = File(default=None),
-    pdf_file: Optional[UploadFile]    = File(default=None),
-) -> RedirectResponse:
-    slug      = slugify(title)
-    embed_url = youtube_to_embed(youtube_url)
-
-    cover_path   = ""
-    pdf_path_str = ""
-    sheet_images: list[dict] = []
-
-    if cover_image and cover_image.filename:
-        cover_path = await _save_cover(cover_image, slug)
-
-    if pdf_file and pdf_file.filename:
-        pdf_path_str, sheet_images = await _save_pdf_and_extract(pdf_file, slug)
-
-    project = {
-        "title":          title,
-        "slug":           slug,
-        "short_desc":     short_desc,
-        "desc_objective": desc_objective,
-        "desc_modeling":  desc_modeling,
-        "cover_image":    cover_path,
-        "pdf_path":       pdf_path_str,
-        "youtube_url":    youtube_url,
-        "embed_url":      embed_url,
-        "software":       software,
-        "category":       category,
-        "status":         status,
-        "date":           date,
-        "skills":         [s.strip() for s in skills if s.strip()],
-        "evolution_text": evolution_text,
-        "sheet_images":   sheet_images,
-    }
-    save_project(project)
-    return RedirectResponse(url="/admin-panel", status_code=303)
-
-
-@router.get("/editar/{project_id}", response_class=HTMLResponse, include_in_schema=False)
-async def admin_edit_form(request: Request, project_id: str) -> HTMLResponse:
-    templates = request.app.state.templates
-    project = get_project_by_id(project_id)
-    if not project:
-        return RedirectResponse(url="/admin-panel", status_code=303)
-    context = _ctx(page_title=f"Editar: {project['title']} | Admin")
-    return templates.TemplateResponse(
-        "pages/admin/project_form.html",
-        {"request": request, "project": project, "mode": "edit", **context},
-    )
-
-
-@router.post("/editar/{project_id}", response_class=HTMLResponse, include_in_schema=False)
-async def admin_update_project(
-    request: Request,
-    project_id: str,
-    title: str             = Form(...),
-    short_desc: str        = Form(...),
-    desc_objective: str    = Form(default=""),
-    desc_modeling: str     = Form(default=""),
-    software: str          = Form(...),
-    category: str          = Form(default="Modelagem 3D"),
-    status: str            = Form(...),
-    date: str              = Form(...),
-    youtube_url: str       = Form(default=""),
-    evolution_text: str    = Form(default=""),
-    skills: List[str]      = Form(default=[]),
-    cover_image: Optional[UploadFile] = File(default=None),
-    pdf_file: Optional[UploadFile]    = File(default=None),
-) -> RedirectResponse:
-    project = get_project_by_id(project_id)
-    if not project:
-        return RedirectResponse(url="/admin-panel", status_code=303)
-
-    slug      = project.get("slug") or slugify(title)
-    embed_url = youtube_to_embed(youtube_url)
-
-    # Preserva arquivos existentes se não forem substituídos
-    cover_path   = project.get("cover_image", "")
-    pdf_path_str = project.get("pdf_path", "")
-    sheet_images = project.get("sheet_images", [])
-
-    if cover_image and cover_image.filename:
-        cover_path = await _save_cover(cover_image, slug)
-
-    if pdf_file and pdf_file.filename:
-        pdf_path_str, sheet_images = await _save_pdf_and_extract(pdf_file, slug)
-
-    project.update({
-        "title":          title,
-        "slug":           slug,
-        "short_desc":     short_desc,
-        "desc_objective": desc_objective,
-        "desc_modeling":  desc_modeling,
-        "cover_image":    cover_path,
-        "pdf_path":       pdf_path_str,
-        "youtube_url":    youtube_url,
-        "embed_url":      embed_url,
-        "software":       software,
-        "category":       category,
-        "status":         status,
-        "date":           date,
-        "skills":         [s.strip() for s in skills if s.strip()],
-        "evolution_text": evolution_text,
-        "sheet_images":   sheet_images,
-    })
-    save_project(project)
-    return RedirectResponse(url="/admin-panel", status_code=303)
-
-
-@router.get("/excluir/{project_id}", response_class=HTMLResponse, include_in_schema=False)
-async def admin_delete_confirm(request: Request, project_id: str) -> HTMLResponse:
-    templates = request.app.state.templates
-    project = get_project_by_id(project_id)
-    if not project:
-        return RedirectResponse(url="/admin-panel", status_code=303)
-    context = _ctx(page_title=f"Excluir: {project['title']} | Admin")
-    return templates.TemplateResponse(
-        "pages/admin/delete_confirm.html",
-        {
-            "request":     request,
-            "project":     project,
-            "item_type":   "projeto",
-            "back_url":    "/admin-panel",
-            "delete_url":  f"/admin-panel/excluir/{project['id']}",
-            **context,
-        },
-    )
-
-
-@router.post("/excluir/{project_id}", include_in_schema=False)
-async def admin_delete_project(request: Request, project_id: str) -> RedirectResponse:
-    delete_project(project_id)
-    return RedirectResponse(url="/admin-panel", status_code=303)

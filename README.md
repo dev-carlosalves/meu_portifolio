@@ -16,11 +16,8 @@ O resultado foi bem além do que eu esperava quando comecei.
 ## O que tem aqui
 
 - **Home** — apresentação geral, quem sou e o que estou desenvolvendo
-- **Minha Jornada** — linha do tempo da minha trajetória acadêmica e profissional, contada de forma cronológica
-- **Projetos em Programação** — projetos Python que desenvolvi, incluindo o Pesquisar+
-- **Laboratório CAD** — meus estudos em modelagem 3D com Fusion 360
+- **Projetos & Trilhas** — estudos e projetos organizados em trilhas (AutoCAD, SolidWorks, Excel, Power BI e Overleaf LaTeX)
 - **Currículo** — versão interativa do meu currículo, com download do PDF disponível
-- **Tecnologias & Competências** — como e por que uso cada tecnologia que aprendi
 - **Contato** — formulário funcional (via EmailJS), WhatsApp, LinkedIn e GitHub
 
 ---
@@ -56,8 +53,8 @@ O resultado foi bem além do que eu esperava quando comecei.
 **Versionamento**
 - Git + GitHub
 
-**Modelagem CAD**
-- Autodesk Fusion 360 — utilizado nos projetos mecânicos documentados no Laboratório CAD
+**Softwares de Engenharia & Análise**
+- SolidWorks, AutoCAD, Microsoft Excel, Microsoft Power BI e Overleaf (LaTeX)
 
 ---
 

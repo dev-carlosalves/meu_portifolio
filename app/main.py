@@ -26,11 +26,9 @@ from app.routers import (
     data_analysis_projects,
     excel_projects,
     home,
-    journey,
     overleaf_projects,
     projects_hub,
     resume,
-    technologies,
 )
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -66,13 +64,11 @@ app.state.templates = templates
 # Routers
 # ──────────────────────────────────────────────────────────────────────────────
 app.include_router(home.router)
-app.include_router(journey.router)
 app.include_router(projects_hub.router)
 app.include_router(cad_projects.router)
 app.include_router(data_analysis_projects.router)
 app.include_router(excel_projects.router)
 app.include_router(overleaf_projects.router)
-app.include_router(technologies.router)
 app.include_router(resume.router)
 app.include_router(contact.router)
 app.include_router(admin.router)

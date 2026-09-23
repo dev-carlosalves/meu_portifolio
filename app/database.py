@@ -1,42 +1,28 @@
 """
-database.py — Camada de acesso aos dados do portfólio (Projetos CAD, Excel e Trilhas de Aprendizado).
+database.py — Camada de acesso aos dados do portfólio (Trilhas de Aprendizado).
 
 Persistência:
-  - Projetos CAD:   app/data/cad_projects.json   (arquivo local)
-  - Projetos Excel: app/data/excel_projects.json  (arquivo local)
-  - Trilhas:        Vercel Blob — trilhas/{slug}.json  (excel, autocad, solidworks)
-                    → leitura/escrita via blob_storage.blob_get / blob_put
-                    → necessário: variável de ambiente BLOB_READ_WRITE_TOKEN
-
-Estrutura preparada para migração futura para SQLite ou PostgreSQL
-sem alterar routers ou templates.
+  - Trilhas: Vercel Blob — trilhas/{slug}.json (autocad, solidworks, excel, powerbi, overleaf)
+             → leitura/escrita via blob_storage.blob_get / blob_put
+             → fallback local para desenvolvimento: app/data/trilhas/{slug}.json
 """
 
 from __future__ import annotations
 
 import json
 import re
-import shutil
 import unicodedata
-import uuid
 from pathlib import Path
 from typing import Optional
 
 from app.blob_storage import blob_get, blob_put
 
-import fitz  # PyMuPDF — extração de páginas do PDF como imagens
-
 # ──────────────────────────────────────────────────────────────────────────────
 # Caminhos base
 # ──────────────────────────────────────────────────────────────────────────────
-BASE_DIR        = Path(__file__).resolve().parent
-CAD_DATA_FILE   = BASE_DIR / "data" / "cad_projects.json"
-EXCEL_DATA_FILE = BASE_DIR / "data" / "excel_projects.json"
-TRILHAS_DIR     = BASE_DIR / "data" / "trilhas"
-STATIC_DIR      = BASE_DIR / "static"
-
-# Alias de compatibilidade para código legado
-DATA_FILE = CAD_DATA_FILE
+BASE_DIR    = Path(__file__).resolve().parent
+TRILHAS_DIR = BASE_DIR / "data" / "trilhas"
+STATIC_DIR  = BASE_DIR / "static"
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -72,202 +58,8 @@ def youtube_to_embed(url: str) -> str:
     return url
 
 
-def extract_pdf_sheets(pdf_path: Path, dest_dir: Path, dpi: int = 150) -> list[str]:
-    """
-    Extrai as páginas de um PDF como imagens PNG de alta qualidade.
-    Retorna a lista de URLs estáticas relativas ao /static.
-    """
-    dest_dir.mkdir(parents=True, exist_ok=True)
-    static_urls: list[str] = []
-    try:
-        doc = fitz.open(str(pdf_path))
-        for i, page in enumerate(doc):
-            pix = page.get_pixmap(dpi=dpi)
-            filename = f"sheet_{i + 1}.png"
-            pix.save(str(dest_dir / filename))
-            # Converte o caminho absoluto para URL estática /static/...
-            rel = str(dest_dir / filename).replace(str(STATIC_DIR), "").replace("\\", "/")
-            static_urls.append(f"/static{rel}")
-    except Exception:
-        pass
-    return static_urls
-
-
 # ──────────────────────────────────────────────────────────────────────────────
-# I/O interno do JSON — genérico
-# ──────────────────────────────────────────────────────────────────────────────
-
-def _load_file(filepath: Path) -> list[dict]:
-    if not filepath.exists():
-        filepath.parent.mkdir(parents=True, exist_ok=True)
-        return []
-    try:
-        return json.loads(filepath.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
-        return []
-
-
-def _persist_file(filepath: Path, projects: list[dict]) -> None:
-    filepath.parent.mkdir(parents=True, exist_ok=True)
-    filepath.write_text(
-        json.dumps(projects, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Aliases internos (manter compatibilidade com admin.py existente)
-# ──────────────────────────────────────────────────────────────────────────────
-
-def _load() -> list[dict]:
-    return _load_file(CAD_DATA_FILE)
-
-
-def _persist(projects: list[dict]) -> None:
-    _persist_file(CAD_DATA_FILE, projects)
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# API pública — CRUD Projetos CAD
-# ──────────────────────────────────────────────────────────────────────────────
-
-def get_all_projects() -> list[dict]:
-    """Retorna todos os projetos CAD, mais recentes primeiro."""
-    return sorted(_load(), key=lambda p: p.get("date", ""), reverse=True)
-
-
-def get_project_by_slug(slug: str) -> Optional[dict]:
-    for p in _load():
-        if p.get("slug") == slug:
-            return p
-    return None
-
-
-def get_project_by_id(project_id: str) -> Optional[dict]:
-    for p in _load():
-        if p.get("id") == project_id:
-            return p
-    return None
-
-
-def save_project(project: dict) -> dict:
-    """Cria (sem ID) ou atualiza (com ID) um projeto CAD no JSON."""
-    projects = _load()
-    if not project.get("id"):
-        project["id"] = str(uuid.uuid4())
-        projects.append(project)
-    else:
-        for i, p in enumerate(projects):
-            if p["id"] == project["id"]:
-                projects[i] = project
-                break
-        else:
-            projects.append(project)
-    _persist(projects)
-    return project
-
-
-def delete_project(project_id: str) -> bool:
-    """Remove o projeto CAD do JSON e limpa todos os seus arquivos estáticos."""
-    projects = _load()
-    target = next((p for p in projects if p["id"] == project_id), None)
-    if not target:
-        return False
-
-    slug = target.get("slug", "")
-    if slug:
-        # Remove pasta de folhas (sheet images)
-        sheets_dir = STATIC_DIR / "images" / "cad" / slug
-        if sheets_dir.exists():
-            shutil.rmtree(sheets_dir, ignore_errors=True)
-        # Remove imagem de capa
-        covers_dir = STATIC_DIR / "images" / "cad" / "covers"
-        for ext in ("png", "jpg", "jpeg", "webp", "gif"):
-            cover = covers_dir / f"{slug}.{ext}"
-            if cover.exists():
-                cover.unlink(missing_ok=True)
-        # Remove PDF
-        pdf_dir = STATIC_DIR / "documents" / "cad"
-        pdf_file = pdf_dir / f"{slug}.pdf"
-        if pdf_file.exists():
-            pdf_file.unlink(missing_ok=True)
-
-    _persist([p for p in projects if p["id"] != project_id])
-    return True
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# API pública — CRUD Projetos Excel
-# ──────────────────────────────────────────────────────────────────────────────
-
-def get_all_excel_projects() -> list[dict]:
-    """Retorna todos os projetos Excel, mais recentes primeiro."""
-    return sorted(
-        _load_file(EXCEL_DATA_FILE),
-        key=lambda p: p.get("date", ""),
-        reverse=True,
-    )
-
-
-def get_excel_project_by_slug(slug: str) -> Optional[dict]:
-    for p in _load_file(EXCEL_DATA_FILE):
-        if p.get("slug") == slug:
-            return p
-    return None
-
-
-def get_excel_project_by_id(project_id: str) -> Optional[dict]:
-    for p in _load_file(EXCEL_DATA_FILE):
-        if p.get("id") == project_id:
-            return p
-    return None
-
-
-def save_excel_project(project: dict) -> dict:
-    """Cria (sem ID) ou atualiza (com ID) um projeto Excel no JSON."""
-    projects = _load_file(EXCEL_DATA_FILE)
-    if not project.get("id"):
-        project["id"] = str(uuid.uuid4())
-        projects.append(project)
-    else:
-        for i, p in enumerate(projects):
-            if p["id"] == project["id"]:
-                projects[i] = project
-                break
-        else:
-            projects.append(project)
-    _persist_file(EXCEL_DATA_FILE, projects)
-    return project
-
-
-def delete_excel_project(project_id: str) -> bool:
-    """Remove o projeto Excel do JSON e limpa seus arquivos estáticos."""
-    projects = _load_file(EXCEL_DATA_FILE)
-    target = next((p for p in projects if p["id"] == project_id), None)
-    if not target:
-        return False
-
-    slug = target.get("slug", "")
-    if slug:
-        # Remove imagem de capa
-        covers_dir = STATIC_DIR / "images" / "excel" / "covers"
-        for ext in ("png", "jpg", "jpeg", "webp", "gif"):
-            cover = covers_dir / f"{slug}.{ext}"
-            if cover.exists():
-                cover.unlink(missing_ok=True)
-        # Remove arquivo Excel
-        excel_dir = STATIC_DIR / "documents" / "excel"
-        for ext in ("xlsx", "xlsm", "xls"):
-            f = excel_dir / f"{slug}.{ext}"
-            if f.exists():
-                f.unlink(missing_ok=True)
-
-    _persist_file(EXCEL_DATA_FILE, [p for p in projects if p["id"] != project_id])
-    return True
-
-
-# ──────────────────────────────────────────────────────────────────────────────
-# API pública — Trilhas de Aprendizado (excel / autocad / solidworks)
+# API pública — Trilhas de Aprendizado (excel / powerbi / autocad / solidworks / overleaf)
 # ──────────────────────────────────────────────────────────────────────────────
 
 def get_trail_data(slug: str) -> Optional[dict]:
