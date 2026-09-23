@@ -28,7 +28,6 @@ from app.routers import (
     home,
     overleaf_projects,
     projects_hub,
-    resume,
 )
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -69,7 +68,6 @@ app.include_router(cad_projects.router)
 app.include_router(data_analysis_projects.router)
 app.include_router(excel_projects.router)
 app.include_router(overleaf_projects.router)
-app.include_router(resume.router)
 app.include_router(contact.router)
 app.include_router(admin.router)
 

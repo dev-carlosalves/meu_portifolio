@@ -17,7 +17,6 @@ O resultado foi bem além do que eu esperava quando comecei.
 
 - **Home** — apresentação geral, quem sou e o que estou desenvolvendo
 - **Projetos & Trilhas** — estudos e projetos organizados em trilhas (AutoCAD, SolidWorks, Excel, Power BI e Overleaf LaTeX)
-- **Currículo** — versão interativa do meu currículo, com download do PDF disponível
 - **Contato** — formulário funcional (via EmailJS), WhatsApp, LinkedIn e GitHub
 
 ---
@@ -25,7 +24,7 @@ O resultado foi bem além do que eu esperava quando comecei.
 ## Objetivos do projeto
 
 - Reunir meus projetos em um lugar só, com histórico real de evolução
-- Ter um currículo online que recrutadores possam acessar rapidamente
+- Ter um portfólio online acessível e profissional
 - Documentar o que aprendo, não apenas o que já sei
 - Servir como vitrine profissional durante a graduação
 - Facilitar o contato com empresas, professores e outros estudantes
@@ -47,7 +46,8 @@ O resultado foi bem além do que eu esperava quando comecei.
 - [Font Awesome 6](https://fontawesome.com/) — ícones
 - [Google Fonts](https://fonts.google.com/) — Poppins (títulos) e Inter (texto)
 
-**Integrações**
+**Integrações & Storage**
+- [Vercel Blob Storage](https://vercel.com/docs/storage/vercel-blob) — persistência em nuvem das trilhas e anexos
 - [EmailJS](https://www.emailjs.com/) — envio de formulário de contato sem backend próprio, carregado sob demanda
 
 **Versionamento**
@@ -66,27 +66,29 @@ meu_portifolio/
 ├── app/
 │   ├── main.py              ← aplicação FastAPI + rota 404 customizada
 │   ├── config.py            ← dados pessoais, SEO e itens de navegação centralizados
+│   ├── database.py          ← camada de dados das trilhas
+│   ├── blob_storage.py      ← integração com Vercel Blob
 │   │
-│   ├── routers/             ← uma rota por página
+│   ├── routers/             ← rotas modulares
 │   │   ├── home.py
-│   │   ├── journey.py
-│   │   ├── projects.py
-│   │   ├── cad_lab.py
-│   │   ├── resume.py
-│   │   ├── technologies.py
-│   │   └── contact.py
+│   │   ├── projects_hub.py
+│   │   ├── cad_projects.py
+│   │   ├── data_analysis_projects.py
+│   │   ├── excel_projects.py
+│   │   ├── overleaf_projects.py
+│   │   ├── contact.py
+│   │   └── admin.py
 │   │
 │   ├── templates/
 │   │   ├── base.html        ← layout base: head, navbar, footer, scripts
 │   │   ├── partials/        ← navbar, footer, section_header reutilizáveis
-│   │   └── pages/           ← template de cada página
+│   │   └── pages/           ← template de cada página e trilha
 │   │
 │   └── static/
 │       ├── css/             ← base, layout, components, sections, animations
-│       ├── js/              ← main, navbar, aos-init, contact
-│       ├── images/          ← profile, projects, cad, og
-│       ├── icons/           ← favicon
-│       └── documents/       ← currículo PDF e certificados
+│       ├── js/              ← main, navbar, aos-init, contact, lesson, trail
+│       ├── images/          ← profile, og
+│       └── icons/           ← favicon
 │
 ├── requirements.txt
 ├── .gitignore

@@ -23,7 +23,6 @@ STUDENT = {
     "whatsapp_note": "Preferencialmente mensagens. Não realizo atendimento por chamadas.",
     "availability": "Disponível para estágios e projetos",
     "photo":        "/static/images/profile/carlos-daniel.webp",
-    "cv":           "/static/documents/curriculo/Curriculo_Carlos_Daniel_Alves_da_Silva.pdf",
     "github":       "https://github.com/dev-carlosalves",
     "linkedin":     "https://www.linkedin.com/in/carlos-daniel-alves-da-silva-a07128311",
 }
@@ -56,10 +55,9 @@ SEO_BASE = {
 # Navegação — itens do menu principal
 # ──────────────────────────────────────────────────────────────────────────────
 NAV_ITEMS = [
-    {"label": "Início",    "href": "/",          "id": "nav-home"},
-    {"label": "Projetos",  "href": "/projetos",  "id": "nav-projetos"},
-    {"label": "Currículo", "href": "/curriculo", "id": "nav-resume"},
-    {"label": "Contato",   "href": "/contato",   "id": "nav-contact"},
+    {"label": "Início",   "href": "/",         "id": "nav-home"},
+    {"label": "Projetos", "href": "/projetos", "id": "nav-projetos"},
+    {"label": "Contato",  "href": "/contato",  "id": "nav-contact"},
 ]
 
 
