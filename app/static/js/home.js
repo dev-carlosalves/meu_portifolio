@@ -16,9 +16,10 @@ function initTyped() {
 
   new Typed('#typed-output', {
     strings: [
+      'Desenvolvimento de Projetos',
+      'Modelagem CAD 2D & 3D',
+      'Análise de Dados & BI',
       'Engenharia Mecânica',
-      'Desenvolvimento Python',
-      'Modelagem CAD',
       'Aprendizagem Contínua',
     ],
     typeSpeed:    55,

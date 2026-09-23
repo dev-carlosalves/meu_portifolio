@@ -15,8 +15,8 @@ STUDENT = {
     "nickname":     "Carlos Daniel",
     "initials":     "CD",
     "title":        "Estudante de Engenharia Mecânica · IFCE",
-    "subtitle":     "SolidWorks · AutoCAD · Excel",
-    "tagline":      "Estudando e documentando soluções em engenharia mecânica e programação.",
+    "subtitle":     "Projetos · CAD · Análise de Dados",
+    "tagline":      "Construindo competências práticas e soluções em projetos, CAD e análise de dados.",
     "location":     "Maracanaú, Ceará – Brasil",
     "email":        "alves.silva.carlosd@gmail.com",
     "whatsapp":     "+55 (85) 98675-9763",
@@ -35,13 +35,13 @@ SEO_BASE = {
     "description":  (
         "Portfólio de estudos e projetos de Carlos Daniel Alves da Silva, "
         "estudante de Engenharia Mecânica no IFCE. "
-        "Modelagem 3D paramétrica, montagens e estudos de desenho técnico "
-        "em SolidWorks e AutoCAD. Práticas e dashboards em Excel."
+        "Desenvolvimento contínuo de competências na área de projetos: "
+        "CAD (SolidWorks e AutoCAD), análise de dados (Power BI e Excel) e documentação técnica."
     ),
     "keywords":     (
-        "engenharia mecânica, IFCE, portfólio CAD, SolidWorks, AutoCAD, "
-        "Carlos Daniel, modelagem 3D, projetos mecânicos, desenho técnico, "
-        "Excel, dashboards, análise de dados"
+        "engenharia mecânica, IFCE, projetos, CAD, SolidWorks, AutoCAD, "
+        "Carlos Daniel, modelagem 3D, desenho técnico, "
+        "Power BI, Excel, dashboards, análise de dados, Overleaf, LaTeX"
     ),
     "author":       STUDENT["name"],
     "og_image":     "/static/images/og/og-image.png",
