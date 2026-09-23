@@ -29,6 +29,8 @@ futuramente sem alterar os handlers abaixo.
 
 from __future__ import annotations
 
+import json
+import re
 import shutil
 import uuid
 from pathlib import Path
@@ -38,7 +40,7 @@ import httpx
 from fastapi import APIRouter, File, Form, Request, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
-from app.blob_storage import blob_put_file
+from app.blob_storage import blob_put_file, generate_client_upload_token
 from app.config import get_base_context
 from app.database import (
     add_modulo_to_trail,
@@ -289,6 +291,42 @@ async def youtube_info(url: str) -> JSONResponse:
         return JSONResponse({"error": str(exc)}, status_code=500)
 
 
+@router.post("/api/request-upload", include_in_schema=False)
+async def api_request_upload(request: Request) -> JSONResponse:
+    """
+    Gera um token de upload client-side para o Vercel Blob.
+    O browser faz o PUT diretamente em blob.vercel-storage.com, sem passar
+    pelo serverless da Vercel — contorna o limite de 4.5 MB do request body.
+
+    Recebe JSON: { filename, slug, aula_id? } ou { pathname }
+    Retorna:     { client_token, upload_url, pathname, clean_name, ext }
+    """
+    try:
+        body = await request.json()
+        pathname = str(body.get("pathname", "")).strip()
+        filename = str(body.get("filename", "")).strip()
+        slug = str(body.get("slug", "geral")).strip()
+        aula_id = str(body.get("aula_id", "")).strip() or str(uuid.uuid4())
+        max_size_mb = int(body.get("max_size_mb", 100))
+
+        if not pathname:
+            if not filename:
+                return JSONResponse({"error": "pathname ou filename é obrigatório"}, status_code=400)
+            clean_name = Path(filename).name
+            clean_name = re.sub(r"[^\w\.\-\_]", "_", clean_name)
+            pathname = f"trilhas/{slug}/{aula_id}/{clean_name}"
+        else:
+            clean_name = Path(pathname).name
+
+        ext = clean_name.rsplit(".", 1)[-1].lower() if "." in clean_name else ""
+        result = generate_client_upload_token(pathname, max_size_mb=max_size_mb)
+        result["clean_name"] = clean_name
+        result["ext"] = ext
+        return JSONResponse(result)
+    except Exception as exc:
+        return JSONResponse({"error": str(exc)}, status_code=500)
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Trilhas — Gestão de aulas
 # ──────────────────────────────────────────────────────────────────────────────
@@ -366,12 +404,22 @@ async def admin_lesson_create(
             else:
                 return RedirectResponse(url=f"/admin-panel/trilhas/{slug}", status_code=303)
 
-        aula_id = str(uuid.uuid4())
+        aula_id = str(form.get("aula_id", "")).strip() or str(uuid.uuid4())
+
+        # Arquivos pré-enviados diretamente ao Vercel Blob pelo browser
+        pre_uploaded_json = form.get("pre_uploaded_files", "")
+        pre_uploaded: list[dict] = []
+        if pre_uploaded_json:
+            try:
+                pre_uploaded = json.loads(str(pre_uploaded_json))
+            except Exception as e:
+                print(f"[AVISO] Falha ao decodificar pre_uploaded_files: {e}")
+                pre_uploaded = []
 
         # Salva arquivos de download primeiro com o ID da aula
-        arquivos = []
+        arquivos: list[dict] = list(pre_uploaded)  # inicia com os já enviados ao Blob
         if download_files:
-            arquivos = await _save_download_files(aula_id, slug, download_files)
+            arquivos += await _save_download_files(aula_id, slug, download_files)
 
         aula: dict = {
             "id":                  aula_id,
@@ -505,10 +553,19 @@ async def admin_lesson_update(
         else:
             arquivos_preservados = arquivos_existentes
 
-        # Adiciona novos arquivos de download
-        novos = []
+        # Adiciona novos arquivos de download (servidor) + pré-enviados ao Blob
+        pre_uploaded_json = form.get("pre_uploaded_files", "")
+        pre_uploaded_novos: list[dict] = []
+        if pre_uploaded_json:
+            try:
+                pre_uploaded_novos = json.loads(str(pre_uploaded_json))
+            except Exception as e:
+                print(f"[AVISO] Falha ao decodificar pre_uploaded_files: {e}")
+                pre_uploaded_novos = []
+
+        novos: list[dict] = list(pre_uploaded_novos)
         if download_files:
-            novos = await _save_download_files(aula_id, slug, download_files)
+            novos += await _save_download_files(aula_id, slug, download_files)
 
         aula = {
             "id":                  aula_id,

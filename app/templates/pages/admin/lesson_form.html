@@ -38,6 +38,8 @@
     >
       <!-- Campo hidden com modulo_id (pode ser sobrescrito pelo select) -->
       <input type="hidden" name="modulo_id" id="hidden-modulo-id" value="{{ modulo_id }}" />
+      <input type="hidden" name="aula_id" id="hidden-aula-id" value="{{ aula.id if aula else '' }}" />
+      <input type="hidden" name="pre_uploaded_files" id="hidden-pre-uploaded-files" value="" />
 
       <!-- ══════════════════════════════════════
            SEÇÃO 1 — LINK DO YOUTUBE
@@ -633,11 +635,149 @@
     btn.onclick = () => toggleRemoveExisting(index, filename);
   }
 
-  // ── Submit feedback ─────────────────────────────────────────────
-  document.getElementById('lesson-form').addEventListener('submit', () => {
+  // ── Envio do Formulário com Upload Direto para o Vercel Blob ──────────
+  const lessonForm = document.getElementById('lesson-form');
+  const aulaIdInput = document.getElementById('hidden-aula-id');
+  const preUploadedInput = document.getElementById('hidden-pre-uploaded-files');
+  const currentSlug = "{{ slug }}";
+  let isSubmitting = false;
+
+  lessonForm.addEventListener('submit', async function (e) {
+    if (isSubmitting) return;
+
+    // Validação básica prévia
+    const tituloInput = document.getElementById('titulo');
+    if (!tituloInput.value.trim()) {
+      alert('Por favor, preencha o título da aula.');
+      tituloInput.focus();
+      return;
+    }
+
+    const modSelect = document.getElementById('select-modulo');
+    if (modSelect && modSelect.value === '__nova__') {
+      const novaSecao = document.getElementById('nova-secao-titulo');
+      if (!novaSecao.value.trim()) {
+        alert('Por favor, informe o nome da nova seção.');
+        novaSecao.focus();
+        return;
+      }
+    }
+
+    // Garante que aula_id existe
+    if (!aulaIdInput.value) {
+      if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        aulaIdInput.value = crypto.randomUUID();
+      } else {
+        aulaIdInput.value = 'aula_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+      }
+    }
+
+    const files = dataTransfer.files;
     const btn = document.getElementById('btn-submit-lesson');
+
+    // Se não há arquivos novos adicionados, envia normalmente
+    if (!files || files.length === 0) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando aula...';
+      return;
+    }
+
+    // Intercepta para fazer o upload direto de cada arquivo ao Vercel Blob
+    e.preventDefault();
+    isSubmitting = true;
     btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando aula e anexos...';
+
+    const preUploaded = [];
+    const totalFiles = files.length;
+
+    try {
+      for (let i = 0; i < totalFiles; i++) {
+        const file = files[i];
+        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-fade"></i> Preparando ${i + 1}/${totalFiles}: ${file.name}...`;
+
+        // 1. Obtém token de upload client-side
+        const reqResp = await fetch('/admin-panel/api/request-upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: file.name,
+            slug: currentSlug,
+            aula_id: aulaIdInput.value,
+          }),
+        });
+
+        if (!reqResp.ok) {
+          throw new Error(`Servidor não autorizou o upload de ${file.name} (status ${reqResp.status})`);
+        }
+
+        const tokenData = await reqResp.json();
+        if (tokenData.error) {
+          throw new Error(`Erro do servidor: ${tokenData.error}`);
+        }
+
+        // 2. Upload direto do browser para o Vercel Blob com progresso visual
+        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Enviando ${i + 1}/${totalFiles} (${file.name}) [0%]...`;
+
+        const uploadResult = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('PUT', tokenData.upload_url);
+          xhr.setRequestHeader('authorization', 'Bearer ' + tokenData.client_token);
+          xhr.setRequestHeader('x-vercel-blob-access', 'public');
+          xhr.setRequestHeader('content-type', file.type || 'application/octet-stream');
+
+          xhr.upload.onprogress = (evt) => {
+            if (evt.lengthComputable) {
+              const pct = Math.round((evt.loaded / evt.total) * 100);
+              btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up fa-bounce"></i> Enviando ${i + 1}/${totalFiles} (${file.name}) [${pct}%]...`;
+            }
+          };
+
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              try {
+                resolve(JSON.parse(xhr.responseText));
+              } catch (err) {
+                resolve({ url: tokenData.upload_url });
+              }
+            } else {
+              reject(new Error(`Falha no armazenamento do arquivo (${xhr.status})`));
+            }
+          };
+
+          xhr.onerror = () => reject(new Error(`Falha de conexão durante o upload de ${file.name}.`));
+          xhr.send(file);
+        });
+
+        preUploaded.push({
+          nome: file.name,
+          url: uploadResult.url || tokenData.upload_url,
+          tipo: tokenData.ext || (file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : ''),
+        });
+      }
+
+      // Preenche o campo hidden com os metadados dos arquivos já salvos no Blob
+      preUploadedInput.value = JSON.stringify(preUploaded);
+
+      // Limpa os arquivos do input do formulário para evitar exceder o limite de 4.5 MB do Vercel
+      fileInput.value = '';
+
+      btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Salvando dados da aula...';
+      lessonForm.submit();
+
+    } catch (err) {
+      console.error('Falha no upload direto:', err);
+      // Notifica e tenta envio fallback via servidor
+      const proceed = confirm(`Ocorreu um detalhe no upload direto do arquivo:\n${err.message}\n\nDeseja tentar enviar diretamente pelo servidor?`);
+      if (proceed) {
+        fileInput.files = dataTransfer.files;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando via servidor...';
+        lessonForm.submit();
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Tentar Novamente';
+        isSubmitting = false;
+      }
+    }
   });
 </script>
 {% endblock %}

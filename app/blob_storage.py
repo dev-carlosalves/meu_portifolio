@@ -212,3 +212,64 @@ def _find_blob_url(pathname: str) -> Optional[str]:
     except Exception:
         pass
     return None
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Upload client-side (browser → Blob direto, sem passar pelo serverless)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def generate_client_upload_token(
+    pathname: str,
+    max_size_mb: int = 100,
+) -> dict:
+    """
+    Gera um token de upload client-side válido para o Vercel Blob.
+
+    O browser usa esse token para fazer PUT diretamente em blob.vercel-storage.com,
+    sem passar pelo serverless da Vercel (contorna o limite de 4.5 MB do request body).
+
+    Formato do token:
+        vercel_blob_client_{storeId}_{base64(hmac_sha256 + '.' + base64(payload))}
+    """
+    import base64
+    import hashlib
+    import hmac
+    import json
+    import time
+    from urllib.parse import quote
+
+    full_token = _get_token()
+    parts = full_token.split("_")
+    # Formato: vercel_blob_rw_{storeId}_{hash}
+    store_id = parts[3] if len(parts) > 3 else parts[-2]
+
+    # Validade de 15 minutos (em ms)
+    valid_until = int((time.time() + 900) * 1000)
+
+    payload_dict = {
+        "pathname": pathname,
+        "validUntil": valid_until,
+    }
+    payload_json = json.dumps(payload_dict, separators=(",", ":"))
+    payload_b64 = base64.b64encode(payload_json.encode("utf-8")).decode("ascii")
+
+    secured_key = hmac.new(
+        full_token.encode("utf-8"),
+        payload_b64.encode("utf-8"),
+        hashlib.sha256,
+    ).hexdigest()
+
+    token_inner = f"{secured_key}.{payload_b64}"
+    token_inner_b64 = base64.b64encode(token_inner.encode("utf-8")).decode("ascii")
+
+    client_token = f"vercel_blob_client_{store_id}_{token_inner_b64}"
+
+    safe_path = "/".join(quote(p, safe="") for p in pathname.split("/"))
+    upload_url = f"{_BLOB_API_BASE}/{safe_path}"
+
+    return {
+        "client_token": client_token,
+        "upload_url": upload_url,
+        "pathname": pathname,
+    }
+
