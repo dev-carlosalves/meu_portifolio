@@ -36,12 +36,12 @@ SEO_BASE = {
         "Portfólio de estudos e projetos de Carlos Daniel Alves da Silva, "
         "estudante de Engenharia Mecânica no IFCE. "
         "Desenvolvimento contínuo de competências na área de projetos: "
-        "CAD (SolidWorks e AutoCAD), análise de dados (Power BI e Excel) e documentação técnica."
+        "CAD (SolidWorks e AutoCAD), análise de dados (Power BI e Excel) e Business Intelligence (Tableau, SQL, Python)."
     ),
     "keywords":     (
         "engenharia mecânica, IFCE, projetos, CAD, SolidWorks, AutoCAD, "
         "Carlos Daniel, modelagem 3D, desenho técnico, "
-        "Power BI, Excel, dashboards, análise de dados, Overleaf, LaTeX"
+        "Power BI, Excel, dashboards, análise de dados, Business Intelligence, BI, Tableau, SQL, Python"
     ),
     "author":       STUDENT["name"],
     "og_image":     "/static/images/og/og-image.png",

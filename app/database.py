@@ -2,7 +2,7 @@
 database.py — Camada de acesso aos dados do portfólio (Trilhas de Aprendizado).
 
 Persistência:
-  - Trilhas: Vercel Blob — trilhas/{slug}.json (autocad, solidworks, excel, powerbi, overleaf)
+  - Trilhas: Vercel Blob — trilhas/{slug}.json (autocad, solidworks, excel, powerbi, bi)
              → leitura/escrita via blob_storage.blob_get / blob_put
              → fallback local para desenvolvimento: app/data/trilhas/{slug}.json
 """
@@ -59,7 +59,7 @@ def youtube_to_embed(url: str) -> str:
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# API pública — Trilhas de Aprendizado (excel / powerbi / autocad / solidworks / overleaf)
+# API pública — Trilhas de Aprendizado (excel / powerbi / autocad / solidworks / bi)
 # ──────────────────────────────────────────────────────────────────────────────
 
 def get_trail_data(slug: str) -> Optional[dict]:
@@ -97,7 +97,7 @@ def calculate_trail_progress(trail: dict) -> dict:
 # API pública — CRUD de Aulas nas Trilhas de Aprendizado
 # ──────────────────────────────────────────────────────────────────────────────
 
-VALID_TRAILS = ("excel", "powerbi", "autocad", "solidworks", "overleaf")
+VALID_TRAILS = ("excel", "powerbi", "autocad", "solidworks", "bi")
 
 
 def _load_trail(slug: str) -> Optional[dict]:

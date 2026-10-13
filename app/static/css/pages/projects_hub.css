@@ -335,20 +335,20 @@
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, transparent 65%);
 }
 
-.hub-card--overleaf .hub-card__icon {
-  border-color: rgba(52, 211, 153, 0.3);
-  background: linear-gradient(135deg, rgba(5, 150, 105, 0.18) 0%, rgba(5, 150, 105, 0.03) 100%);
-  color: #10b981;
-  box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+.hub-card--bi .hub-card__icon {
+  border-color: rgba(56, 189, 248, 0.3);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(99, 102, 241, 0.08) 100%);
+  color: #38bdf8;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.2);
 }
 
-.hub-card--overleaf:hover {
-  border-color: rgba(52, 211, 153, 0.35);
-  box-shadow: var(--shadow-card-hover), 0 0 25px rgba(16, 185, 129, 0.15);
+.hub-card--bi:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: var(--shadow-card-hover), 0 0 28px rgba(14, 165, 233, 0.2);
 }
 
-.hub-card--overleaf .hub-card__glow {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, transparent 65%);
+.hub-card--bi .hub-card__glow {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(99, 102, 241, 0.06) 50%, transparent 75%);
 }
 
 .hub-card--autocad .hub-card__icon {
@@ -443,10 +443,22 @@
   border-color: rgba(16, 185, 129, 0.25);
 }
 
-.hub-badge--overleaf {
-  background: rgba(16, 185, 129, 0.1);
-  color: #34d399;
-  border-color: rgba(16, 185, 129, 0.25);
+.hub-badge--tableau {
+  background: rgba(235, 110, 43, 0.12);
+  color: #f97316;
+  border-color: rgba(235, 110, 43, 0.3);
+}
+
+.hub-badge--sql {
+  background: rgba(6, 182, 212, 0.12);
+  color: #22d3ee;
+  border-color: rgba(6, 182, 212, 0.3);
+}
+
+.hub-badge--python {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
 .hub-badge--autocad {
@@ -504,9 +516,12 @@
   flex-shrink: 0;
 }
 
-.hub-card--excel .hub-card__features li i,
-.hub-card--overleaf .hub-card__features li i {
+.hub-card--excel .hub-card__features li i {
   color: #34d399;
+}
+
+.hub-card--bi .hub-card__features li i {
+  color: #38bdf8;
 }
 
 .hub-card--autocad .hub-card__features li i {
@@ -560,20 +575,31 @@
   transform: translateX(4px);
 }
 
-/* Botão Acessar temático para Excel e Overleaf */
-.hub-card--excel .hub-card__cta,
-.hub-card--overleaf .hub-card__cta {
+.hub-card--excel .hub-card__cta {
   background: rgba(16, 185, 129, 0.1);
   color: #34d399;
   border-color: rgba(16, 185, 129, 0.25);
 }
 
-.hub-card--excel .hub-card__cta:hover,
-.hub-card--overleaf .hub-card__cta:hover {
+.hub-card--excel .hub-card__cta:hover {
   background: #10b981;
   color: #09090b;
   border-color: #10b981;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+/* Botão Acessar temático para BI */
+.hub-card--bi .hub-card__cta {
+  background: rgba(14, 165, 233, 0.12);
+  color: #38bdf8;
+  border-color: rgba(14, 165, 233, 0.3);
+}
+
+.hub-card--bi .hub-card__cta:hover {
+  background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+  color: #09090b;
+  border-color: #38bdf8;
+  box-shadow: 0 0 20px rgba(14, 165, 233, 0.35);
 }
 
 /* Botão Acessar temático para AutoCAD */

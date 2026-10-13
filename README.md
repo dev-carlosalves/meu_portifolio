@@ -16,7 +16,7 @@ O resultado foi bem além do que eu esperava quando comecei.
 ## O que tem aqui
 
 - **Home** — apresentação geral, quem sou e o que estou desenvolvendo
-- **Projetos & Trilhas** — estudos e projetos organizados em trilhas (AutoCAD, SolidWorks, Excel, Power BI e Overleaf LaTeX)
+- **Projetos & Trilhas** — estudos e projetos organizados em áreas e trilhas (AutoCAD, SolidWorks, Excel, Power BI e BI - Business Intelligence)
 - **Contato** — formulário funcional (via EmailJS), WhatsApp, LinkedIn e GitHub
 
 ---
@@ -53,8 +53,8 @@ O resultado foi bem além do que eu esperava quando comecei.
 **Versionamento**
 - Git + GitHub
 
-**Softwares de Engenharia & Análise**
-- SolidWorks, AutoCAD, Microsoft Excel, Microsoft Power BI e Overleaf (LaTeX)
+**Softwares de Engenharia & Ferramentas de Dados**
+- SolidWorks, AutoCAD, Microsoft Excel, Microsoft Power BI, Tableau, SQL e Python
 
 ---
 
@@ -75,7 +75,7 @@ meu_portifolio/
 │   │   ├── cad_projects.py
 │   │   ├── data_analysis_projects.py
 │   │   ├── excel_projects.py
-│   │   ├── overleaf_projects.py
+│   │   ├── bi_projects.py
 │   │   ├── contact.py
 │   │   └── admin.py
 │   │

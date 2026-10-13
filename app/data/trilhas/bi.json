@@ -1,0 +1,41 @@
+{
+  "id": "bi",
+  "slug": "bi",
+  "nome": "BI (Business Intelligence)",
+  "descricao": "Estudos e práticas em Business Intelligence: conceitos estratégicos, modelagem dimensional e implementação com as ferramentas líderes de mercado — Tableau, Power BI, SQL e Python.",
+  "categoria": "Business Intelligence",
+  "icone": "fa-chart-line",
+  "cor": "azul",
+  "modulos": [
+    {
+      "id": "modulo-01",
+      "numero": 1,
+      "titulo": "Fundamentos de Business Intelligence",
+      "aulas": []
+    },
+    {
+      "id": "modulo-02",
+      "numero": 2,
+      "titulo": "Power BI & DAX",
+      "aulas": []
+    },
+    {
+      "id": "modulo-03",
+      "numero": 3,
+      "titulo": "Tableau & Visual Storytelling",
+      "aulas": []
+    },
+    {
+      "id": "modulo-04",
+      "numero": 4,
+      "titulo": "SQL para Análise de Dados",
+      "aulas": []
+    },
+    {
+      "id": "modulo-05",
+      "numero": 5,
+      "titulo": "Python Aplicado a BI & ETL",
+      "aulas": []
+    }
+  ]
+}

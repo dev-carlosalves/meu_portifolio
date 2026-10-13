@@ -21,12 +21,12 @@ from fastapi.templating import Jinja2Templates
 from app.config import get_base_context
 from app.routers import (
     admin,
+    bi_projects,
     cad_projects,
     contact,
     data_analysis_projects,
     excel_projects,
     home,
-    overleaf_projects,
     projects_hub,
 )
 
@@ -67,7 +67,7 @@ app.include_router(projects_hub.router)
 app.include_router(cad_projects.router)
 app.include_router(data_analysis_projects.router)
 app.include_router(excel_projects.router)
-app.include_router(overleaf_projects.router)
+app.include_router(bi_projects.router)
 app.include_router(contact.router)
 app.include_router(admin.router)
 

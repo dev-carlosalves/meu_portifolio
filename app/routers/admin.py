@@ -54,7 +54,7 @@ TRAIL_LABELS = {
     "powerbi":    "Power BI",
     "autocad":    "AutoCAD",
     "solidworks": "SolidWorks",
-    "overleaf":   "Overleaf (LaTeX)",
+    "bi":         "BI (Business Intelligence)",
 }
 
 
