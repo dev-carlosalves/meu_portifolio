@@ -17,25 +17,22 @@ router = APIRouter()
 
 @router.get("/projetos/bi", response_class=HTMLResponse, include_in_schema=False)
 async def trail_bi(request: Request) -> HTMLResponse:
-    """Página da área de Business Intelligence (BI) com visão completa das ferramentas e trilha."""
+    """Página de trilha Business Intelligence (BI)."""
     templates = request.app.state.templates
     trail = get_trail_data("bi")
     if not trail:
-        context = get_base_context(page_id="projetos", page_title="Área não encontrada")
+        context = get_base_context(page_id="projetos", page_title="Trilha não encontrada")
         return templates.TemplateResponse(
             "pages/404.html", {"request": request, **context}, status_code=404
         )
     progress = calculate_trail_progress(trail)
     context = get_base_context(
         page_id="projetos",
-        page_title="BI (Business Intelligence) | Carlos Daniel",
-        description=(
-            "Explore a área de Business Intelligence: conceitos fundamentais de BI, ciclo de vida de dados "
-            "e formação prática nas principais ferramentas — Tableau, Power BI, SQL e Python."
-        ),
+        page_title="Trilha BI (Business Intelligence) | Carlos Daniel",
+        description=trail.get("descricao", ""),
     )
     return templates.TemplateResponse(
-        "pages/bi_page.html",
+        "pages/trail_page.html",
         {
             "request": request,
             "trail": trail,

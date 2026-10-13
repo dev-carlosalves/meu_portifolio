@@ -14,9 +14,9 @@
     <nav class="trail-breadcrumb" aria-label="Navegação estrutural" data-aos="fade-right">
       <a href="/projetos" class="trail-breadcrumb__link">
         <i class="fa-solid fa-folder-open" aria-hidden="true"></i>
-        Trilhas
+        Projetos
       </a>
-      {% if breadcrumb_parent %}
+      {% if breadcrumb_parent and breadcrumb_parent.href != '/projetos' %}
       <i class="fa-solid fa-chevron-right trail-breadcrumb__sep" aria-hidden="true"></i>
       <a href="{{ breadcrumb_parent.href }}" class="trail-breadcrumb__link">
         {{ breadcrumb_parent.label }}
@@ -37,8 +37,8 @@
 
           <!-- Tag de categoria -->
           <div class="trail-sidebar__tag">
-            <i class="fa-solid fa-{{ trail.icone }}" aria-hidden="true"></i>
-            SOFTWARE
+            <i class="fa-solid {% if trail.icone.startswith('fa-') %}{{ trail.icone }}{% else %}fa-{{ trail.icone }}{% endif %}" aria-hidden="true"></i>
+            {{ trail.categoria | default('SOFTWARE') | upper }}
           </div>
 
           <!-- Título da trilha -->
